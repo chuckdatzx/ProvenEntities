@@ -1,0 +1,11 @@
+*.~*
+*.dcu
+*.drc
+*.identcache
+*.local
+*.map
+*.rsm
+
+ProvenEntities_UnitTests.res
+ProvenEntities_UnitTests.exe
+TestInsightSettings.ini
