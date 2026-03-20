@@ -5,10 +5,9 @@ program ProvenEntities_UnitTests;
 {$ENDIF}
 {$STRONGLINKTYPES ON}
 uses
-  {$IFNDEF ANDROID}
+  { TODO -oChuck -cDesign Concern : Should I include a compile-time flag for including/discluding FastMM4? }
   FastMM4,
   DUnitX.MemoryLeakMonitor.FastMM4,
-  {$ENDIF }
   System.SysUtils,
   {$IFDEF TESTINSIGHT}
   TestInsight.DUnitX,
@@ -17,12 +16,13 @@ uses
   {$ENDIF }
   DUnitX.TestFramework,
   tinkering in 'tinkering.pas',
+  PE.Buckets in 'Source\PE.Buckets.pas',
   PE.RandomGenerator.OrdinalGenerationRoutines in 'Source\PE.RandomGenerator.OrdinalGenerationRoutines.pas',
   PE.RandomGenerator in 'Source\PE.RandomGenerator.pas',
+  PE.UnitTests.Buckets_Proven in 'Source\Unit Tests\PE.UnitTests.Buckets_Proven.pas',
   PE.UnitTests.RandomGenerator_Proven in 'Source\Unit Tests\PE.UnitTests.RandomGenerator_Proven.pas',
   PE.UnitTests.RandomGenerator.OrdinalGenerationRoutines_Proven in 'Source\Unit Tests\PE.UnitTests.RandomGenerator.OrdinalGenerationRoutines_Proven.pas',
-  PE.UnitTests.RandomGenerator.TDD.Templates in 'Source\Unit Tests\PE.UnitTests.RandomGenerator.TDD.Templates.pas',
-  PE.Buckets in 'Source\PE.Buckets.pas';
+  PE.UnitTests.RandomGenerator.TDD.Templates in 'Source\Unit Tests\PE.UnitTests.RandomGenerator.TDD.Templates.pas';
 
 { keep comment here to protect the following conditional from being removed by the IDE when adding a unit }
 {$IFNDEF TESTINSIGHT}

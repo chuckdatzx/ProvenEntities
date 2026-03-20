@@ -291,9 +291,9 @@ begin
 //    ChiSquareGoodnessOfFit.BucketIn<MyEnum>.Create(33, function (Value: MyEnum): Boolean begin Result := (Value = C); end)]);
   Actual := RNG_Tests_Utility.CanRegisterTypeQ_GenerateAndReturnXValuesOfTypeQFromRoutineY_ThenUnregisterTypeQ<MyEnum>(10000, X);
   Sorted := Buckets.SortDataCollectionXIntoCustomBucketsY<MyEnum>(Actual, 
-    [Buckets.BucketIn<MyEnum>.Create(function (Value: MyEnum): Boolean begin Result := (Value = A); end, 3333),
-      Buckets.BucketIn<MyEnum>.Create(function (Value: MyEnum): Boolean begin Result := (Value = B); end, 3333),
-      Buckets.BucketIn<MyEnum>.Create(function (Value: MyEnum): Boolean begin Result := (Value = C); end, 3333)]);
+    [Buckets.BucketIn<MyEnum>.Create(function (const Value: MyEnum): Boolean begin Result := (Value = A); end, 3333),
+      Buckets.BucketIn<MyEnum>.Create(function (const Value: MyEnum): Boolean begin Result := (Value = B); end, 3333),
+      Buckets.BucketIn<MyEnum>.Create(function (const Value: MyEnum): Boolean begin Result := (Value = C); end, 3333)]);
   ChiSquareGoodnessOfFit.CanPassUpperTailTestsYGivenSampleSizeX(Sorted);
 end;
 
