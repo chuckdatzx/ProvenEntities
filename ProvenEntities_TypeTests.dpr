@@ -3,10 +3,10 @@ program ProvenEntities_TypeTests;
 {$APPTYPE CONSOLE}
 {$STRONGLINKTYPES ON}
 uses
-  PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime in 'PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas',
-  PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime in 'PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas',
-  PE.TypeTests.Buckets in 'Source\Unit Tests\PE.TypeTests.Buckets.pas',
-  PE.Buckets in 'Source\PE.Buckets.pas';
+  PE.Buckets in 'Source\PE.Buckets.pas',
+  PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas',
+  PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas',
+  PE.TypeTests.Buckets in 'Type Tests\PE.TypeTests.Buckets.pas';
 
 type
   //Replace T with any compilable type.

@@ -150,10 +150,10 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas"/>
-        <DCCReference Include="PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas"/>
-        <DCCReference Include="Source\Unit Tests\PE.TypeTests.Buckets.pas"/>
         <DCCReference Include="Source\PE.Buckets.pas"/>
+        <DCCReference Include="Type Tests\PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas"/>
+        <DCCReference Include="Type Tests\PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas"/>
+        <DCCReference Include="Type Tests\PE.TypeTests.Buckets.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -6,6 +6,6 @@
 *.map
 *.rsm
 
-ProvenEntities_UnitTests.res
-ProvenEntities_UnitTests.exe
+ProvenEntities_TypeTests.res
+ProvenEntities_TypeTests.exe
 TestInsightSettings.ini
