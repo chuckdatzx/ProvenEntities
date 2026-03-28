@@ -59,14 +59,8 @@ type
   public
     class function CategorizeSampleOfSizeXIntoBucketsY<Q>(const RoutineUnderTest: TFunc<Q>; const X: SampleSize; const Y: array of BucketIn<Q>): TArray<BucketOut>; static;
     class procedure CanPassUpperTailTestsYGivenSampleSizeX<Q: record>(const ARoutine: TFunc<Q>; const X: SampleSize; const Y: array of BucketIn<Q>; const ASignificanceLevel: SignificanceLevel = sl95); overload; static;
-    class procedure CanPassUpperTailTestsYGivenSampleSizeX(const X: array of Buckets.BucketOut; const ASignificanceLevel: SignificanceLevel = sl95); overload; static;
+//    class procedure CanPassUpperTailTestsYGivenSampleSizeX(const X: array of Buckets.BucketOut; const ASignificanceLevel: SignificanceLevel = sl95); overload; static;
   end library {Currently Requires DUnitX's Assert class (i.e. is self-validating)};
-
-  [TestFixture]
-  EnumStuff = class
-  public
-    [Test]procedure Test();
-  end;
 
   RNG_ExerciseTypeT_Ordinal_Tests<T> = class abstract(RNG_ExerciseTypeT_Tests<T>)
   strict private
@@ -276,7 +270,7 @@ end;
 
 { EnumStuff }
 
-procedure EnumStuff.Test;
+(*procedure EnumStuff.Test;
 type
   MyEnum = (A, B, C);
 var
@@ -290,12 +284,12 @@ begin
 //    ChiSquareGoodnessOfFit.BucketIn<MyEnum>.Create(33, function (Value: MyEnum): Boolean begin Result := (Value = B); end),
 //    ChiSquareGoodnessOfFit.BucketIn<MyEnum>.Create(33, function (Value: MyEnum): Boolean begin Result := (Value = C); end)]);
   Actual := RNG_Tests_Utility.CanRegisterTypeQ_GenerateAndReturnXValuesOfTypeQFromRoutineY_ThenUnregisterTypeQ<MyEnum>(10000, X);
-  Sorted := Buckets.SortDataCollectionXIntoCustomBucketsY<MyEnum>(Actual, 
+  Sorted := Buckets.SortDataCollectionXIntoCustomBucketsY<MyEnum>(Actual,
     [Buckets.BucketIn<MyEnum>.Create(function (const Value: MyEnum): Boolean begin Result := (Value = A); end, 3333),
       Buckets.BucketIn<MyEnum>.Create(function (const Value: MyEnum): Boolean begin Result := (Value = B); end, 3333),
       Buckets.BucketIn<MyEnum>.Create(function (const Value: MyEnum): Boolean begin Result := (Value = C); end, 3333)]);
   ChiSquareGoodnessOfFit.CanPassUpperTailTestsYGivenSampleSizeX(Sorted);
-end;
+end;*)
 
 { Buckets.BucketIn<T> }
 
@@ -347,7 +341,7 @@ begin
     Assert.FailFmt('The X squared value (%s) is greater than the critical value (%s)', [XSquared.ToString(), CriticalValue.ToString()]);
 end;
 
-class procedure ChiSquareGoodnessOfFit.CanPassUpperTailTestsYGivenSampleSizeX(
+(*class procedure ChiSquareGoodnessOfFit.CanPassUpperTailTestsYGivenSampleSizeX(
   const X: array of Buckets.BucketOut;
   const ASignificanceLevel: SignificanceLevel);
 var
@@ -366,14 +360,14 @@ begin
     Assert.AreNotEqual<NativeUInt>(0, X[I].PredictionCount, 'Boundary Check - Bucket "%s" has an expected count of zero');
   CriticalValue := CriticalValuesBySignificanceLevelAndDegreesOfFreedom[ASignificanceLevel, BucketsUnderTest];
   Assert.AreNotEqual<Double>(0.0, CriticalValue, 'Boundary Check - The critical value is not assigned');
-  
+
   Assert.IsTrue(BucketsUnderTest >= 1, 'Boundary Check - The number of tested buckets must be at least 1');
   for I := Low(X) to High(X) do
     if (X[I].RecordedCount > 0) then
       XSquared := XSquared + (Power(NativeInt(X[I].RecordedCount) - X[I].PredictionCount, 2) / X[I].PredictionCount);
   if (XSquared > CriticalValue) then
     Assert.FailFmt('The X squared value (%s) is greater than the critical value (%s)', [XSquared.ToString(), CriticalValue.ToString()]);
-end;
+end;*)
 
 class function ChiSquareGoodnessOfFit.CategorizeSampleOfSizeXIntoBucketsY<Q>(
   const RoutineUnderTest: TFunc<Q>; const X: SampleSize;

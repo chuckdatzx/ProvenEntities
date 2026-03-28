@@ -123,12 +123,10 @@ end;
 class function RNG_Standard_Generation_Routines.RandomRoutineFromQAndForQ<Q>: TFunc<Q>;
 var
   AType: TRttiType;
-  I: NativeInt;
   MaxValue: Integer;
   MinValue: Integer;
   X: TValue;
   Z: TRttiEnumerationType;
-  SomeValue: Q;
 begin
   Result := nil;
   X := TValue.From<Q>(Default(Q));

@@ -8,8 +8,8 @@
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Console</AppType>
-        <MainSource>ProvenEntities_UnitTests.dpr</MainSource>
-        <ProjectName Condition="'$(ProjectName)'==''">ProvenEntities_UnitTests</ProjectName>
+        <MainSource>ProvenEntities_TypeTests.dpr</MainSource>
+        <ProjectName Condition="'$(ProjectName)'==''">ProvenEntities_TypeTests</ProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -75,7 +75,7 @@
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
         <DCC_UnitSearchPath>$(DUnitX);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <SanitizedProjectName>ProvenEntities_UnitTests</SanitizedProjectName>
+        <SanitizedProjectName>ProvenEntities_TypeTests</SanitizedProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <VerInfo_Keys>package=com.embarcadero.$(MSBuildProjectName);label=$(MSBuildProjectName);versionCode=1;versionName=1.0.0;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=</VerInfo_Keys>
@@ -150,14 +150,10 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="tinkering.pas"/>
+        <DCCReference Include="PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas"/>
+        <DCCReference Include="PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas"/>
+        <DCCReference Include="Source\Unit Tests\PE.TypeTests.Buckets.pas"/>
         <DCCReference Include="Source\PE.Buckets.pas"/>
-        <DCCReference Include="Source\PE.RandomGenerator.OrdinalGenerationRoutines.pas"/>
-        <DCCReference Include="Source\PE.RandomGenerator.pas"/>
-        <DCCReference Include="Source\Unit Tests\PE.UnitTests.Buckets_Proven.pas"/>
-        <DCCReference Include="Source\Unit Tests\PE.UnitTests.RandomGenerator_Proven.pas"/>
-        <DCCReference Include="Source\Unit Tests\PE.UnitTests.RandomGenerator.OrdinalGenerationRoutines_Proven.pas"/>
-        <DCCReference Include="Source\Unit Tests\PE.UnitTests.RandomGenerator.TDD.Templates.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -180,7 +176,7 @@
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
                 <Source>
-                    <Source Name="MainSource">ProvenEntities_UnitTests.dpr</Source>
+                    <Source Name="MainSource">ProvenEntities_TypeTests.dpr</Source>
                 </Source>
             </Delphi.Personality>
             <Deployment Version="4">
@@ -273,15 +269,15 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="C:\temp\libProvenEntities_UnitTests.so" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="C:\temp\libProvenEntities_TypeTests.so" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Android">
-                        <RemoteName>libProvenEntities_UnitTests.so</RemoteName>
+                        <RemoteName>libProvenEntities_TypeTests.so</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="C:\temp\libProvenEntities_UnitTests.so" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="C:\temp\libProvenEntities_TypeTests.so" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Android64">
-                        <RemoteName>libProvenEntities_UnitTests.so</RemoteName>
+                        <RemoteName>libProvenEntities_TypeTests.so</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -327,21 +323,15 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win32\Debug\ProvenEntities_UnitTests.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="Win32\Debug\ProvenEntities_TypeTests.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteName>ProvenEntities_UnitTests.exe</RemoteName>
+                        <RemoteName>ProvenEntities_TypeTests.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win64\Debug\ProvenEntities_UnitTests.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="Win64\Debug\ProvenEntities_TypeTests.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64">
-                        <RemoteName>ProvenEntities_UnitTests.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="Win64\Debug\ProvenEntities_UnitTests.rsm" Configuration="Debug" Class="DebugSymbols">
-                    <Platform Name="Win64">
-                        <RemoteName>ProvenEntities_UnitTests.rsm</RemoteName>
+                        <RemoteName>ProvenEntities_TypeTests.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

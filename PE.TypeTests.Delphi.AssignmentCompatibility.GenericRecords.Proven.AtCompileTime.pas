@@ -1,0 +1,35 @@
+unit PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime;
+{Chuck C.T.
+Full Declaration of Transparency:
+All of the following can only be considered as valid as your compiler and my interpretation of
+https://docwiki.embarcadero.com/RADStudio/Florence/en/Type_Compatibility_and_Identity_(Delphi)
+
+If you don't agree with everything you see in this source code unit, then please don't assume that anything has been proven here.
+If you find any problems, please let me know and I'll fix them.
+}
+
+interface
+
+uses
+  {PE}
+  PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime;
+
+{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime }
+var
+  X: G<T>;
+  Y: G<T>;
+
+const
+  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime = True;
+{$ELSE}
+const
+  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime = False;
+{$IFEND}
+
+implementation
+
+begin  //The proof is in the compilation (or the lack of, depending on how you define "compilation")
+  X := Y;
+  Y := X;
+
+end.
