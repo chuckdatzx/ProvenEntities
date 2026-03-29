@@ -29,7 +29,7 @@ const
 implementation
 
 begin  //The proof is in the compilation (or the lack of, depending on how you define "compilation")
-  X := Y;
-  Y := X;
+//  X := Y;
+//  Y := X;
 
 end.

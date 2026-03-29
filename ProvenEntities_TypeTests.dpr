@@ -6,21 +6,22 @@ uses
   PE.Buckets in 'Source\PE.Buckets.pas',
   PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas',
   PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas',
-  PE.TypeTests.Buckets in 'Type Tests\PE.TypeTests.Buckets.pas';
+  PE.TypeTests.Buckets in 'Type Tests\PE.TypeTests.Buckets.pas',
+  PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime.pas';
 
 type
   //Replace T with any compilable type.
-  //(just make sure to keep it between the first and last "WriteLn" [that way we know no errors could have occurred])
-  T = Integer;
+  T = Cardinal;
 
 begin
   {
   Since Delphi won't have time to setup exception handling, we're only going to get 1 of 2 results when running from the command line:
-  1) Complete Failure: (Brought to you by everyone's favorite bug to track down!) Runtime error X at address Y
+  1) Complete Failure: (Likely brought to you by everyone's favorite bug to track down!) Runtime error <X> at address <Y>
   2) Complete Passing: Output from the app of "Tests Started...Tests Completed"
   }
   Write('Tests Started...');
-  //If you're feeling wild and crazy, add all the types!
-  GrabbyArmBrains_TypeTests<T>.Invoke();
+  //If you want to cover more ground, just add your own values for T
+  //just make sure to keep it between the first and last "WriteLn" (that way we know no errors could have occurred)
+  PE.TypeTests.Buckets.SUT_TYPES<T>.ExerciseBucketDomain();
   Write('Tests Completed');
 end.

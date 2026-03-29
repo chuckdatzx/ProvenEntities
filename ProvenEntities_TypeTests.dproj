@@ -154,6 +154,7 @@
         <DCCReference Include="Type Tests\PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas"/>
         <DCCReference Include="Type Tests\PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas"/>
         <DCCReference Include="Type Tests\PE.TypeTests.Buckets.pas"/>
+        <DCCReference Include="Type Tests\PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
