@@ -108,6 +108,10 @@ implementation
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
 
+uses
+  {PE}
+  PE.DomainTests.Buckets;
+
 { BucketIn_TypeTests<T> :: Type Tests }
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
 begin
@@ -223,6 +227,7 @@ begin
   GrabbyArmBrains_TypeTests<T>.IsAssigmentCompatibleWithAnAnonymousMethodComprisedOfASingleImmutableValueOfTAndReturningABooleanType();
   GrabbyArmBrains_TypeTests<T>.IsSymmetricallyAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType();
   GrabbyArmBrains_TypeTests<T>.ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
+  PE.DomainTests.Buckets.DomainTests<T>.Exercise();
   Result := True;
 end;
 

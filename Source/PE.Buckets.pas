@@ -2,6 +2,10 @@ unit PE.Buckets;
 
 interface
 
+uses
+  {Delphi}
+  System.SysUtils;  //Only required for TArray<T> type; could be removed if I'm willing to live w/signature changes
+
 type
   BucketTally = Cardinal;
   GrabbyArmBrains<T> = reference to function (const AValue: T): Boolean;
@@ -27,6 +31,16 @@ type
     property Name: string read FName write FName;
   end;
 
+  Routines = record
+  public
+    class function Categorize<T>(const DataStream: TArray<T>; const Buckets: TArray<BucketIn<T>>): TArray<BucketOut>; static; inline;
+  end;
+
 implementation
+
+class function Routines.Categorize<T>(const DataStream: TArray<T>; const Buckets: TArray<BucketIn<T>>): TArray<BucketOut>;
+begin
+
+end;
 
 end.
