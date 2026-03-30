@@ -40,11 +40,8 @@ uses
   - Identically defined generic records are symmetrically assignment compatible at compile-time
 
 If said compile-time checks are True, and then considering the tests below,
-I am claiming the following types are proven for any compilable generic type T:
-  - BucketIn<T>
-  - BucketTally
-  - GrabbyArmBrains<T>
- }
+I am claiming the all types and routines of the PE.Buckets.pas domain are proven for any compilable generic type T.
+}
 
 type
   SUT_TYPES<T> = record
@@ -54,15 +51,17 @@ type
       BucketIn_Closed = BucketIn<T>;
       E_BucketTally = BucketTally;
       GrabbyArmBrains_Closed = GrabbyArmBrains<T>;
+      BucketNameType = string;
     end;
   public
     class var ActualBucketTally: Actual.E_BucketTally;
     class var ActualGrabbyArmBrains: Actual.GrabbyArmBrains_Closed;
-    class var ActualBucketIn: Actual.BucketIn_Closed;
+    class var ActualBucketNameType: Actual.BucketNameType;
   public
     class var ExpectedBucketTally: Actual.E_BucketTally;
     class var ExpectedGrabbyArmBrains: Actual.GrabbyArmBrains_Closed;
     class var ExpectedBucketIn: BucketIn<T>;
+    class var ExpectedBucketOut: BucketOut;
   public
     class var ExpectedCardinal: Cardinal;
   public
@@ -73,7 +72,14 @@ type
   BucketIn_TypeTests<T> = record {Type ID and symmetric assignment compatibility tests are ignored; should have been handled by compiler flags}
   private {Domain Boundaries}
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType(); static; inline;
+    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType(); static; inline;
+  end;
+
+  BucketOut_TypeTests = record
+  private {Domain Boundaries}
+    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType(); static; inline;
+    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
   end;
 
   BucketTally_TypeTests = record
@@ -92,7 +98,7 @@ type
     class procedure IsSymmetricallyAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
   private {Type Identity/Symmetric Assignment Compatibility}
     class procedure TheProvidedTIsTypeIdenticalToTheSUT_Type(); static; inline;
-    class procedure ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT(); static; inline;
+    class procedure ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT(); static; inline; { TODO -oChuck -cToDo : Requires runtime (and I really don't want to have to knock the grabby arm type down to a procedural type only)}
   end;
 
 {$ENDIF}
@@ -106,15 +112,47 @@ implementation
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
 begin
   Assert(System.TypeInfo(BucketTally) = System.TypeInfo(SUT_TYPES<T>.Actual.E_BucketTally));
-  SUT_TYPES<T>.ExpectedBucketIn.GrabbyArm := SUT_TYPES<T>.ActualBucketIn.GrabbyArm;
-  SUT_TYPES<T>.ActualBucketIn.GrabbyArm := SUT_TYPES<T>.ExpectedBucketIn.GrabbyArm;
+  SUT_TYPES<T>.ExpectedBucketIn.GrabbyArm := SUT_TYPES<T>.ActualGrabbyArmBrains;
+  SUT_TYPES<T>.ActualGrabbyArmBrains := SUT_TYPES<T>.ExpectedBucketIn.GrabbyArm;
+end;
+
+class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
+begin
+  {$IF (System.TypeInfo(string) <> System.TypeInfo(Integer)) and (System.TypeInfo(string) = System.TypeInfo(string))}
+  Assert(System.TypeInfo(string) = System.TypeInfo(SUT_TYPES<T>.Actual.BucketNameType));
+  SUT_TYPES<T>.ExpectedBucketIn.Name := SUT_TYPES<T>.ActualBucketNameType;
+  SUT_TYPES<T>.ActualBucketNameType := SUT_TYPES<T>.ExpectedBucketIn.Name;
+  {$ELSE}
+  Assert(False, 'We do not seem to have compile time type identity established for the native string');
+  {$IFEND}
 end;
 
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
 begin
   Assert(System.TypeInfo(BucketTally) = System.TypeInfo(SUT_TYPES<T>.Actual.E_BucketTally));
-  SUT_TYPES<T>.ExpectedBucketIn.Prediction := SUT_TYPES<T>.ActualBucketIn.Prediction;
-  SUT_TYPES<T>.ActualBucketIn.Prediction := SUT_TYPES<T>.ExpectedBucketIn.Prediction;
+  SUT_TYPES<T>.ExpectedBucketIn.Prediction := SUT_TYPES<T>.ActualBucketTally;
+  SUT_TYPES<T>.ActualBucketTally := SUT_TYPES<T>.ExpectedBucketIn.Prediction;
+end;
+
+{ BucketOut_TypeTests :: Type Tests }
+class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType;
+begin
+  Assert(System.TypeInfo(BucketTally) = System.TypeInfo(SUT_TYPES<T>.Actual.E_BucketTally));
+  SUT_TYPES<T>.ExpectedBucketOut.Count := SUT_TYPES<T>.ActualBucketTally;
+  SUT_TYPES<T>.ActualBucketTally := SUT_TYPES<T>.ExpectedBucketOut.Count;
+end;
+
+{ TODO -oChuck -cMental Note : You haven't yet considered what can/can't be done w/include files. Furthermore, you haven't even braoched the concept of a pre-compiler. }
+
+class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
+begin
+  {$IF (System.TypeInfo(string) <> System.TypeInfo(Integer)) and (System.TypeInfo(string) = System.TypeInfo(string))}
+  Assert(System.TypeInfo(string) = System.TypeInfo(SUT_TYPES<T>.Actual.BucketNameType));
+  SUT_TYPES<T>.ExpectedBucketOut.Name := SUT_TYPES<T>.ActualBucketNameType;
+  SUT_TYPES<T>.ActualBucketNameType := SUT_TYPES<T>.ExpectedBucketOut.Name;
+  {$ELSE}
+  Assert(False, 'We do not seem to have compile time type identity established for the native string');
+  {$IFEND}
 end;
 
 { BucketTally_TypeTests :: Tests }
@@ -164,16 +202,9 @@ begin
 end;
 
 class procedure GrabbyArmBrains_TypeTests<T>.ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
-var
-{ TODO -oChuck -cToDo : You can shrink this further. Just need to get to it. }
-  ActualValue: Boolean;
-  Actual: GrabbyArmBrains<T>;
 begin
-  ActualValue := False;
-  Assert(not ActualValue);
-  Actual := function (const AValue: T): Boolean begin Result := (AValue = Default(T)) end;
-  Assert(Assigned(Actual));
-  Assert(Actual(Default(T)));
+  SUT_TYPES<T>.ActualGrabbyArmBrains := function (const AValue: T): Boolean begin Result := (AValue = Default(T)) end;
+  Assert(SUT_TYPES<T>.ActualGrabbyArmBrains(Default(T)));
 end;
 
 class function SUT_TYPES<T>.ExerciseBucketDomain(): Boolean;
@@ -184,7 +215,10 @@ begin
   BucketTally_TypeTests.IsTypeIdenticalToCardinal();
   BucketTally_TypeTests.SharesSymmetricAssignmentCompatibilityWithCardinal();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
+  BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
+  BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
+  BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
   GrabbyArmBrains_TypeTests<T>.TheProvidedTIsTypeIdenticalToTheSUT_Type();
   GrabbyArmBrains_TypeTests<T>.IsAssigmentCompatibleWithAnAnonymousMethodComprisedOfASingleImmutableValueOfTAndReturningABooleanType();
   GrabbyArmBrains_TypeTests<T>.IsSymmetricallyAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType();
