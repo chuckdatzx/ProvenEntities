@@ -74,6 +74,7 @@ type
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType(); static; inline;
+    class procedure All3PropertiesInitializedToDefaultValues(); static; inline;
   end;
 
   BucketOut_TypeTests = record
@@ -113,6 +114,14 @@ uses
   PE.DomainTests.Buckets;
 
 { BucketIn_TypeTests<T> :: Type Tests }
+class procedure BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues();
+begin
+  var Actual: BucketIn<T>;
+  Assert(Default(BucketTally) = Actual.Prediction);
+  Assert(Default(GrabbyArmBrains<T>) = Actual.GrabbyArm);
+  Assert(Default(string) = Actual.Name);
+end;
+
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
 begin
   Assert(System.TypeInfo(BucketTally) = System.TypeInfo(SUT_TYPES<T>.Actual.E_BucketTally));
@@ -221,6 +230,7 @@ begin
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
+  BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues();
   BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
   BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
   GrabbyArmBrains_TypeTests<T>.TheProvidedTIsTypeIdenticalToTheSUT_Type();
