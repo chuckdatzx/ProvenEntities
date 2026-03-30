@@ -6,3 +6,5 @@ And that's basically the reasoning behind why I started this repo. I'm looking t
 And if it turns out that the bug is here, please please please let me know so I can add a test (i.e., let me know so I can permanently fix it)."
 
 **TLDR: Pretty much the repo title explains it; the goal is to have proven entities.**
+Oh noes.. I almost forgot to mention.
+Everything I'm developing is being done 100% in Delphi 12 CE (Delphi 12.1 Patch 1). I literally cannot afford any better at the moment. The realm at which these tests are being executed MAY REQUIRE that you use Delphi 12.1 Patch 1 _just to get any valid feeback from the IDE_.
