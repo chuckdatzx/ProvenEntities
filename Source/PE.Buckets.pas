@@ -21,6 +21,7 @@ type
     property Name: string read FName write FName;
     property Prediction: BucketTally read FPrediction write FPrediction;
   public
+//    constructor Create(const Name: string = '');
     class function Default(): BucketIn<T>; static; inline;
   end;
 
@@ -28,12 +29,8 @@ type
   strict private
     FCount: BucketTally;
     FName: string;
-
-  //UNTESTED
   public
     class operator Equal(const A: BucketOut; const B: BucketOut): Boolean; static; inline;
-  //UNTESTED
-
   public
     property Count: BucketTally read FCount write FCount;
     property Name: string read FName write FName;
@@ -51,18 +48,21 @@ begin end;
 
 class operator BucketOut.Equal(const A: BucketOut; const B: BucketOut): Boolean;
 begin
-//  Result := (A = B);
-  Result := False;
+  Result := (@A = @B);
+  if (not Result) then
+    Result := (A.Count = B.Count) and (A.Name = B.Name);
 end;
 
 class function Routines.Categorize<T>(const DataStream: TArray<T>; const Buckets: TArray<BucketIn<T>>): TArray<BucketOut>;
 var
-  I: NativeInt;  
-  A: BucketOut;
+  I: NativeInt;
 begin
   Result := nil;
   for I := Low(Buckets) to High(Buckets) do
-    Result := Result + [A];
+  begin
+    Result := Result + [Default(BucketOut)];
+    Result[High(Result)].Name := Buckets[I].Name;
+  end;
 end;
 
 end.
