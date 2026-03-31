@@ -29,6 +29,8 @@ uses
   PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
   PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
   PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime,
+  {PE}
+  PE.DomainTests.Buckets,
   {Domain Under Test}
   PE.Buckets;
 
@@ -70,16 +72,31 @@ type
 
 type
   BucketIn_TypeTests<T> = record {Type ID and symmetric assignment compatibility tests are ignored; should have been handled by compiler flags}
+  strict private
+    class function Expected(const AValue: T): Boolean; static; inline;
   private {Domain Boundaries}
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType(); static; inline;
+    class procedure All3PropertiesInitializedToDefaultValues(); static; inline;
+  private {Constructor Tests}
+    class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue(); static; inline;
+    class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue(); static; inline;
+    class procedure ConstructorInitializesTheNamePropertyWhenGivenADefaultValue(); static; inline;
+    class procedure ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue(); static; inline;
   end;
 
   BucketOut_TypeTests = record
+  strict private class var Default: BucketOut;
   private {Domain Boundaries}
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
+  private {Domain Boundaries}
+    class procedure ComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultCountPropertyValue(); static; inline;
+    class procedure ComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultNamePropertyValue(); static; inline;
+    class procedure ComparisonOperatorReturnsTrueWhenBothInstancesAreSystemDotDefaultValues(); static; inline;
+    class procedure ComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical(); static; inline;
+    { TODO -oChuck -cToDo : Now that I've taken over the equality operator, a new property pokes a hole in the existing testing surface area}
   end;
 
   BucketTally_TypeTests = record
@@ -108,11 +125,36 @@ implementation
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
 
-uses
-  {PE}
-  PE.DomainTests.Buckets;
-
 { BucketIn_TypeTests<T> :: Type Tests }
+class procedure BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues();
+begin
+  var Actual: BucketIn<T>;
+  Assert(System.Default(BucketTally) = Actual.Prediction);
+  Assert(System.Default(GrabbyArmBrains<T>) = Actual.GrabbyArm);
+  Assert(System.Default(string) = Actual.Name);
+end;
+
+class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
+begin
+  System.Assert(System.Default(GrabbyArmBrains<T>) = BucketIn<T>.Create(System.Default(GrabbyArmBrains<T>)).GrabbyArm);
+end;
+
+class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
+begin
+  System.Assert(not (System.Default(GrabbyArmBrains<T>) = BucketIn<T>.Create(Expected).GrabbyArm));
+end;
+
+class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
+begin
+  Assert(System.Default(SUT_TYPES<T>.Actual.BucketNameType) = BucketIn<T>.Create(nil, System.Default(SUT_TYPES<T>.Actual.BucketNameType)).Name);
+end;
+
+class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
+begin
+  Assert('a' <> System.Default(SUT_TYPES<T>.Actual.BucketNameType));
+  Assert('a' = BucketIn<T>.Create(nil, 'a').Name);
+end;
+
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
 begin
   Assert(System.TypeInfo(BucketTally) = System.TypeInfo(SUT_TYPES<T>.Actual.E_BucketTally));
@@ -138,8 +180,44 @@ begin
   SUT_TYPES<T>.ActualBucketTally := SUT_TYPES<T>.ExpectedBucketIn.Prediction;
 end;
 
+class function BucketIn_TypeTests<T>.Expected(const AValue: T): Boolean;
+begin Result := False; end;
+
 { BucketOut_TypeTests :: Type Tests }
-class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType;
+
+class procedure BucketOut_TypeTests.ComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultNamePropertyValue();
+begin
+  var NonDefault := Default;
+  NonDefault.Name := 'a';  //Safe to make this assumption (for now; at least)
+  Assert(not (System.Default(BucketOut) = NonDefault));
+end;
+
+class procedure BucketOut_TypeTests.ComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultCountPropertyValue();
+begin
+  var NonDefault := Default;
+  NonDefault.Count := 1;  //Safe to make this assumption (for now; at least)
+  Assert(not (System.Default(BucketOut) = NonDefault));
+end;
+
+class procedure BucketOut_TypeTests.ComparisonOperatorReturnsTrueWhenBothInstancesAreSystemDotDefaultValues();
+begin
+  Assert(System.Default(BucketOut) = System.Default(BucketOut));
+end;
+
+class procedure BucketOut_TypeTests.ComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical();
+begin
+  var NonDefault1 := Default;
+  var NonDefault2 := Default;
+  NonDefault1.Count := 1;  //Safe to make this assumption (for now; at least)
+  NonDefault2.Count := 1;  //Safe to make this assumption (for now; at least)
+  NonDefault1.Name := 'a';  //Safe to make this assumption (for now; at least)
+  NonDefault2.Name := 'a';  //Safe to make this assumption (for now; at least)
+  Assert(not (System.Default(BucketOut) = NonDefault1));
+  Assert(not (System.Default(BucketOut) = NonDefault2));
+  Assert(NonDefault1 = NonDefault2);
+end;
+
+class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
 begin
   Assert(System.TypeInfo(BucketTally) = System.TypeInfo(SUT_TYPES<T>.Actual.E_BucketTally));
   SUT_TYPES<T>.ExpectedBucketOut.Count := SUT_TYPES<T>.ActualBucketTally;
@@ -162,7 +240,7 @@ end;
 { BucketTally_TypeTests :: Tests }
 class procedure BucketTally_TypeTests.DefaultValueIsZero();
 begin
-  Assert(0 = Default(SUT_TYPES<T>.Actual.E_BucketTally));
+  Assert(0 = System.Default(SUT_TYPES<T>.Actual.E_BucketTally));
 end;
 
 class procedure BucketTally_TypeTests.IsTypeIdenticalToCardinal();
@@ -207,7 +285,7 @@ end;
 
 class procedure GrabbyArmBrains_TypeTests<T>.ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
 begin
-  SUT_TYPES<T>.ActualGrabbyArmBrains := function (const AValue: T): Boolean begin Result := (AValue = Default(T)) end;
+  SUT_TYPES<T>.ActualGrabbyArmBrains := function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)) end;
   Assert(SUT_TYPES<T>.ActualGrabbyArmBrains(Default(T)));
 end;
 
@@ -218,9 +296,18 @@ begin
   BucketTally_TypeTests.MaximumValueIs4294967295();
   BucketTally_TypeTests.IsTypeIdenticalToCardinal();
   BucketTally_TypeTests.SharesSymmetricAssignmentCompatibilityWithCardinal();
+  BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
+  BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
+  BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
+  BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
+  BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues();
+  BucketOut_TypeTests.ComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultCountPropertyValue();
+  BucketOut_TypeTests.ComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultNamePropertyValue();
+  BucketOut_TypeTests.ComparisonOperatorReturnsTrueWhenBothInstancesAreSystemDotDefaultValues();
+  BucketOut_TypeTests.ComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical();
   BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
   BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
   GrabbyArmBrains_TypeTests<T>.TheProvidedTIsTypeIdenticalToTheSUT_Type();
