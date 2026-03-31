@@ -60,15 +60,20 @@ begin
 end;
 
 class function Routines.Categorize<T>(const DataStream: TArray<T>; const Buckets: TArray<BucketIn<T>>): TArray<BucketOut>;
-var
-  I: NativeInt;
 begin
-  Result := nil;
+  Result := [];
+  var I: NativeInt;
   for I := Low(Buckets) to High(Buckets) do
   begin
     Result := Result + [Default(BucketOut)];
     Result[High(Result)].Name := Buckets[I].Name;
   end;
+  var J: NativeInt;
+  for I := Low(DataStream) to High(DataStream) do
+    for J := Low(Buckets) to High(Buckets) do
+      if Assigned(Buckets[J].GrabbyArm) then
+        if Buckets[J].GrabbyArm(DataStream[I]) then
+          Result[J].Count := Result[J].Count + 1;
 end;
 
 end.
