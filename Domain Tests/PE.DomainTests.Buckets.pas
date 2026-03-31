@@ -1,5 +1,9 @@
 unit PE.DomainTests.Buckets;
-
+{Chuck C.T.
+Full Declaration of Transparency:
+You should only consider this code proven insofar as you agree with everything presented
+(and by "everything presented", I mean from the scope of the compiler all the way through to
+your custom code based on whatever I've presented here).}
 interface
 
 uses

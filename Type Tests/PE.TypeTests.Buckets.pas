@@ -1,27 +1,9 @@
 unit PE.TypeTests.Buckets;
-{Related materials:
-- https://en.wikipedia.org/wiki/Parametric_polymorphism
-}
 {Chuck C.T.
 Full Declaration of Transparency:
 You should only consider this code proven insofar as you agree with everything presented
 (and by "everything presented", I mean from the scope of the compiler all the way through to
-your custom code based on whatever I've presented here).
-At this exact point in time, I consider the following to be proof enough for me. But, that is still obviously just my opinion.
-
-That being said, I've worked reasonably hard to cover everything I could possiblly come up with. The problem
-is that I'm just one human; I can only forecast so much. If you have any suggestions for improving the overall
-coverage of this domain, please feel free to let me know. It takes a village; and all that.
-Fair warning; I very much welcome critique of this code, but I'm likely going to argue from the perspective of:
-Just because you CAN break it, that does not necessarily mean that it, in and of itself, is broken. To put it
-into other terms, showing that a thing can be misused doesn't necessarily mean said thing is inherently in need
-of fixing.
-
-Oh yeah... I almost forgot. If you are well-versed in unit testing, then the following is likely not the flavor
-of "unit testing" you're used to. Not being sure what to call them, I'm calling them "type tests" for the time being.
-Which I hope serves as a reminder that while type tests may "feel" like unit tests, the goal of the these
-unit tests is to prove out the types and domains themselves.
-}
+your custom code based on whatever I've presented here).}
 interface
 
 uses
@@ -84,6 +66,8 @@ type
     class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue(); static; inline;
     class procedure ConstructorInitializesTheNamePropertyWhenGivenADefaultValue(); static; inline;
     class procedure ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue(); static; inline;
+    class procedure ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue(); static; inline;
+    class procedure ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue(); static; inline;
   end;
 
   BucketOut_TypeTests = record
@@ -153,6 +137,16 @@ class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenG
 begin
   Assert('a' <> System.Default(SUT_TYPES<T>.Actual.BucketNameType));
   Assert('a' = BucketIn<T>.Create(nil, 'a').Name);
+end;
+
+class procedure BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue();
+begin
+  System.Assert(System.Default(BucketTally) = BucketIn<T>.Create(nil, '', System.Default(BucketTally)).Prediction);
+end;
+
+class procedure BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue();
+begin
+  System.Assert(System.Default(BucketTally) <> BucketIn<T>.Create(nil, '', System.Default(BucketTally) + 1).Prediction);
 end;
 
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
@@ -300,6 +294,8 @@ begin
   BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
   BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
   BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
+  BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue();
+  BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
