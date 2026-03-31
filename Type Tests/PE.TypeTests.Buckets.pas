@@ -29,6 +29,8 @@ uses
   PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
   PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
   PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime,
+  {PE}
+  PE.DomainTests.Buckets,
   {Domain Under Test}
   PE.Buckets;
 
@@ -70,11 +72,18 @@ type
 
 type
   BucketIn_TypeTests<T> = record {Type ID and symmetric assignment compatibility tests are ignored; should have been handled by compiler flags}
+  strict private
+    class function Expected(const AValue: T): Boolean; static; inline;
   private {Domain Boundaries}
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType(); static; inline;
     class procedure All3PropertiesInitializedToDefaultValues(); static; inline;
+  private {Constructor Tests}
+    class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue(); static; inline;
+    class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue(); static; inline;
+    class procedure ConstructorInitializesTheNamePropertyWhenGivenADefaultValue(); static; inline;
+    class procedure ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue(); static; inline;
   end;
 
   BucketOut_TypeTests = record
@@ -116,10 +125,6 @@ implementation
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
 
-uses
-  {PE}
-  PE.DomainTests.Buckets;
-
 { BucketIn_TypeTests<T> :: Type Tests }
 class procedure BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues();
 begin
@@ -127,6 +132,27 @@ begin
   Assert(System.Default(BucketTally) = Actual.Prediction);
   Assert(System.Default(GrabbyArmBrains<T>) = Actual.GrabbyArm);
   Assert(System.Default(string) = Actual.Name);
+end;
+
+class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
+begin
+  System.Assert(System.Default(GrabbyArmBrains<T>) = BucketIn<T>.Create(System.Default(GrabbyArmBrains<T>)).GrabbyArm);
+end;
+
+class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
+begin
+  System.Assert(not (System.Default(GrabbyArmBrains<T>) = BucketIn<T>.Create(Expected).GrabbyArm));
+end;
+
+class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
+begin
+  Assert(System.Default(SUT_TYPES<T>.Actual.BucketNameType) = BucketIn<T>.Create(nil, System.Default(SUT_TYPES<T>.Actual.BucketNameType)).Name);
+end;
+
+class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
+begin
+  Assert('a' <> System.Default(SUT_TYPES<T>.Actual.BucketNameType));
+  Assert('a' = BucketIn<T>.Create(nil, 'a').Name);
 end;
 
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
@@ -153,6 +179,9 @@ begin
   SUT_TYPES<T>.ExpectedBucketIn.Prediction := SUT_TYPES<T>.ActualBucketTally;
   SUT_TYPES<T>.ActualBucketTally := SUT_TYPES<T>.ExpectedBucketIn.Prediction;
 end;
+
+class function BucketIn_TypeTests<T>.Expected(const AValue: T): Boolean;
+begin Result := False; end;
 
 { BucketOut_TypeTests :: Type Tests }
 
@@ -267,6 +296,10 @@ begin
   BucketTally_TypeTests.MaximumValueIs4294967295();
   BucketTally_TypeTests.IsTypeIdenticalToCardinal();
   BucketTally_TypeTests.SharesSymmetricAssignmentCompatibilityWithCardinal();
+  BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
+  BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
+  BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
+  BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();

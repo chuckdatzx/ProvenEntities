@@ -21,7 +21,7 @@ type
     property Name: string read FName write FName;
     property Prediction: BucketTally read FPrediction write FPrediction;
   public
-//    constructor Create(const Name: string = '');
+    constructor Create(const GrabbyArm: GrabbyArmBrains<T>; const Name: string = '');
     class function Default(): BucketIn<T>; static; inline;
   end;
 
@@ -42,6 +42,12 @@ type
   end;
 
 implementation
+
+constructor BucketIn<T>.Create(const GrabbyArm: GrabbyArmBrains<T>; const Name: string);
+begin
+  FGrabbyArm := GrabbyArm;
+  FName := Name;
+end;
 
 class function BucketIn<T>.Default(): BucketIn<T>;
 begin end;
