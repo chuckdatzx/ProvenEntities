@@ -11,6 +11,8 @@ and not just assume, without pause, that it is unbreakable.}
 interface
 
 uses
+  {PE System}
+  PE.Types,
   {Delphi}
   System.SysUtils;
 
@@ -42,7 +44,7 @@ type
 
 type
   ///<summary>Means of counting for bucket-related operations</summary>
-  BucketTally = Cardinal;
+  BucketTally = NaturalNumber;
   ///<summary>Provides a customizable means for adding "brains" to a BucketIn{T} instance</summary>
   GrabbyArmBrains<T> = reference to function (const AValue: T): Boolean;
   { TODO -oChuck -cPotential Feature :

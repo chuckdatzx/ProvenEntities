@@ -35,7 +35,7 @@ type
   strict private
     class function Expected(const AValue: T): Boolean; static; inline;
   private {Property Tests}
-    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType(); static; inline;
+    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
     class procedure All3PropertiesInitializedToDefaultValues(); static; inline;
@@ -51,7 +51,7 @@ type
   BucketOut_TypeTests = record
   strict private class var Default: BucketOut;
   private {Property Tests}
-    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType(); static; inline;
+    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
   private {Equality Comparison Operator}
     class procedure EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultCountPropertyValue(); static; inline;
@@ -61,13 +61,9 @@ type
   end;
 
   BucketTally_TypeTests = record
-  private {Domain Boundaries}
-    class procedure DefaultValueIsZero(); static; inline;
-    class procedure MinimumValueIsZero(); static; inline;
-    class procedure MaximumValueIs4294967295(); static; inline; //4,294,967,295
-  private {Type Identity/Symmetric Assignment Compatibility}
-    class procedure IsTypeIdenticalToCardinal(); static; inline;
-    class procedure SharesSymmetricAssignmentCompatibilityWithCardinal(); static; inline;
+  private {Domain/Delphi Boundaries}
+    class procedure IsTypeIdenticalToNaturalNumber(); static; inline;
+    class procedure SharesSymmetricAssignmentCompatibilityWithNaturalNumber(); static; inline;
   end;
 
   GrabbyArmBrains_TypeTests<T> = record
@@ -83,6 +79,10 @@ type
 {$ENDIF}
 
 implementation
+
+uses
+  {PE System}
+  PE.Types;
 
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
@@ -149,10 +149,10 @@ begin
   {$IFEND}
 end;
 
-class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
+class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
 begin
-  System.Assert(System.TypeInfo(BucketTally) = TypeTestHarness.BucketIn<T>.PredictionProperty_SystemDotTypeInfo());
-  var Expected: BucketTally := 0;
+  System.Assert(System.TypeInfo(NaturalNumber) = TypeTestHarness.BucketIn<T>.PredictionProperty_SystemDotTypeInfo());
+  var Expected: NaturalNumber := 0;
   var Actual: BucketIn<T>;
   Actual.Prediction := Expected;
   Expected := Actual.Prediction;
@@ -198,10 +198,10 @@ begin
   System.Assert(NonDefault1 = NonDefault2);
 end;
 
-class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
+class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
 begin
-  System.Assert(System.TypeInfo(BucketTally) = TypeTestHarness.BucketOut.CountProperty_SystemDotTypeInfo());
-  var Expected: BucketTally := 0;
+  System.Assert(System.TypeInfo(NaturalNumber) = TypeTestHarness.BucketOut.CountProperty_SystemDotTypeInfo());
+  var Expected: NaturalNumber := 0;
   var Actual: BucketOut;
   Actual.Count := Expected;
   Expected := Actual.Count;
@@ -223,29 +223,14 @@ begin
 end;
 
 { BucketTally_TypeTests :: Tests }
-class procedure BucketTally_TypeTests.DefaultValueIsZero();
+class procedure BucketTally_TypeTests.IsTypeIdenticalToNaturalNumber();
 begin
-  System.Assert(0 = System.Default(BucketTally));
+  System.Assert(System.TypeInfo(NaturalNumber) = System.TypeInfo(BucketTally));
 end;
 
-class procedure BucketTally_TypeTests.IsTypeIdenticalToCardinal();
+class procedure BucketTally_TypeTests.SharesSymmetricAssignmentCompatibilityWithNaturalNumber();
 begin
-  System.Assert(SystemDotTypeInfo.ForCardinalType() = System.TypeInfo(BucketTally));
-end;
-
-class procedure BucketTally_TypeTests.MaximumValueIs4294967295();
-begin
-  System.Assert(High(Cardinal) = High(BucketTally));
-end;
-
-class procedure BucketTally_TypeTests.MinimumValueIsZero();
-begin
-  System.Assert(Low(Cardinal) = Low(BucketTally));
-end;
-
-class procedure BucketTally_TypeTests.SharesSymmetricAssignmentCompatibilityWithCardinal();
-begin
-  var Expected: Cardinal := 0;
+  var Expected: NaturalNumber;
   var Actual: BucketTally := Expected;
   Expected := Actual;
 end;
@@ -271,18 +256,15 @@ end;
 
 class procedure TypeTests<T>.Exercise();
 begin
-  BucketTally_TypeTests.DefaultValueIsZero();
-  BucketTally_TypeTests.MinimumValueIsZero();
-  BucketTally_TypeTests.MaximumValueIs4294967295();
-  BucketTally_TypeTests.IsTypeIdenticalToCardinal();
-  BucketTally_TypeTests.SharesSymmetricAssignmentCompatibilityWithCardinal();
+  BucketTally_TypeTests.IsTypeIdenticalToNaturalNumber();
+  BucketTally_TypeTests.SharesSymmetricAssignmentCompatibilityWithNaturalNumber();
   BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
   BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
   BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
   BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
   BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue();
   BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue();
-  BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
+  BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
   BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues();
@@ -290,7 +272,7 @@ begin
   BucketOut_TypeTests.EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultNamePropertyValue();
   BucketOut_TypeTests.EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreSystemDotDefaultValues();
   BucketOut_TypeTests.EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical();
-  BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
+  BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
   BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
   GrabbyArmBrains_TypeTests<T>.IsAssigmentCompatibleWithAnAnonymousMethodComprisedOfASingleImmutableValueOfTAndReturningABooleanType();
   GrabbyArmBrains_TypeTests<T>.IsLeftAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType();

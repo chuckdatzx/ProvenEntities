@@ -17,7 +17,9 @@ uses
   PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas',
   PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas',
   PE.TypeTests.Buckets in 'Type Tests\PE.TypeTests.Buckets.pas',
-  PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime.pas';
+  PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime.pas',
+  PE.Types in 'Source\PE.Types.pas',
+  PE.TypeTests.Types in 'Type Tests\PE.TypeTests.Types.pas';
 
 type
   //Replace T with any compilable type.
@@ -32,6 +34,7 @@ begin
   Write('Tests Started...');
   //If you want to cover more ground, just add your own values for T
   //just make sure to keep it between the first and last "WriteLn" (that way we can be sure no errors could have occurred)
+  PE.TypeTests.Types.AllTests.Exercise();
   PE.TypeTests.Buckets.TypeTests<T>.Exercise();
   PE.DomainTests.Buckets.DomainTests<T>.Exercise();
   Write('Tests Completed');
