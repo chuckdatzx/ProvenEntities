@@ -95,6 +95,10 @@ implementation
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
 
+uses
+  {PE System}
+  PE.Types;
+
 { CategorizeRoutine_SignatureTests<T> }
 
 class procedure CategorizeRoutine_SignatureTests<T>.ReturnsAnEmptyArrayOfBucketOut();

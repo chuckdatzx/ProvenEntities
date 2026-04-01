@@ -7,9 +7,6 @@ type
   NaturalNumber32 = NaturalNumber;
   NaturalNumber64 = type UInt64;
 
-//  X = record helper for NaturalNumber
-//  end;
-
 implementation
 
 end.

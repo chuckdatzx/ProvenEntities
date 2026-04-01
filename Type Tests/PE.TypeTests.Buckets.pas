@@ -60,12 +60,6 @@ type
     class procedure EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical(); static; inline;
   end;
 
-  BucketTally_TypeTests = record
-  private {Domain/Delphi Boundaries}
-    class procedure IsTypeIdenticalToNaturalNumber(); static; inline;
-    class procedure SharesSymmetricAssignmentCompatibilityWithNaturalNumber(); static; inline;
-  end;
-
   GrabbyArmBrains_TypeTests<T> = record
   strict private type
     ExpectedProceduralType<Q> = function (const AValue: Q): Boolean;
@@ -91,7 +85,7 @@ uses
 class procedure BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues();
 begin
   var Actual: BucketIn<T>;
-  System.Assert(System.Default(BucketTally) = Actual.Prediction);
+  System.Assert(System.Default(NaturalNumber) = Actual.Prediction);
   System.Assert(System.Default(GrabbyArmBrains<T>) = Actual.GrabbyArm);
   System.Assert(System.Default(string) = Actual.Name);
 end;
@@ -121,12 +115,12 @@ end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue();
 begin
-  System.Assert(System.Default(BucketTally) = BucketIn<T>.Create(nil, '', System.Default(BucketTally)).Prediction);
+  System.Assert(System.Default(NaturalNumber) = BucketIn<T>.Create(nil, '', System.Default(NaturalNumber)).Prediction);
 end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue();
 begin
-  System.Assert(System.Default(BucketTally) <> BucketIn<T>.Create(nil, '', System.Default(BucketTally) + 1).Prediction);
+  System.Assert(System.Default(NaturalNumber) <> BucketIn<T>.Create(nil, '', System.Default(NaturalNumber) + 1).Prediction);
 end;
 
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
@@ -222,19 +216,6 @@ begin
   {$IFEND}
 end;
 
-{ BucketTally_TypeTests :: Tests }
-class procedure BucketTally_TypeTests.IsTypeIdenticalToNaturalNumber();
-begin
-  System.Assert(System.TypeInfo(NaturalNumber) = System.TypeInfo(BucketTally));
-end;
-
-class procedure BucketTally_TypeTests.SharesSymmetricAssignmentCompatibilityWithNaturalNumber();
-begin
-  var Expected: NaturalNumber;
-  var Actual: BucketTally := Expected;
-  Expected := Actual;
-end;
-
 { GrabbyArmBrains_TypeTests :: Type Tests }
 
 class procedure GrabbyArmBrains_TypeTests<T>.IsLeftAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType();
@@ -256,8 +237,6 @@ end;
 
 class procedure TypeTests<T>.Exercise();
 begin
-  BucketTally_TypeTests.IsTypeIdenticalToNaturalNumber();
-  BucketTally_TypeTests.SharesSymmetricAssignmentCompatibilityWithNaturalNumber();
   BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
   BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
   BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();

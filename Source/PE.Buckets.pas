@@ -43,8 +43,6 @@ type
 {$ENDREGION}
 
 type
-  ///<summary>Means of counting for bucket-related operations</summary>
-  BucketTally = NaturalNumber;
   ///<summary>Provides a customizable means for adding "brains" to a BucketIn{T} instance</summary>
   GrabbyArmBrains<T> = reference to function (const AValue: T): Boolean;
   { TODO -oChuck -cPotential Feature :
@@ -59,13 +57,13 @@ type
   strict private
     FGrabbyArm: GrabbyArmBrains<T>;
     FName: string;
-    FPrediction: BucketTally;
+    FPrediction: NaturalNumber;
   public
     property GrabbyArm: GrabbyArmBrains<T> read FGrabbyArm write FGrabbyArm;
     property Name: string read FName write FName;
-    property Prediction: BucketTally read FPrediction write FPrediction;
+    property Prediction: NaturalNumber read FPrediction write FPrediction;
   public
-    constructor Create(const GrabbyArm: GrabbyArmBrains<T>; const Name: string = ''; const Prediction: BucketTally = Default(BucketTally));
+    constructor Create(const GrabbyArm: GrabbyArmBrains<T>; const Name: string = ''; const Prediction: NaturalNumber = Default(NaturalNumber));
   end;
 
 
@@ -73,12 +71,12 @@ type
   ///<summary>Contains results of operations performed on a BucketIn{T} instance</summary>
   BucketOut = record
   strict private
-    FCount: BucketTally;
+    FCount: NaturalNumber;
     FName: string;
   public
     class operator Equal(const A: BucketOut; const B: BucketOut): Boolean; static; inline;
   public
-    property Count: BucketTally read FCount write FCount;
+    property Count: NaturalNumber read FCount write FCount;
     property Name: string read FName write FName;
   end;
 
@@ -96,7 +94,7 @@ implementation
 
 { BucketIn<T> }
 
-constructor BucketIn<T>.Create(const GrabbyArm: GrabbyArmBrains<T>; const Name: string; const Prediction: BucketTally);
+constructor BucketIn<T>.Create(const GrabbyArm: GrabbyArmBrains<T>; const Name: string; const Prediction: NaturalNumber);
 begin
   FGrabbyArm := GrabbyArm;
   FName := Name;
@@ -147,14 +145,14 @@ end;
 
 class function TypeTestHarness.BucketIn<T>.PredictionProperty_SystemDotTypeInfo: Pointer;
 begin
-  Result := System.TypeInfo(BucketTally);
+  Result := System.TypeInfo(NaturalNumber);
 end;
 
 { TypeTestHarness.BucketOut }
 
 class function TypeTestHarness.BucketOut.CountProperty_SystemDotTypeInfo: Pointer;
 begin
-  Result := System.TypeInfo(BucketTally);
+  Result := System.TypeInfo(NaturalNumber);
 end;
 
 class function TypeTestHarness.BucketOut.NameProperty_SystemDotTypeInfo: Pointer;
