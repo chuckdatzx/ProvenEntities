@@ -12,6 +12,23 @@ type
   ///<summary>Provides a customizable means for adding "brains" to a BucketIn&lt;T&gt; instance</summary>
   GrabbyArmBrains<T> = reference to function (const AValue: T): Boolean;
 
+  ///<summary>Essentially here to minimize the distance between tests and SUT</summary>
+  ///<remarks>If I come up with a means of retrieving a type definition from a record's property; there's no longer a need for this entity</remarks>
+  TypeTestHarness = record
+  public type
+    BucketIn<T> = record
+    public
+      class function GrabbyArmProperty_SystemDotTypeInfo(): Pointer; static; inline;
+      class function NameProperty_SystemDotTypeInfo(): Pointer; static; inline;
+      class function PredictionProperty_SystemDotTypeInfo(): Pointer; static; inline;
+    end;
+    BucketOut = record
+    public
+      class function CountProperty_SystemDotTypeInfo(): Pointer; static; inline;
+      class function NameProperty_SystemDotTypeInfo(): Pointer; static; inline;
+    end;
+  end;
+
 type
   ///<summary>Simple input container for bucket-related operations</summary>
   BucketIn<T> = record
@@ -19,10 +36,6 @@ type
     FGrabbyArm: GrabbyArmBrains<T>;
     FName: string;
     FPrediction: BucketTally;
-  public
-    class function GrabbyArmProperty_SystemDotTypeInfo(): Pointer; static; inline;
-    class function NameProperty_SystemDotTypeInfo(): Pointer; static; inline;
-    class function PredictionProperty_SystemDotTypeInfo(): Pointer; static; inline;
   public
     property GrabbyArm: GrabbyArmBrains<T> read FGrabbyArm write FGrabbyArm;
     property Name: string read FName write FName;
@@ -38,9 +51,6 @@ type
     FName: string;
   public
     class operator Equal(const A: BucketOut; const B: BucketOut): Boolean; static; inline;
-  public
-    class function CountProperty_SystemDotTypeInfo(): Pointer; static; inline;
-    class function NameProperty_SystemDotTypeInfo(): Pointer; static; inline;
   public
     property Count: BucketTally read FCount write FCount;
     property Name: string read FName write FName;
@@ -63,27 +73,7 @@ begin
   FPrediction := Prediction;
 end;
 
-class function BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo: Pointer;
-begin
-  Result := System.TypeInfo(GrabbyArmBrains<T>);
-end;
-
-class function BucketIn<T>.NameProperty_SystemDotTypeInfo(): Pointer;
-begin
-  Result := System.TypeInfo(string);
-end;
-
-class function BucketIn<T>.PredictionProperty_SystemDotTypeInfo: Pointer;
-begin
-  Result := System.TypeInfo(BucketTally);
-end;
-
 { BucketOut }
-
-class function BucketOut.CountProperty_SystemDotTypeInfo: Pointer;
-begin
-  Result := System.TypeInfo(BucketTally);
-end;
 
 class operator BucketOut.Equal(const A: BucketOut; const B: BucketOut): Boolean;
 begin
@@ -109,12 +99,35 @@ begin
   var J: NativeInt;
   for I := Low(DataStream) to High(DataStream) do
     for J := Low(SmartBuckets) to High(SmartBuckets) do
-      if Assigned(SmartBuckets[J].GrabbyArm) then
-        if SmartBuckets[J].GrabbyArm(DataStream[I]) then
-          Result[J].Count := Result[J].Count + 1;
+      if SmartBuckets[J].GrabbyArm(DataStream[I]) then
+        Result[J].Count := Result[J].Count + 1;
 end;
 
-class function BucketOut.NameProperty_SystemDotTypeInfo: Pointer;
+{ TypeTestHarness.BucketIn }
+
+class function TypeTestHarness.BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo: Pointer;
+begin
+  Result := System.TypeInfo(GrabbyArmBrains<T>);
+end;
+
+class function TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo: Pointer;
+begin
+  Result := System.TypeInfo(string);
+end;
+
+class function TypeTestHarness.BucketIn<T>.PredictionProperty_SystemDotTypeInfo: Pointer;
+begin
+  Result := System.TypeInfo(BucketTally);
+end;
+
+{ TypeTestHarness.BucketOut }
+
+class function TypeTestHarness.BucketOut.CountProperty_SystemDotTypeInfo: Pointer;
+begin
+  Result := System.TypeInfo(BucketTally);
+end;
+
+class function TypeTestHarness.BucketOut.NameProperty_SystemDotTypeInfo: Pointer;
 begin
   Result := System.TypeInfo(string);
 end;

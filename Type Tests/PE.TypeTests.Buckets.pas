@@ -104,13 +104,13 @@ end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
 begin
-  System.Assert(SystemDotTypeInfo.ForNativeStringType() = BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  System.Assert(SystemDotTypeInfo.ForNativeStringType() = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
   System.Assert(System.Default(string) = BucketIn<T>.Create(nil, System.Default(string)).Name);
 end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
 begin
-  System.Assert(SystemDotTypeInfo.ForNativeStringType() = BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  System.Assert(SystemDotTypeInfo.ForNativeStringType() = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
   System.Assert('a' <> System.Default(string));
   System.Assert('a' = BucketIn<T>.Create(nil, 'a').Name);
 end;
@@ -127,7 +127,7 @@ end;
 
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
 begin
-  System.Assert(System.TypeInfo(GrabbyArmBrains<T>) = BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo);
+  System.Assert(System.TypeInfo(GrabbyArmBrains<T>) = TypeTestHarness.BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo);
   var Expected: GrabbyArmBrains<T> := BucketIn<T>.Create(nil).GrabbyArm;
   System.Assert(BucketIn<T>.Create(Expected).GrabbyArm = Expected);
 end;
@@ -135,7 +135,7 @@ end;
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
 begin
   {$IF (System.TypeInfo(string) <> System.TypeInfo(Integer)) and (System.TypeInfo(string) = System.TypeInfo(string))}
-  System.Assert(SystemDotTypeInfo.ForNativeStringType() = BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  System.Assert(SystemDotTypeInfo.ForNativeStringType() = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
   var Expected: string;
   var Actual: BucketIn<T>;
   Expected := Actual.Name;
@@ -147,7 +147,7 @@ end;
 
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
 begin
-  System.Assert(System.TypeInfo(BucketTally) = BucketIn<T>.PredictionProperty_SystemDotTypeInfo());
+  System.Assert(System.TypeInfo(BucketTally) = TypeTestHarness.BucketIn<T>.PredictionProperty_SystemDotTypeInfo());
   var Expected: BucketTally;
   var Actual: BucketIn<T>;
   Actual.Prediction := Expected;
@@ -193,7 +193,7 @@ end;
 
 class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
 begin
-  System.Assert(System.TypeInfo(BucketTally) = BucketOut.CountProperty_SystemDotTypeInfo());
+  System.Assert(System.TypeInfo(BucketTally) = TypeTestHarness.BucketOut.CountProperty_SystemDotTypeInfo());
   var Expected: BucketTally;
   var Actual: BucketOut;
   Actual.Count := Expected;
@@ -205,7 +205,7 @@ end;
 class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
 begin
   {$IF (System.TypeInfo(string) <> System.TypeInfo(Integer)) and (System.TypeInfo(string) = System.TypeInfo(string))}
-  Assert(SystemDotTypeInfo.ForNativeStringType() = BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  Assert(SystemDotTypeInfo.ForNativeStringType() = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
   var Expected: string;
   var Actual: BucketIn<T>;
   Actual.Name := Expected;
@@ -223,17 +223,17 @@ end;
 
 class procedure BucketTally_TypeTests.IsTypeIdenticalToCardinal();
 begin
-  Assert(SystemDotTypeInfo.ForCardinalType() = System.TypeInfo(BucketTally));
+  System.Assert(SystemDotTypeInfo.ForCardinalType() = System.TypeInfo(BucketTally));
 end;
 
 class procedure BucketTally_TypeTests.MaximumValueIs4294967295();
 begin
-  Assert(High(Cardinal) = High(BucketTally));
+  System.Assert(High(Cardinal) = High(BucketTally));
 end;
 
 class procedure BucketTally_TypeTests.MinimumValueIsZero();
 begin
-  Assert(Low(Cardinal) = Low(BucketTally));
+  System.Assert(Low(Cardinal) = Low(BucketTally));
 end;
 
 class procedure BucketTally_TypeTests.SharesSymmetricAssignmentCompatibilityWithCardinal();
