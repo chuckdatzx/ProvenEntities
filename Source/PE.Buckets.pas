@@ -20,6 +20,10 @@ type
     FName: string;
     FPrediction: BucketTally;
   public
+    class function GrabbyArmProperty_SystemDotTypeInfo(): Pointer; static; inline;
+    class function NameProperty_SystemDotTypeInfo(): Pointer; static; inline;
+    class function PredictionProperty_SystemDotTypeInfo(): Pointer; static; inline;
+  public
     property GrabbyArm: GrabbyArmBrains<T> read FGrabbyArm write FGrabbyArm;
     property Name: string read FName write FName;
     property Prediction: BucketTally read FPrediction write FPrediction;
@@ -35,6 +39,9 @@ type
   public
     class operator Equal(const A: BucketOut; const B: BucketOut): Boolean; static; inline;
   public
+    class function CountProperty_SystemDotTypeInfo(): Pointer; static; inline;
+    class function NameProperty_SystemDotTypeInfo(): Pointer; static; inline;
+  public
     property Count: BucketTally read FCount write FCount;
     property Name: string read FName write FName;
   end;
@@ -47,11 +54,35 @@ type
 
 implementation
 
+{ BucketIn<T> }
+
 constructor BucketIn<T>.Create(const GrabbyArm: GrabbyArmBrains<T>; const Name: string; const Prediction: BucketTally);
 begin
   FGrabbyArm := GrabbyArm;
   FName := Name;
   FPrediction := Prediction;
+end;
+
+class function BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo: Pointer;
+begin
+  Result := System.TypeInfo(GrabbyArmBrains<T>);
+end;
+
+class function BucketIn<T>.NameProperty_SystemDotTypeInfo(): Pointer;
+begin
+  Result := System.TypeInfo(string);
+end;
+
+class function BucketIn<T>.PredictionProperty_SystemDotTypeInfo: Pointer;
+begin
+  Result := System.TypeInfo(BucketTally);
+end;
+
+{ BucketOut }
+
+class function BucketOut.CountProperty_SystemDotTypeInfo: Pointer;
+begin
+  Result := System.TypeInfo(BucketTally);
 end;
 
 class operator BucketOut.Equal(const A: BucketOut; const B: BucketOut): Boolean;
@@ -81,6 +112,11 @@ begin
       if Assigned(SmartBuckets[J].GrabbyArm) then
         if SmartBuckets[J].GrabbyArm(DataStream[I]) then
           Result[J].Count := Result[J].Count + 1;
+end;
+
+class function BucketOut.NameProperty_SystemDotTypeInfo: Pointer;
+begin
+  Result := System.TypeInfo(string);
 end;
 
 end.

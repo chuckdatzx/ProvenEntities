@@ -19,37 +19,10 @@ uses
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
 
-{If ANY of the following is compiling, compile-time checks should have established the following are true:
-  - Identically defined generic records are type identical according to System.TypeInfo() at compile-time
-  - Identically defined generic records are symmetrically assignment compatible at compile-time
-
-If said compile-time checks are True, and then considering the tests below,
-I am claiming the all types and routines of the PE.Buckets.pas domain are proven for any compilable generic type T.
-}
-
 type
-  SUT_TYPES<T> = record
-  public type
-    Actual = record
-    type
-      BucketIn_Closed = BucketIn<T>;
-      E_BucketTally = BucketTally;
-      GrabbyArmBrains_Closed = GrabbyArmBrains<T>;
-      BucketNameType = string;
-    end;
+  TypeTests<T> = record
   public
-    class var ActualBucketTally: Actual.E_BucketTally;
-    class var ActualGrabbyArmBrains: Actual.GrabbyArmBrains_Closed;
-    class var ActualBucketNameType: Actual.BucketNameType;
-  public
-    class var ExpectedBucketTally: Actual.E_BucketTally;
-    class var ExpectedGrabbyArmBrains: Actual.GrabbyArmBrains_Closed;
-    class var ExpectedBucketIn: BucketIn<T>;
-    class var ExpectedBucketOut: BucketOut;
-  public
-    class var ExpectedCardinal: Cardinal;
-  public
-    class function ExerciseBucketDomain(): Boolean; static; inline;
+    class procedure Exercise(); static; inline;
   end;
 
 type
@@ -94,12 +67,13 @@ type
   end;
 
   GrabbyArmBrains_TypeTests<T> = record
+  strict private type
+    ExpectedProceduralType<Q> = function (const AValue: Q): Boolean;
   private {Domain Boundaries}
     class procedure IsAssigmentCompatibleWithAnAnonymousMethodComprisedOfASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
-    class procedure IsSymmetricallyAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
-  private {Type Identity/Symmetric Assignment Compatibility}
-    class procedure TheProvidedTIsTypeIdenticalToTheSUT_Type(); static; inline;
-    class procedure ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT(); static; inline; { TODO -oChuck -cToDo : Requires runtime (and I really don't want to have to knock the grabby arm type down to a procedural type only)}
+    class procedure IsLeftAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
+  private {Capabilities}
+    class procedure ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT(); static; inline;
   end;
 
 {$ENDIF}
@@ -113,9 +87,9 @@ implementation
 class procedure BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues();
 begin
   var Actual: BucketIn<T>;
-  Assert(System.Default(BucketTally) = Actual.Prediction);
-  Assert(System.Default(GrabbyArmBrains<T>) = Actual.GrabbyArm);
-  Assert(System.Default(string) = Actual.Name);
+  System.Assert(System.Default(BucketTally) = Actual.Prediction);
+  System.Assert(System.Default(GrabbyArmBrains<T>) = Actual.GrabbyArm);
+  System.Assert(System.Default(string) = Actual.Name);
 end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
@@ -130,13 +104,15 @@ end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
 begin
-  Assert(System.Default(SUT_TYPES<T>.Actual.BucketNameType) = BucketIn<T>.Create(nil, System.Default(SUT_TYPES<T>.Actual.BucketNameType)).Name);
+  System.Assert(SystemDotTypeInfo.ForNativeStringType() = BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  System.Assert(System.Default(string) = BucketIn<T>.Create(nil, System.Default(string)).Name);
 end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
 begin
-  Assert('a' <> System.Default(SUT_TYPES<T>.Actual.BucketNameType));
-  Assert('a' = BucketIn<T>.Create(nil, 'a').Name);
+  System.Assert(SystemDotTypeInfo.ForNativeStringType() = BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  System.Assert('a' <> System.Default(string));
+  System.Assert('a' = BucketIn<T>.Create(nil, 'a').Name);
 end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue();
@@ -151,17 +127,19 @@ end;
 
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
 begin
-  Assert(System.TypeInfo(BucketTally) = System.TypeInfo(SUT_TYPES<T>.Actual.E_BucketTally));
-  SUT_TYPES<T>.ExpectedBucketIn.GrabbyArm := SUT_TYPES<T>.ActualGrabbyArmBrains;
-  SUT_TYPES<T>.ActualGrabbyArmBrains := SUT_TYPES<T>.ExpectedBucketIn.GrabbyArm;
+  System.Assert(System.TypeInfo(GrabbyArmBrains<T>) = BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo);
+  var Expected: GrabbyArmBrains<T> := BucketIn<T>.Create(nil).GrabbyArm;
+  System.Assert(BucketIn<T>.Create(Expected).GrabbyArm = Expected);
 end;
 
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
 begin
   {$IF (System.TypeInfo(string) <> System.TypeInfo(Integer)) and (System.TypeInfo(string) = System.TypeInfo(string))}
-  Assert(System.TypeInfo(string) = System.TypeInfo(SUT_TYPES<T>.Actual.BucketNameType));
-  SUT_TYPES<T>.ExpectedBucketIn.Name := SUT_TYPES<T>.ActualBucketNameType;
-  SUT_TYPES<T>.ActualBucketNameType := SUT_TYPES<T>.ExpectedBucketIn.Name;
+  System.Assert(SystemDotTypeInfo.ForNativeStringType() = BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  var Expected: string;
+  var Actual: BucketIn<T>;
+  Expected := Actual.Name;
+  Actual.Name := Expected;
   {$ELSE}
   Assert(False, 'We do not seem to have compile time type identity established for the native string');
   {$IFEND}
@@ -169,9 +147,11 @@ end;
 
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
 begin
-  Assert(System.TypeInfo(BucketTally) = System.TypeInfo(SUT_TYPES<T>.Actual.E_BucketTally));
-  SUT_TYPES<T>.ExpectedBucketIn.Prediction := SUT_TYPES<T>.ActualBucketTally;
-  SUT_TYPES<T>.ActualBucketTally := SUT_TYPES<T>.ExpectedBucketIn.Prediction;
+  System.Assert(System.TypeInfo(BucketTally) = BucketIn<T>.PredictionProperty_SystemDotTypeInfo());
+  var Expected: BucketTally;
+  var Actual: BucketIn<T>;
+  Actual.Prediction := Expected;
+  Expected := Actual.Prediction;
 end;
 
 class function BucketIn_TypeTests<T>.Expected(const AValue: T): Boolean;
@@ -183,19 +163,19 @@ class procedure BucketOut_TypeTests.ComparisonOperatorReturnsFalseWhenEitherBuck
 begin
   var NonDefault := Default;
   NonDefault.Name := 'a';  //Safe to make this assumption (for now; at least)
-  Assert(not (System.Default(BucketOut) = NonDefault));
+  System.Assert(not (System.Default(BucketOut) = NonDefault));
 end;
 
 class procedure BucketOut_TypeTests.ComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultCountPropertyValue();
 begin
   var NonDefault := Default;
   NonDefault.Count := 1;  //Safe to make this assumption (for now; at least)
-  Assert(not (System.Default(BucketOut) = NonDefault));
+  System.Assert(not (System.Default(BucketOut) = NonDefault));
 end;
 
 class procedure BucketOut_TypeTests.ComparisonOperatorReturnsTrueWhenBothInstancesAreSystemDotDefaultValues();
 begin
-  Assert(System.Default(BucketOut) = System.Default(BucketOut));
+  System.Assert(System.Default(BucketOut) = System.Default(BucketOut));
 end;
 
 class procedure BucketOut_TypeTests.ComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical();
@@ -206,16 +186,18 @@ begin
   NonDefault2.Count := 1;  //Safe to make this assumption (for now; at least)
   NonDefault1.Name := 'a';  //Safe to make this assumption (for now; at least)
   NonDefault2.Name := 'a';  //Safe to make this assumption (for now; at least)
-  Assert(not (System.Default(BucketOut) = NonDefault1));
-  Assert(not (System.Default(BucketOut) = NonDefault2));
-  Assert(NonDefault1 = NonDefault2);
+  System.Assert(not (System.Default(BucketOut) = NonDefault1));
+  System.Assert(not (System.Default(BucketOut) = NonDefault2));
+  System.Assert(NonDefault1 = NonDefault2);
 end;
 
 class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
 begin
-  Assert(System.TypeInfo(BucketTally) = System.TypeInfo(SUT_TYPES<T>.Actual.E_BucketTally));
-  SUT_TYPES<T>.ExpectedBucketOut.Count := SUT_TYPES<T>.ActualBucketTally;
-  SUT_TYPES<T>.ActualBucketTally := SUT_TYPES<T>.ExpectedBucketOut.Count;
+  System.Assert(System.TypeInfo(BucketTally) = BucketOut.CountProperty_SystemDotTypeInfo());
+  var Expected: BucketTally;
+  var Actual: BucketOut;
+  Actual.Count := Expected;
+  Expected := Actual.Count;
 end;
 
 { TODO -oChuck -cMental Note : You haven't yet considered what can/can't be done w/include files. Furthermore, you haven't even braoched the concept of a pre-compiler. }
@@ -223,9 +205,11 @@ end;
 class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
 begin
   {$IF (System.TypeInfo(string) <> System.TypeInfo(Integer)) and (System.TypeInfo(string) = System.TypeInfo(string))}
-  Assert(System.TypeInfo(string) = System.TypeInfo(SUT_TYPES<T>.Actual.BucketNameType));
-  SUT_TYPES<T>.ExpectedBucketOut.Name := SUT_TYPES<T>.ActualBucketNameType;
-  SUT_TYPES<T>.ActualBucketNameType := SUT_TYPES<T>.ExpectedBucketOut.Name;
+  Assert(SystemDotTypeInfo.ForNativeStringType() = BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  var Expected: string;
+  var Actual: BucketIn<T>;
+  Actual.Name := Expected;
+  Expected := Actual.Name;
   {$ELSE}
   Assert(False, 'We do not seem to have compile time type identity established for the native string');
   {$IFEND}
@@ -234,56 +218,51 @@ end;
 { BucketTally_TypeTests :: Tests }
 class procedure BucketTally_TypeTests.DefaultValueIsZero();
 begin
-  Assert(0 = System.Default(SUT_TYPES<T>.Actual.E_BucketTally));
+  System.Assert(0 = System.Default(BucketTally));
 end;
 
 class procedure BucketTally_TypeTests.IsTypeIdenticalToCardinal();
 begin
-  Assert(System.TypeInfo(Cardinal) = System.TypeInfo(SUT_TYPES<T>.Actual.E_BucketTally));
+  Assert(SystemDotTypeInfo.ForCardinalType() = System.TypeInfo(BucketTally));
 end;
 
 class procedure BucketTally_TypeTests.MaximumValueIs4294967295();
 begin
-  Assert(High(Cardinal) = High(SUT_TYPES<T>.Actual.E_BucketTally));
+  Assert(High(Cardinal) = High(BucketTally));
 end;
 
 class procedure BucketTally_TypeTests.MinimumValueIsZero();
 begin
-  Assert(Low(Cardinal) = Low(SUT_TYPES<T>.Actual.E_BucketTally));
+  Assert(Low(Cardinal) = Low(BucketTally));
 end;
 
 class procedure BucketTally_TypeTests.SharesSymmetricAssignmentCompatibilityWithCardinal();
 begin
-  SUT_TYPES<T>.ActualBucketTally := SUT_TYPES<T>.ExpectedCardinal;
-  SUT_TYPES<T>.ExpectedCardinal := SUT_TYPES<T>.ActualBucketTally;
+  var Actual: BucketTally := 0;
+  var Expected: Cardinal := Actual;
+  Actual := Expected;
 end;
 
 { GrabbyArmBrains_TypeTests :: Type Tests }
-class procedure GrabbyArmBrains_TypeTests<T>.TheProvidedTIsTypeIdenticalToTheSUT_Type();
-begin
-  System.Assert(System.TypeInfo(GrabbyArmBrains<T>) = System.TypeInfo(SUT_TYPES<T>.Actual.GrabbyArmBrains_Closed));
-end;
 
-class procedure GrabbyArmBrains_TypeTests<T>.IsSymmetricallyAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType();
+class procedure GrabbyArmBrains_TypeTests<T>.IsLeftAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType();
 begin
-  SUT_TYPES<T>.ExpectedGrabbyArmBrains := SUT_TYPES<T>.ActualGrabbyArmBrains;
-  SUT_TYPES<T>.ActualGrabbyArmBrains := SUT_TYPES<T>.ExpectedGrabbyArmBrains;
+  var Actual: ExpectedProceduralType<T>;
+  var Expected: GrabbyArmBrains<T> := Actual;
 end;
 
 class procedure GrabbyArmBrains_TypeTests<T>.IsAssigmentCompatibleWithAnAnonymousMethodComprisedOfASingleImmutableValueOfTAndReturningABooleanType();
-{ TODO -oChuck -cToDo : Is it even possible to take an anonymous method, given that it will be an interface instance at runtime, and prove out its usage at compile-time? }
 begin
-  SUT_TYPES<T>.ExpectedGrabbyArmBrains := function (const AValue: T): Boolean begin Result := False end;
-  SUT_TYPES<T>.ActualGrabbyArmBrains := function (const AValue: T): Boolean begin Result := False end;
+  var Expected: GrabbyArmBrains<T> := function (const AValue: T): Boolean begin Result := False end;
 end;
 
 class procedure GrabbyArmBrains_TypeTests<T>.ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
 begin
-  SUT_TYPES<T>.ActualGrabbyArmBrains := function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)) end;
-  Assert(SUT_TYPES<T>.ActualGrabbyArmBrains(Default(T)));
+  var Actual: GrabbyArmBrains<T> := function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)) end;
+  Assert(Actual(Default(T)));
 end;
 
-class function SUT_TYPES<T>.ExerciseBucketDomain(): Boolean;
+class procedure TypeTests<T>.Exercise();
 begin
   BucketTally_TypeTests.DefaultValueIsZero();
   BucketTally_TypeTests.MinimumValueIsZero();
@@ -306,12 +285,9 @@ begin
   BucketOut_TypeTests.ComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical();
   BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheBucketTallyType();
   BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
-  GrabbyArmBrains_TypeTests<T>.TheProvidedTIsTypeIdenticalToTheSUT_Type();
   GrabbyArmBrains_TypeTests<T>.IsAssigmentCompatibleWithAnAnonymousMethodComprisedOfASingleImmutableValueOfTAndReturningABooleanType();
-  GrabbyArmBrains_TypeTests<T>.IsSymmetricallyAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType();
+  GrabbyArmBrains_TypeTests<T>.IsLeftAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType();
   GrabbyArmBrains_TypeTests<T>.ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
-  PE.DomainTests.Buckets.DomainTests<T>.Exercise();
-  Result := True;
 end;
 
 {$IFEND}

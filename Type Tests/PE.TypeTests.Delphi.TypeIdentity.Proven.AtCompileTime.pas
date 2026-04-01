@@ -39,6 +39,27 @@ const
   SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime = False;
   {$IFEND}
 
+{$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}
+type
+  SystemDotTypeInfo = record
+  public
+    class function ForCardinalType(): Pointer; static; inline;
+    class function ForNativeStringType(): Pointer; static; inline;
+  end;
+{$IFEND}
+
 implementation
+
+{$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}
+class function SystemDotTypeInfo.ForCardinalType(): Pointer;
+begin
+  Result := System.TypeInfo(Cardinal);
+end;
+
+class function SystemDotTypeInfo.ForNativeStringType(): Pointer;
+begin
+  Result := System.TypeInfo(string);
+end;
+{$IFEND}
 
 end.

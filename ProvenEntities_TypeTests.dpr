@@ -23,6 +23,7 @@ begin
   Write('Tests Started...');
   //If you want to cover more ground, just add your own values for T
   //just make sure to keep it between the first and last "WriteLn" (that way we know no errors could have occurred)
-  PE.TypeTests.Buckets.SUT_TYPES<T>.ExerciseBucketDomain();
+  PE.TypeTests.Buckets.TypeTests<T>.Exercise();
+  PE.DomainTests.Buckets.DomainTests<T>.Exercise();
   Write('Tests Completed');
 end.
