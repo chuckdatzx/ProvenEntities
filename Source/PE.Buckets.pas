@@ -14,6 +14,12 @@ uses
   {Delphi}
   System.SysUtils;
 
+{ TODO -oChuck -cPotential Feature :
+Wasn't sure where to put this; just didn't want it in the way of inline documentation.
+Considering the context of the BucketTally type:
+I'm not going to argue that it needs to be a cardinal; I just wanted a type with a predictable roof/ceiling.
+Consider loosening the definition of this type (e.g. arguably get the same effect [and increasing effects] and a performance increase by choosing NativeUInt32) }
+
 {$REGION 'Type Test Harness'}
 type
   ///<summary>Essentially here to minimize the distance between tests and SUT</summary>
@@ -39,6 +45,11 @@ type
   BucketTally = Cardinal;
   ///<summary>Provides a customizable means for adding "brains" to a BucketIn{T} instance</summary>
   GrabbyArmBrains<T> = reference to function (const AValue: T): Boolean;
+  { TODO -oChuck -cPotential Feature :
+Something that would be nice to add to the GrabbyArmBrains<T> type:
+In addition to the AValue parameter, include a parameter (read-only) that contains every
+unique value of T from data stream TArray<T> that has been encountered.
+Doing so would allow users to easily "only include new values." }
 
 type
   ///<summary>Simple input container for bucket-related operations</summary>
@@ -54,6 +65,8 @@ type
   public
     constructor Create(const GrabbyArm: GrabbyArmBrains<T>; const Name: string = ''; const Prediction: BucketTally = Default(BucketTally));
   end;
+
+
 
   ///<summary>Contains results of operations performed on a BucketIn{T} instance</summary>
   BucketOut = record
@@ -71,6 +84,10 @@ type
   public
     ///<summary>Iterates each element of the provided data stream while giving each bucket has a chance to determine inclusion (using whatever you put into place for the "grabby arm")</summary>
     class function Categorize<T>(const DataStream: TArray<T>; const Buckets: TArray<BucketIn<T>>): TArray<BucketOut>; static; inline;
+    { TODO -oChuck -cPotential Feature :
+An obvious feature upgrade would be to extend the "mouth" of the Categorize<T> routine.
+For example, instead of just accepting a data stream of TArray<T>, consider things like a TField instance,
+or possible TStream descendants. }
   end;
 
 implementation
