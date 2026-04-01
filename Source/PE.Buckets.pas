@@ -6,12 +6,8 @@ uses
   {Delphi}
   System.SysUtils;
 
+{$REGION 'Type Test Harness'}
 type
-  ///<summary>Means of counting for bucket-related operations</summary>
-  BucketTally = Cardinal;
-  ///<summary>Provides a customizable means for adding "brains" to a BucketIn&lt;T&gt; instance</summary>
-  GrabbyArmBrains<T> = reference to function (const AValue: T): Boolean;
-
   ///<summary>Essentially here to minimize the distance between tests and SUT</summary>
   ///<remarks>If I come up with a means of retrieving a type definition from a record's property; there's no longer a need for this entity</remarks>
   TypeTestHarness = record
@@ -28,6 +24,13 @@ type
       class function NameProperty_SystemDotTypeInfo(): Pointer; static; inline;
     end;
   end;
+{$ENDREGION}
+
+type
+  ///<summary>Means of counting for bucket-related operations</summary>
+  BucketTally = Cardinal;
+  ///<summary>Provides a customizable means for adding "brains" to a BucketIn{T} instance</summary>
+  GrabbyArmBrains<T> = reference to function (const AValue: T): Boolean;
 
 type
   ///<summary>Simple input container for bucket-related operations</summary>
@@ -44,7 +47,7 @@ type
     constructor Create(const GrabbyArm: GrabbyArmBrains<T>; const Name: string = ''; const Prediction: BucketTally = Default(BucketTally));
   end;
 
-  ///<summary>Contains results of operations performed on a BucketIn&lt;T&gt; instance</summary>
+  ///<summary>Contains results of operations performed on a BucketIn{T} instance</summary>
   BucketOut = record
   strict private
     FCount: BucketTally;
