@@ -7,9 +7,7 @@ your custom code based on entities from this unit).
 
 I'm truly not trying to scare anyone off. I'm perfectly comfortable calling the following proven;
 and I have researched from the compiler to my code. I'm simply recommending that you do the same
-and not just assume, without pause, that it is unbreakable.
-}
-
+and not just assume, without pause, that it is unbreakable.}
 interface
 
 type

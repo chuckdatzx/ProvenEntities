@@ -13,9 +13,7 @@ All of the following can only be considered as valid as your compiler and my int
 https://docwiki.embarcadero.com/RADStudio/Florence/en/Type_Compatibility_and_Identity_(Delphi)
 
 If you don't agree with everything you see in this source code unit, then please don't assume that anything has been proven here.
-If you find any problems, please let me know and I'll fix them.
-}
-
+If you find any problems, please let me know and I'll fix them.}
 interface
 
 uses
