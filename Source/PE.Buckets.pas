@@ -118,7 +118,6 @@ end;
 
 class function TypeTestHarness.BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo: Pointer;
 begin
-//  Result := System.TypeInfo(SmartClaw<T>);
   Result := System.TypeInfo(SmartClaw<T>);
 end;
 

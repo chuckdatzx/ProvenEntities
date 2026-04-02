@@ -17,21 +17,29 @@ If you find any problems, please let me know and I'll fix them.}
 interface
 
 uses
-  {PE}
+  {PE Assertions}
   PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime;
 
-{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime }
-var
-  X: G<T>;
-  Y: G<T>;
-
+{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime}
 const
   IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime = True;
+
+procedure DoesNothing();
 {$ELSE}
 const
   IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime = False;
 {$IFEND}
 
 implementation
+
+{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime}
+procedure DoesNothing();
+begin
+  var X: G<T>;
+  var Y: G<T>;
+  X := Y;
+  Y := X;
+end;
+{$IFEND}
 
 end.
