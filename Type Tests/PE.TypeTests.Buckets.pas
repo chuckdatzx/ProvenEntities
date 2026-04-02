@@ -11,10 +11,10 @@ and not just assume, without pause, that it is unbreakable.}
 interface
 
 uses
-  {Assertions}
-  PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
-  PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
-  PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime,
+  {PE Assertions}
+  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
+  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
+  PE.Delphi.TypeIdentity.Proven.AtCompileTime,
   {PE}
   PE.DomainTests.Buckets,
   {Domain Under Test}
@@ -30,16 +30,20 @@ type
     class procedure Exercise(); static; inline;
   end;
 
+{ TODO -oChuck -cMusing : Not certain yet if it is needed, but I'm not currently "locking down" BucketIn<T> and BucketOut.
+ I say this because it can be argued that additions (e.g. adding a 4th property to a BucketIn<T> type) can cause undesirable side-effects.
+ While the above seems true, I can also argue "stop trying to break it". I guess I'll see where I land at a later point.}
+
 type
   BucketIn_TypeTests<T> = record {Type ID and symmetric assignment compatibility tests are ignored; should have been handled by compiler flags}
   strict private
     class function Expected(const AValue: T): Boolean; static; inline;
-  private {Property Tests}
+  private {Language Tests: Property Tests}
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheSmartClawType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
     class procedure All3PropertiesInitializedToDefaultValues(); static; inline;
-  private {Constructor Tests}
+  private {Language Tests: Constructor Tests}
     class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue(); static; inline;
     class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue(); static; inline;
     class procedure ConstructorInitializesTheNamePropertyWhenGivenADefaultValue(); static; inline;
@@ -50,10 +54,10 @@ type
 
   BucketOut_TypeTests = record
   strict private class var Default: BucketOut;
-  private {Property Tests}
+  private {Language Tests: Property Tests}
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
-  private {Equality Comparison Operator}
+  private {Language Tests: Equality Comparison Operator :: BucketOut = BucketOut}
     class procedure EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultCountPropertyValue(); static; inline;
     class procedure EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultNamePropertyValue(); static; inline;
     class procedure EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreSystemDotDefaultValues(); static; inline;

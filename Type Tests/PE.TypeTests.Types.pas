@@ -57,8 +57,8 @@ type
 implementation
 
 uses
-  {PE System}
-  PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime,
+  {PE Assertions}
+  PE.Delphi.TypeIdentity.Proven.AtCompileTime,
   {PE SUT}
   PE.Types;
 

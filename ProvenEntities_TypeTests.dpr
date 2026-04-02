@@ -14,12 +14,12 @@ and not just assume, without pause, that it is unbreakable.}
 uses
   PE.Buckets in 'Source\PE.Buckets.pas',
   PE.DomainTests.Buckets in 'Domain Tests\PE.DomainTests.Buckets.pas',
-  PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas',
-  PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas',
   PE.TypeTests.Buckets in 'Type Tests\PE.TypeTests.Buckets.pas',
-  PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime in 'Type Tests\PE.TypeTests.Delphi.TypeIdentity.Proven.AtCompileTime.pas',
   PE.Types in 'Source\PE.Types.pas',
-  PE.TypeTests.Types in 'Type Tests\PE.TypeTests.Types.pas';
+  PE.TypeTests.Types in 'Type Tests\PE.TypeTests.Types.pas',
+  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas',
+  PE.Delphi.TypeIdentity.Proven.AtCompileTime in 'Delphi\PE.Delphi.TypeIdentity.Proven.AtCompileTime.pas',
+  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas';
 
 type
   //Replace T with any compilable type.

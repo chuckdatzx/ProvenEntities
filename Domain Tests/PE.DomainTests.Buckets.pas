@@ -12,8 +12,8 @@ interface
 
 uses
   {Assertions}
-  PE.TypeTests.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
-  PE.TypeTests.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
+  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
+  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
   {PE}
   PE.Buckets;
 
