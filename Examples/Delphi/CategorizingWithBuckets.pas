@@ -25,7 +25,7 @@ type
 
   OrganizingNumbers = record
   strict private type BucketIn_NaturalNumber = BucketIn<NaturalNumber>;
-  public const SomeCollectionOfNaturalNumbers: NaturalNumberArray = [1, 2, 3, 4, 5, 6, 7];
+  strict private const SomeCollectionOfNaturalNumbers: NaturalNumberArray = [1, 2, 3, 4, 5, 6, 7];
   public
     class procedure ByCherryPicking(); static;
     class procedure ByOddsAndEvens(); static;
