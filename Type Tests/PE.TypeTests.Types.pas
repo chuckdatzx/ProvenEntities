@@ -84,7 +84,8 @@ begin
   { TODO -oChuck -c?sForThoseSeeingInsideTheCompiler :
 Uncommenting the above reproducably causes a "F2084 Internal Error: 2252". I have my theories,
 but none of those matter. The important part is that the SmartClaw<T> cannot be proven to handle
-the NaturalNumber64 type. So, for the time being, anyone using SmartClaw<T> where SmartClaw<NaturalNumber64> is hoping that the code works.}
+the NaturalNumber64 type. So, for the time being, anyone using SmartClaw<T> where SmartClaw<NaturalNumber64> is hoping that the code works.
+For those of you reading this note, as long as 4.2 billion is a big enough natural number for you, just use SmartClaw<NaturalNumber> until I figure this out.}
   {Delphi Tests}
   NaturalNumber_TypeTests.IsSymmetricallyAssignmentCompatibleWithCardinal();
   NaturalNumber64_TypeTests.IsSymmetricallyAssignmentCompatibleWithUInt64();

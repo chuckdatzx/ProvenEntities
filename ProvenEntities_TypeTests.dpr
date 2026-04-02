@@ -32,9 +32,10 @@ type
 
 begin
   {
-  We're likely only going to get 1 of 2 results when running from the command line:
-  1) Complete Failure: (Likely brought to you by everyone's favorite bug to track down!) Runtime error <X> at address <Y>
-  2) Complete Passing: Output from the app of "Tests Started...Tests Completed"
+  All you need to do to prove things out at runtime is to execute the binary produced by this project file.
+  You're likely only going to get 1 of 2 results when running from the command line:
+  1) Complete Failure: (Likely brought to you by everyone's favorite bug to track down!) Runtime error <X> at address <Y>, or
+  2) Complete Passing: after running the binary, you see "Tests Started...Tests Completed"
   }
   Write('Tests Started...');
   //If you want to cover more ground, just add your own values for T
