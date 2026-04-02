@@ -24,7 +24,7 @@ uses
 const
   IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime = True;
 
-procedure DoesNothing();
+procedure ProvingThePoint();
 {$ELSE}
 const
   IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime = False;
@@ -33,7 +33,7 @@ const
 implementation
 
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime}
-procedure DoesNothing();
+procedure ProvingThePoint();
 begin
   var X: G<T>;
   var Y: G<T>;

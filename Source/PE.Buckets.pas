@@ -11,10 +11,16 @@ and not just assume, without pause, that it is unbreakable.}
 interface
 
 uses
+  {PE Assertions}
+  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
+  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
   {PE System}
   PE.Types,
   {Delphi}
   System.SysUtils;
+
+{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
+ IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
 
 {$REGION 'Type Test Harness'}
 type
@@ -73,7 +79,12 @@ For example, instead of just accepting a data stream of TArray<T>, consider thin
 or possible TStream descendants. }
   end;
 
+{$IFEND}
+
 implementation
+
+{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
+ IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
 
 { BucketIn<T> }
 
@@ -142,5 +153,7 @@ class function TypeTestHarness.BucketOut.NameProperty_SystemDotTypeInfo: Pointer
 begin
   Result := System.TypeInfo(string);
 end;
+
+{$IFEND}
 
 end.
