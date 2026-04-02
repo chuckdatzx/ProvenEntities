@@ -12,14 +12,19 @@ and not just assume, without pause, that it is unbreakable.}
 {$APPTYPE CONSOLE}
 {$STRONGLINKTYPES ON}
 uses
+  {PE}
   PE.Buckets in 'Source\PE.Buckets.pas',
+  PE.Types in 'Source\PE.Types.pas',
+  {PE Tests}
   PE.DomainTests.Buckets in 'Domain Tests\PE.DomainTests.Buckets.pas',
   PE.TypeTests.Buckets in 'Type Tests\PE.TypeTests.Buckets.pas',
-  PE.Types in 'Source\PE.Types.pas',
   PE.TypeTests.Types in 'Type Tests\PE.TypeTests.Types.pas',
+  {Language Assertions}
+  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas',
   PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas',
   PE.Delphi.TypeIdentity.Proven.AtCompileTime in 'Delphi\PE.Delphi.TypeIdentity.Proven.AtCompileTime.pas',
-  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas';
+  {Examples}
+  CategorizingWithBuckets in 'Examples\Delphi\CategorizingWithBuckets.pas';
 
 type
   //Replace T with any compilable type.
@@ -37,5 +42,6 @@ begin
   PE.TypeTests.Types.AllTests.Exercise();
   PE.TypeTests.Buckets.TypeTests<T>.Exercise();
   PE.DomainTests.Buckets.DomainTests<T>.Exercise();
+  CategorizingWithBuckets.OrganizingNumbers.ByOddsAndEvens();
   Write('Tests Completed');
 end.

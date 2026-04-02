@@ -15,9 +15,7 @@ uses
   PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
   PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
   {PE System}
-  PE.Types,
-  {Delphi}
-  System.SysUtils;
+  PE.Types;
 
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}

@@ -1,6 +1,6 @@
 unit PE.TypeTests.Types;
 {Chuck C.T.
- Keep in mind that pretty much everything in here is defined from an intuitionistic perspective.
+ Keep in mind that pretty much everything from here is defined from an intuitionistic perspective.
  The type names and what said types represent may not match what you currently think of as intuition;
  especially if you started from a Pascal/Object Pascal/Delphi background like I did.
 }
@@ -22,7 +22,7 @@ type
   end;
 
   NaturalNumber_TypeTests = record
-  public {Domain Tests}
+  public {Domain/Language Tests}
     class procedure TheLowestPossibleValueIsZero(); static; inline;
     class procedure TheHighestPossibleNumberIs4294967295(); static; inline; //4,294,967,295
   public
@@ -30,24 +30,30 @@ type
   end;
 
   NaturalNumber32_TypeTests = record
-  public {Domain Tests}
+  public {Domain/Language Tests}
     class procedure TheLowestPossibleValueIsZero(); static; inline;
     class procedure TheHighestPossibleNumberIs4294967295(); static; inline; //4,294,967,295
   end;
 
   NaturalNumber64_TypeTests = record
-  public {Domain Tests}
+  public {Domain/Language Tests}
     class procedure TheLowestPossibleValueIsZero(); static; inline;
     class procedure TheHighestPossibleNumberIs18446744073709551615(); static; inline; //Approximately 18.45 quintillion
   public
     class procedure IsSymmetricallyAssignmentCompatibleWithUInt64(); static; inline;
   end;
 
+  NaturalNumberArray_TypeTests = record
+  public {Language Tests :: Delphi :: Capabilites}
+    class procedure SharesTypeIdentityWithTArrayOfNaturalNumber(); static; inline;
+    class procedure IsSymmetricallyAssignmentCompatibleWithTArrayOfNaturalNumber(); static; inline;
+  end;
+
   SmartClaw_TypeTests<T> = record
   strict private class function Expected(const AValue: T): Boolean; static; inline;
   public {Domain Tests :: Capabilites}
     class procedure ReturnsTrueWhenOnlyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT(); static; inline;
-  public {Delphi Tests :: Capabilites}
+  public {Language Tests :: Delphi :: Capabilites}
     class procedure IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
     class procedure IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfTheExpectedRoutinePresentlyLivingInThisTestCollection(); static; inline;
   public {Test Wrapper}
@@ -185,6 +191,20 @@ class procedure SmartClaw_TypeTests<T>.ReturnsTrueWhenOnlyComprisedOfCodeCompari
 begin
   var Actual: SmartClaw<T> := function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)) end;
   Assert(Actual(Default(T)));
+end;
+
+{ NaturalNumberArray_TypeTests }
+
+class procedure NaturalNumberArray_TypeTests.IsSymmetricallyAssignmentCompatibleWithTArrayOfNaturalNumber;
+begin
+  var Expected: TArray<NaturalNumber>;
+  var Actual: NaturalNumberArray := Expected;
+  Expected := Actual;
+end;
+
+class procedure NaturalNumberArray_TypeTests.SharesTypeIdentityWithTArrayOfNaturalNumber;
+begin
+  TypeEquivalenceInquiry<TArray<NaturalNumber>>.SharesTypeIdentityWith<NaturalNumberArray>();
 end;
 
 end.
