@@ -16,12 +16,6 @@ uses
   {Delphi}
   System.SysUtils;
 
-{ TODO -oChuck -cPotential Feature :
-Wasn't sure where to put this; just didn't want it in the way of inline documentation.
-Considering the context of the BucketTally type:
-I'm not going to argue that it needs to be a cardinal; I just wanted a type with a predictable roof/ceiling.
-Consider loosening the definition of this type (e.g. arguably get the same effect [and increasing effects] and a performance increase by choosing NativeUInt32) }
-
 {$REGION 'Type Test Harness'}
 type
   ///<summary>Essentially here to minimize the distance between tests and SUT</summary>
@@ -43,30 +37,19 @@ type
 {$ENDREGION}
 
 type
-  ///<summary>Provides a customizable means for adding "brains" to a BucketIn{T} instance</summary>
-  GrabbyArmBrains<T> = reference to function (const AValue: T): Boolean;
-  { TODO -oChuck -cPotential Feature :
-Something that would be nice to add to the GrabbyArmBrains<T> type:
-In addition to the AValue parameter, include a parameter (read-only) that contains every
-unique value of T from data stream TArray<T> that has been encountered.
-Doing so would allow users to easily "only include new values." }
-
-type
   ///<summary>Simple input container for bucket-related operations</summary>
   BucketIn<T> = record
   strict private
-    FGrabbyArm: GrabbyArmBrains<T>;
+    FGrabbyArm: SmartClaw<T>;
     FName: string;
     FPrediction: NaturalNumber;
   public
-    property GrabbyArm: GrabbyArmBrains<T> read FGrabbyArm write FGrabbyArm;
+    property GrabbyArm: SmartClaw<T> read FGrabbyArm write FGrabbyArm;
     property Name: string read FName write FName;
     property Prediction: NaturalNumber read FPrediction write FPrediction;
   public
-    constructor Create(const GrabbyArm: GrabbyArmBrains<T>; const Name: string = ''; const Prediction: NaturalNumber = Default(NaturalNumber));
+    constructor Create(const GrabbyArm: SmartClaw<T>; const Name: string = ''; const Prediction: NaturalNumber = Default(NaturalNumber));
   end;
-
-
 
   ///<summary>Contains results of operations performed on a BucketIn{T} instance</summary>
   BucketOut = record
@@ -94,7 +77,7 @@ implementation
 
 { BucketIn<T> }
 
-constructor BucketIn<T>.Create(const GrabbyArm: GrabbyArmBrains<T>; const Name: string; const Prediction: NaturalNumber);
+constructor BucketIn<T>.Create(const GrabbyArm: SmartClaw<T>; const Name: string; const Prediction: NaturalNumber);
 begin
   FGrabbyArm := GrabbyArm;
   FName := Name;
@@ -135,7 +118,8 @@ end;
 
 class function TypeTestHarness.BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo: Pointer;
 begin
-  Result := System.TypeInfo(GrabbyArmBrains<T>);
+//  Result := System.TypeInfo(SmartClaw<T>);
+  Result := System.TypeInfo(SmartClaw<T>);
 end;
 
 class function TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo: Pointer;

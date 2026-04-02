@@ -36,7 +36,7 @@ type
     class function Expected(const AValue: T): Boolean; static; inline;
   private {Property Tests}
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType(); static; inline;
-    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType(); static; inline;
+    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheSmartClawType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
     class procedure All3PropertiesInitializedToDefaultValues(); static; inline;
   private {Constructor Tests}
@@ -60,16 +60,6 @@ type
     class procedure EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical(); static; inline;
   end;
 
-  GrabbyArmBrains_TypeTests<T> = record
-  strict private type
-    ExpectedProceduralType<Q> = function (const AValue: Q): Boolean;
-  private {Domain Boundaries}
-    class procedure IsAssigmentCompatibleWithAnAnonymousMethodComprisedOfASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
-    class procedure IsLeftAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
-  private {Capabilities}
-    class procedure ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT(); static; inline;
-  end;
-
 {$ENDIF}
 
 implementation
@@ -86,18 +76,18 @@ class procedure BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues()
 begin
   var Actual: BucketIn<T>;
   System.Assert(System.Default(NaturalNumber) = Actual.Prediction);
-  System.Assert(System.Default(GrabbyArmBrains<T>) = Actual.GrabbyArm);
+  System.Assert(System.Default(SmartClaw<T>) = Actual.GrabbyArm);
   System.Assert(System.Default(string) = Actual.Name);
 end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
 begin
-  System.Assert(System.Default(GrabbyArmBrains<T>) = BucketIn<T>.Create(System.Default(GrabbyArmBrains<T>)).GrabbyArm);
+  System.Assert(System.Default(SmartClaw<T>) = BucketIn<T>.Create(System.Default(SmartClaw<T>)).GrabbyArm);
 end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
 begin
-  System.Assert(not (System.Default(GrabbyArmBrains<T>) = BucketIn<T>.Create(Expected).GrabbyArm));
+  System.Assert(not (System.Default(SmartClaw<T>) = BucketIn<T>.Create(Expected).GrabbyArm));
 end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
@@ -123,10 +113,10 @@ begin
   System.Assert(System.Default(NaturalNumber) <> BucketIn<T>.Create(nil, '', System.Default(NaturalNumber) + 1).Prediction);
 end;
 
-class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
+class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheSmartClawType();
 begin
-  System.Assert(System.TypeInfo(GrabbyArmBrains<T>) = TypeTestHarness.BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo);
-  var Expected: GrabbyArmBrains<T> := BucketIn<T>.Create(nil).GrabbyArm;
+  System.Assert(System.TypeInfo(SmartClaw<T>) = TypeTestHarness.BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo);
+  var Expected: SmartClaw<T> := BucketIn<T>.Create(nil).GrabbyArm;
   System.Assert(BucketIn<T>.Create(Expected).GrabbyArm = Expected);
 end;
 
@@ -216,25 +206,6 @@ begin
   {$IFEND}
 end;
 
-{ GrabbyArmBrains_TypeTests :: Type Tests }
-
-class procedure GrabbyArmBrains_TypeTests<T>.IsLeftAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType();
-begin
-  var Actual: ExpectedProceduralType<T>;
-  var Expected: GrabbyArmBrains<T> := Actual;
-end;
-
-class procedure GrabbyArmBrains_TypeTests<T>.IsAssigmentCompatibleWithAnAnonymousMethodComprisedOfASingleImmutableValueOfTAndReturningABooleanType();
-begin
-  var Expected: GrabbyArmBrains<T> := function (const AValue: T): Boolean begin Result := False end;
-end;
-
-class procedure GrabbyArmBrains_TypeTests<T>.ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
-begin
-  var Actual: GrabbyArmBrains<T> := function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)) end;
-  Assert(Actual(Default(T)));
-end;
-
 class procedure TypeTests<T>.Exercise();
 begin
   BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
@@ -245,7 +216,7 @@ begin
   BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
   BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
-  BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheGrabbyArmBrainsType();
+  BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheSmartClawType();
   BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues();
   BucketOut_TypeTests.EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultCountPropertyValue();
   BucketOut_TypeTests.EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultNamePropertyValue();
@@ -253,9 +224,6 @@ begin
   BucketOut_TypeTests.EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical();
   BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
   BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
-  GrabbyArmBrains_TypeTests<T>.IsAssigmentCompatibleWithAnAnonymousMethodComprisedOfASingleImmutableValueOfTAndReturningABooleanType();
-  GrabbyArmBrains_TypeTests<T>.IsLeftAssigmentCompatibleWithAProceduralTypeHavingASingleImmutableValueOfTAndReturningABooleanType();
-  GrabbyArmBrains_TypeTests<T>.ReturnsTrueWhenComprisedSolelyOfSourceCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
 end;
 
 {$IFEND}
