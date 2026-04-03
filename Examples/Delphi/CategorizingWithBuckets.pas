@@ -10,7 +10,7 @@ uses
 type
   TCustomEnumeratedType = (cetSour, cetSweet, cetFuzzy);
 const
-  MyCandyDish: TArray<TCustomEnumeratedType> = [cetSour, cetSweet, cetFuzzy, cetSour, cetSweet];
+  MyCandyDish: ArrayOf<TCustomEnumeratedType> = [cetSour, cetSweet, cetFuzzy, cetSour, cetSweet];
 
 type
   Exercise = record
@@ -37,7 +37,7 @@ implementation
 
 class procedure OrganizingNumbers.ByCherryPicking;
 var
-  Actual: TArray<BucketOut>;
+  Actual: ArrayOf<BucketOut>;
 begin
   Actual := Routines.Categorize<NaturalNumber>(SomeCollectionOfNaturalNumbers,
     [BucketIn_NaturalNumber.Create(function (const AValue: NaturalNumber): Boolean begin Result := (AValue = 1); end, '1s'),
@@ -51,7 +51,7 @@ end;
 
 class procedure OrganizingNumbers.ByOddsAndEvens();
 var
-  Actual: TArray<BucketOut>;
+  Actual: ArrayOf<BucketOut>;
 begin
   Actual := Routines.Categorize<NaturalNumber>(SomeCollectionOfNaturalNumbers,
     [BucketIn_NaturalNumber.Create(function (const AValue: NaturalNumber): Boolean begin Result := ((AValue mod 2) = 0); end, 'Even'),
@@ -76,7 +76,7 @@ end;
 
 class procedure OrganizingCustomEnumeratedTypes.IsLikeTellingARobotHowToSortACandyDish;
 var
-  Actual: TArray<BucketOut>;
+  Actual: ArrayOf<BucketOut>;
 begin
   //Asking: "How many of my favorites does this candy dish have?"
   Actual := Routines.Categorize<TCustomEnumeratedType>(MyCandyDish,

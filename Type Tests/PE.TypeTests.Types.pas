@@ -289,7 +289,7 @@ end;
 class procedure Array_TypeTests<TypeUnderTest>.IsInitializedToAnEmptyCollectionOfElements;
 begin
 { TODO -oChuck -cMusing : Currently using TArray as a backing for this; not sure what else I actually could use (well, in attempting to make everything happen at compile-time).}
-  System.Assert(TArray<TypeUnderTest>.Create() = System.Default(&Array<TypeUnderTest>));
+  System.Assert(TArray<TypeUnderTest>.Create() = System.Default(ArrayOf<TypeUnderTest>));
 end;
 
 class procedure Array_TypeTests<TypeUnderTest>.IsNotTypeIdenticalWithTArray;
@@ -300,7 +300,7 @@ end;
 class procedure Array_TypeTests<TypeUnderTest>.IsSymmetricallyAssignmentCompatibleWithTArrayOfT;
 begin
   var Expected: TArray<TypeUnderTest>;
-  var Actual: &Array<TypeUnderTest> := Expected;
+  var Actual: ArrayOf<TypeUnderTest> := Expected;
   Expected := Actual;
 end;
 

@@ -70,10 +70,10 @@ type
   Routines = record
   public
     ///<summary>Iterates each element of the provided data stream while giving each bucket has a chance to determine inclusion (using whatever you put into place for the "grabby arm")</summary>
-    class function Categorize<T>(const DataStream: TArray<T>; const Buckets: TArray<BucketIn<T>>): TArray<BucketOut>; static; inline;
+    class function Categorize<T>(const DataStream: ArrayOf<T>; const Buckets: ArrayOf<BucketIn<T>>): ArrayOf<BucketOut>; static; inline;
     { TODO -oChuck -cPotential Feature :
 An obvious feature upgrade would be to extend the "mouth" of the Categorize<T> routine.
-For example, instead of just accepting a data stream of TArray<T>, consider things like a TField instance,
+For example, instead of just accepting a data stream of ArrayOf<T>, consider things like a TField instance,
 or possible TStream descendants. }
   end;
 
@@ -102,9 +102,9 @@ begin
     Result := (A.Count = B.Count) and (A.Name = B.Name);
 end;
 
-class function Routines.Categorize<T>(const DataStream: TArray<T>; const Buckets: TArray<BucketIn<T>>): TArray<BucketOut>;
+class function Routines.Categorize<T>(const DataStream: ArrayOf<T>; const Buckets: ArrayOf<BucketIn<T>>): ArrayOf<BucketOut>;
 var
-  SmartBuckets: TArray<BucketIn<T>>;
+  SmartBuckets: ArrayOf<BucketIn<T>>;
 begin
   Result := [];
   SmartBuckets := [];

@@ -6,7 +6,7 @@ unit PE.Types;
 interface
 
 type
-  &Array<T> = array of T;
+  ArrayOf<T> = array of T;
 
 type {Foundational Types}
   NaturalNumber = type Cardinal;
@@ -14,7 +14,7 @@ type {Foundational Types}
   NaturalNumber64 = type UInt64;
 
 type {Foundational Array Types}
-  NaturalNumberArray = TArray<NaturalNumber>;
+  NaturalNumberArray = ArrayOf<NaturalNumber>;
 
 type
   SmartClaw<T> = reference to function (const AValue: T): Boolean;
