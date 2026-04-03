@@ -9,6 +9,7 @@ uses
 
 type
   TCustomEnumeratedType = (cetSour, cetSweet, cetFuzzy);
+  NaturalNumberArray = ArrayOf<NaturalNumber>;
 const
   MyCandyDish: ArrayOf<TCustomEnumeratedType> = [cetSour, cetSweet, cetFuzzy, cetSour, cetSweet];
 

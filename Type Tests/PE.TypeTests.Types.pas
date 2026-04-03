@@ -67,12 +67,6 @@ type
     class procedure Exercise(); static; inline;
   end;
 
-  NaturalNumberArray_TypeTests = record
-  public {Language Tests :: Delphi :: Capabilites}
-    class procedure SharesTypeIdentityWithTArrayOfNaturalNumber(); static; inline;
-    class procedure IsSymmetricallyAssignmentCompatibleWithTArrayOfNaturalNumber(); static; inline;
-  end;
-
   SmartClaw_TypeTests<T> = record
   strict private class function Expected(const AValue: T): Boolean; static; inline;
   public {Domain Tests :: Capabilites}
@@ -255,20 +249,6 @@ class procedure SmartClaw_TypeTests<T>.ReturnsTrueWhenOnlyComprisedOfCodeCompari
 begin
   var Actual: SmartClaw<T> := function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)) end;
   Assert(Actual(Default(T)));
-end;
-
-{ NaturalNumberArray_TypeTests }
-
-class procedure NaturalNumberArray_TypeTests.IsSymmetricallyAssignmentCompatibleWithTArrayOfNaturalNumber;
-begin
-  var Expected: TArray<NaturalNumber>;
-  var Actual: NaturalNumberArray := Expected;
-  Expected := Actual;
-end;
-
-class procedure NaturalNumberArray_TypeTests.SharesTypeIdentityWithTArrayOfNaturalNumber;
-begin
-  TypeEquivalenceInquiry<TArray<NaturalNumber>>.SharesTypeIdentityWith<NaturalNumberArray>();
 end;
 
 { Array_TypeTests<TypeUnderTest> }

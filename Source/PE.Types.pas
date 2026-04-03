@@ -5,16 +5,11 @@ unit PE.Types;
 }
 interface
 
-type
-  ArrayOf<T> = array of T;
-
 type {Foundational Types}
+  ArrayOf<T> = array of T;
   NaturalNumber = type Cardinal;
   NaturalNumber32 = NaturalNumber;
   NaturalNumber64 = type UInt64;
-
-type {Foundational Array Types}
-  NaturalNumberArray = ArrayOf<NaturalNumber>;
 
 type
   SmartClaw<T> = reference to function (const AValue: T): Boolean;
