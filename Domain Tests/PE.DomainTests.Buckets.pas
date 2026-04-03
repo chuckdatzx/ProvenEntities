@@ -11,12 +11,11 @@ and not just assume, without pause, that it is unbreakable.}
 interface
 
 uses
-  {Assertions}
-  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
-  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
   {PE}
-  PE.TypeTests.Types,
-  PE.Buckets;
+  PE.Buckets,
+  PE.ImplicitlyTrusted.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
+  PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
+  PE.TypeTests.Types;
 
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}

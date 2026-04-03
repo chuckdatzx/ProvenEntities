@@ -1,4 +1,4 @@
-unit PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime;
+unit PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime;
 {Chuck C.T.
 Full Declaration of Transparency:
 You should only consider the code under test proven insofar as you agree with everything presented
@@ -18,7 +18,7 @@ interface
 
 uses
   {PE}
-  PE.Delphi.TypeIdentity.Proven.AtCompileTime;
+  PE.ImplicitlyTrusted.Delphi.TypeIdentity.Proven.AtCompileTime;
 
 {$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and
   SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}

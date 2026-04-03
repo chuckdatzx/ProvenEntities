@@ -81,9 +81,8 @@ type
 implementation
 
 uses
-  {PE Assertions}
-  PE.Delphi.TypeIdentity.Proven.AtCompileTime,
-  {PE SUT}
+  {PE}
+  PE.ImplicitlyTrusted.Delphi.TypeIdentity.Proven.AtCompileTime,
   PE.Types;
 
 { Exercise }

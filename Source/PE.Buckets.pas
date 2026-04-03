@@ -12,8 +12,8 @@ interface
 
 uses
   {PE Assertions}
-  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
-  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
+  PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
+  PE.ImplicitlyTrusted.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
   {PE System}
   PE.Types;
 
