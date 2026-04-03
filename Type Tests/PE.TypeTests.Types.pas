@@ -35,6 +35,7 @@ type
 
 type
   NaturalNumber_TypeTests = record
+  strict private class var Expected: Cardinal;
   public {Domain Tests :: w/respect to intent}
     class procedure TheLowestPossibleValueIsZero(); static; inline;
     class procedure TheHighestPossibleNumberIs4294967295(); static; inline; //4,294,967,295
@@ -46,6 +47,7 @@ type
   end;
 
   NaturalNumber32_TypeTests = record
+  strict private class var Expected: Cardinal;
   public {Domain :: w/respect to intent}
     class procedure TheLowestPossibleValueIsZero(); static; inline;
     class procedure TheHighestPossibleNumberIs4294967295(); static; inline; //4,294,967,295
@@ -57,6 +59,7 @@ type
   end;
 
   NaturalNumber64_TypeTests = record
+  strict private class var Expected: UInt64;
   public {Domain :: w/respect to intent}
     class procedure TheLowestPossibleValueIsZero(); static; inline;
     class procedure TheHighestPossibleNumberIs18446744073709551615(); static; inline; //Approximately 18.45 quintillion
@@ -109,6 +112,7 @@ end;
 
 class procedure NaturalNumber_TypeTests.Exercise;
 begin
+  Expected := 0;
   TheLowestPossibleValueIsZero();
   TheHighestPossibleNumberIs4294967295();
   IsNotTypeIdenticalToCardinal();
@@ -122,7 +126,6 @@ end;
 
 class procedure NaturalNumber_TypeTests.IsSymmetricallyAssignmentCompatibleWithCardinal();
 begin
-  var Expected: Cardinal := 0;
   var Actual: NaturalNumber := Expected;
   Expected := Actual;
 end;
@@ -162,6 +165,7 @@ end;
 
 class procedure NaturalNumber32_TypeTests.Exercise;
 begin
+  Expected := 0;
   TheLowestPossibleValueIsZero();
   TheHighestPossibleNumberIs4294967295();
   IsSymmetricallyAssignmentCompatibleWithCardinal();
@@ -170,7 +174,6 @@ end;
 
 class procedure NaturalNumber32_TypeTests.IsSymmetricallyAssignmentCompatibleWithCardinal;
 begin
-  var Expected: Cardinal := 0;
   var Actual: NaturalNumber32 := Expected;
   Expected := Actual;
 end;
@@ -194,6 +197,7 @@ end;
 
 class procedure NaturalNumber64_TypeTests.Exercise;
 begin
+  Expected := 0;
   TheLowestPossibleValueIsZero();
   TheHighestPossibleNumberIs18446744073709551615();
   IsNotTypeIdenticalToUInt64();
@@ -207,7 +211,6 @@ end;
 
 class procedure NaturalNumber64_TypeTests.IsSymmetricallyAssignmentCompatibleWithUInt64;
 begin
-  var Expected: UInt64 := 0;
   var Actual: NaturalNumber64 := Expected;
   Expected := Actual;
 end;

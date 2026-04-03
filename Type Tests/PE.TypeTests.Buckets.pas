@@ -12,11 +12,12 @@ interface
 
 uses
   {PE}
+  PE.Buckets,
   PE.DomainTests.Buckets,
   PE.ImplicitlyTrusted.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
   PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
   PE.ImplicitlyTrusted.Delphi.TypeIdentity.Proven.AtCompileTime,
-  PE.Buckets;
+  PE.Types;
 
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
@@ -34,41 +35,42 @@ type
 
 type
   BucketIn_TypeTests<T> = record {Type ID and symmetric assignment compatibility tests are ignored; should have been handled by compiler flags}
-  strict private
-    class function Expected(const AValue: T): Boolean; static; inline;
-  private {Language Tests: Property Tests}
+  strict private class function Expected(const AValue: T): Boolean; static; inline;
+  strict private class var ExpectedNaturalNumber: UInt64;
+  strict private {Language Tests: Property Tests}
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheSmartClawType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
     class procedure All3PropertiesInitializedToDefaultValues(); static; inline;
-  private {Language Tests: Constructor Tests}
+  strict private {Language Tests: Constructor Tests}
     class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue(); static; inline;
     class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue(); static; inline;
     class procedure ConstructorInitializesTheNamePropertyWhenGivenADefaultValue(); static; inline;
     class procedure ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue(); static; inline;
     class procedure ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue(); static; inline;
     class procedure ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue(); static; inline;
+  public {Wrapper}
+    class procedure Exercise(); static; inline;
   end;
 
   BucketOut_TypeTests = record
   strict private class var Default: BucketOut;
-  private {Language Tests: Property Tests}
+  strict private class var ExpectedNaturalNumber: UInt64;
+  strict private {Language Tests: Property Tests}
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
-  private {Language Tests: Equality Comparison Operator :: BucketOut = BucketOut}
+  strict private {Language Tests: Equality Comparison Operator :: BucketOut = BucketOut}
     class procedure EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultCountPropertyValue(); static; inline;
     class procedure EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultNamePropertyValue(); static; inline;
     class procedure EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreSystemDotDefaultValues(); static; inline;
     class procedure EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical(); static; inline;
+  public {Wrapper}
+    class procedure Exercise(); static; inline;
   end;
 
 {$ENDIF}
 
 implementation
-
-uses
-  {PE System}
-  PE.Types;
 
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
@@ -138,10 +140,23 @@ end;
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
 begin
   System.Assert(System.TypeInfo(NaturalNumber) = TypeTestHarness.BucketIn<T>.PredictionProperty_SystemDotTypeInfo());
-  var Expected: NaturalNumber := 0;
   var Actual: BucketIn<T>;
-  Actual.Prediction := Expected;
-  Expected := Actual.Prediction;
+  Actual.Prediction := ExpectedNaturalNumber;
+  ExpectedNaturalNumber := Actual.Prediction;
+end;
+
+class procedure BucketIn_TypeTests<T>.Exercise();
+begin
+  ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
+  ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheSmartClawType();
+  ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
+  All3PropertiesInitializedToDefaultValues();
+  ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
+  ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
+  ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
+  ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
+  ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue();
+  ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue();
 end;
 
 class function BucketIn_TypeTests<T>.Expected(const AValue: T): Boolean;
@@ -187,10 +202,9 @@ end;
 class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
 begin
   System.Assert(System.TypeInfo(NaturalNumber) = TypeTestHarness.BucketOut.CountProperty_SystemDotTypeInfo());
-  var Expected: NaturalNumber := 0;
   var Actual: BucketOut;
-  Actual.Count := Expected;
-  Expected := Actual.Count;
+  Actual.Count := ExpectedNaturalNumber;
+//  ExpectedNaturalNumber := Actual.Count;
 end;
 
 { TODO -oChuck -cMental Note : You haven't yet considered what can/can't be done w/include files. Furthermore, you haven't even braoched the concept of a pre-compiler. }
@@ -208,24 +222,20 @@ begin
   {$IFEND}
 end;
 
+class procedure BucketOut_TypeTests.Exercise();
+begin
+  EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultCountPropertyValue();
+  EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultNamePropertyValue();
+  EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreSystemDotDefaultValues();
+  EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical();
+  ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
+  ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
+end;
+
 class procedure TypeTests<T>.Exercise();
 begin
-  BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
-  BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
-  BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
-  BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
-  BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue();
-  BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue();
-  BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
-  BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
-  BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheSmartClawType();
-  BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues();
-  BucketOut_TypeTests.EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultCountPropertyValue();
-  BucketOut_TypeTests.EqualityComparisonOperatorReturnsFalseWhenEitherBucketOutHasANonDefaultNamePropertyValue();
-  BucketOut_TypeTests.EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreSystemDotDefaultValues();
-  BucketOut_TypeTests.EqualityComparisonOperatorReturnsTrueWhenBothInstancesAreEqualBecauseAllPropertyValuesAreIdentical();
-  BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
-  BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
+  BucketIn_TypeTests<T>.Exercise();
+  BucketOut_TypeTests.Exercise();
 end;
 
 {$IFEND}
