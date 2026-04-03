@@ -204,7 +204,7 @@ begin
   System.Assert(System.TypeInfo(NaturalNumber) = TypeTestHarness.BucketOut.CountProperty_SystemDotTypeInfo());
   var Actual: BucketOut;
   Actual.Count := ExpectedNaturalNumber;
-//  ExpectedNaturalNumber := Actual.Count;
+  ExpectedNaturalNumber := Actual.Count;
 end;
 
 { TODO -oChuck -cMental Note : You haven't yet considered what can/can't be done w/include files. Furthermore, you haven't even braoched the concept of a pre-compiler. }
@@ -237,7 +237,6 @@ begin
   BucketIn_TypeTests<T>.Exercise();
   BucketOut_TypeTests.Exercise();
 end;
-
 {$IFEND}
 
 end.
