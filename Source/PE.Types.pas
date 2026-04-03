@@ -5,6 +5,9 @@ unit PE.Types;
 }
 interface
 
+type
+  &Array<T> = array of T;
+
 type {Foundational Types}
   NaturalNumber = type Cardinal;
   NaturalNumber32 = NaturalNumber;
