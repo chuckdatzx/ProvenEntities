@@ -9,7 +9,7 @@ uses
 type
   DataStream = class sealed
   public
-    class function UniqueElements<T>(const DataStream: ArrayOf<T>): ArrayOf<T>; inline;
+    class function UniqueElements<T>(const ADataStream: ArrayOf<T>): ArrayOf<T>; inline;
   end;
 
 implementation
@@ -20,10 +20,10 @@ uses
 
 { DataStream }
 
-class function DataStream.UniqueElements<T>(const DataStream: ArrayOf<T>): ArrayOf<T>;
+class function DataStream.UniqueElements<T>(const ADataStream: ArrayOf<T>): ArrayOf<T>;
 begin
   Result := [];
-  for var Each: T in DataStream do
+  for var Each: T in ADataStream do
     if (not TArray.Contains<T>(Result, Each)) then
       Result := Result + [Each];
 end;

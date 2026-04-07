@@ -50,7 +50,7 @@ type
       { TODO -oChuck -cToDo : Prove the following tests out at the type level (currently only proven when closed) }
       ResultOrder_UsingNaturalNumber = record
       strict private
-        class procedure ReturnsElementsInAscendingOrderWhenGivenElementsInAscendingOrder(); static; inline;
+        class procedure ReturnsElementsInAscendingOrderWhenGivenElementsInAscendingOrder; static; inline;
         class procedure ReturnsElementsInDescendingOrderWhenGivenElementsInDescendingOrder(); static; inline;
         class procedure ReturnsElementsInMixedOrderWhenGivenElementsInMixedOrder(); static; inline;
       public

@@ -10,7 +10,7 @@ uses
 type
   Rando = record
   public
-    class function NonDefaultValue<T>(): T; static; //inline;
+    class function NonDefaultValue<T>(): T; static; inline;
   end;
 
 implementation
