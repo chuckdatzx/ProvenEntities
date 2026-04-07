@@ -8,7 +8,6 @@ interface
 
 uses
   {PE}
-  PE.Delphi.Rando,
   PE.Delphi.TypeIdentity.Proven.AtCompileTime,
   PE.Types;
 
@@ -28,52 +27,6 @@ type
     class procedure IsSymmetricallyAssignmentCompatibleWithTArrayOfT(); static; inline;
   public {Wrapper}
     class procedure Exercise(); static; inline;
-  end;
-
-  ArrayOfHelperTests = record
-  public type
-    UniqueElements = record
-    public type
-      ResultOrder_UsingNaturalNumber = record
-      strict private
-        class procedure ReturnsElementsInAscendingOrderWhenGivenElementsInAscendingOrder(); static; inline;
-        class procedure ReturnsElementsInDescendingOrderWhenGivenElementsInDescendingOrder(); static; inline;
-        class procedure ReturnsElementsInMixedOrderWhenGivenElementsInMixedOrder(); static; inline;
-      public
-        class procedure Exercise(); static; inline;
-      end;
-    end;
-  public
-    class procedure Exercise(); static; inline;
-  end;
-
-  ArrayOfHelperTestsG = record
-  public type
-    ///<summary>Just a type container</summary>
-    UniqueElements<TypeUnderTest> = record
-      public type
-        ///<summary>Locking down the routine's structure in domain terms</summary>
-        RoutineStructure = record
-        strict private
-          class procedure TheOnlyParameterAcceptsAnEmptyArrayOfT(); static; inline;
-          class procedure ReturnsAnEmptyArrayOfT(); static; inline;
-        public
-          class procedure Exercise(); static; inline;
-        end;
-        RepeatedElementsAreFilteredOut = record
-        strict private
-          class procedure Returns1DefaultElementWhenGiven1DefaultElement(); static; inline;
-          class procedure Returns1DefaultElementWhenGiven3DefaultElements(); static; inline;
-          class procedure Returns1NonDefaultElementWhenGiven1NonDefaultElement(); static; inline;
-          class procedure Returns1NonDefaultElementWhenGiven3OfTheSameNonDefaultElements(); static; inline;
-          class procedure Returns3UniqueNonDefaultElementsWhenGivenTheSame3UniqueNonDefaultElements(); static; inline;
-          class procedure Returns3UniqueNonDefaultElementsAnd1DefaultElementWhenGivenTheSame3UniqueNonDefaultElementsAmongstNonDefaultElements(); static; inline;
-        public
-          class procedure Exercise(); static; inline;
-        end;
-    public
-      class procedure Exercise(); static; inline;
-    end;
   end;
 
 type
@@ -137,11 +90,6 @@ begin
   ArrayOf_TypeTests<NaturalNumber>.Exercise();
   ArrayOf_TypeTests<NaturalNumber32>.Exercise();
   ArrayOf_TypeTests<NaturalNumber64>.Exercise();
-  {Helpers for helped types}
-  ArrayOfHelperTests.Exercise();
-  ArrayOfHelperTestsG.UniqueElements<NaturalNumber>.Exercise();
-//  ArrayOfHelperTestsG<NaturalNumber32>.Exercise();
-//  ArrayOfHelperTestsG<NaturalNumber64>.Exercise();
   {2nd Gen. Types by 1st Gen. Types}
   SmartClaw_TypeTests<NaturalNumber>.Exercise();
   SmartClaw_TypeTests<NaturalNumber32>.Exercise();
@@ -309,153 +257,6 @@ begin
   var Expected: TArray<TypeUnderTest>;
   var Actual: ArrayOf<TypeUnderTest> := Expected;
   Expected := Actual;
-end;
-
-{ ArrayOfHelperTests<TypeUnderTest>.UniqueElements_RoutineStructure_Tests }
-
-class procedure ArrayOfHelperTestsG.UniqueElements<TypeUnderTest>.RoutineStructure.Exercise;
-begin
-  RoutineStructure.TheOnlyParameterAcceptsAnEmptyArrayOfT();
-  RoutineStructure.ReturnsAnEmptyArrayOfT();
-end;
-
-class procedure ArrayOfHelperTestsG.UniqueElements<TypeUnderTest>.RoutineStructure.ReturnsAnEmptyArrayOfT;
-begin
-  var Expected: ArrayOf<TypeUnderTest>;
-  ArrayOf.UniqueElements<TypeUnderTest>(Expected);
-end;
-
-class procedure ArrayOfHelperTestsG.UniqueElements<TypeUnderTest>.RoutineStructure.TheOnlyParameterAcceptsAnEmptyArrayOfT;
-begin
-  var Dummy: ArrayOf<TypeUnderTest>; var Expected: ArrayOf<TypeUnderTest>;
-  Expected := ArrayOf.UniqueElements<TypeUnderTest>(Dummy);
-  System.Assert(0 = System.Length(Expected));
-end;
-
-{ ArrayOfHelperTests<TypeUnderTest> }
-
-class procedure ArrayOfHelperTestsG.UniqueElements<TypeUnderTest>.Exercise;
-begin
-  RoutineStructure.Exercise();
-  RepeatedElementsAreFilteredOut.Exercise();
-end;
-
-{ ArrayOfHelperTests.UniqueElements.ResultOrder }
-
-class procedure ArrayOfHelperTests.UniqueElements.ResultOrder_UsingNaturalNumber.Exercise;
-begin
-  ReturnsElementsInAscendingOrderWhenGivenElementsInAscendingOrder();
-  ReturnsElementsInDescendingOrderWhenGivenElementsInDescendingOrder();
-  ReturnsElementsInMixedOrderWhenGivenElementsInMixedOrder();
-end;
-
-class procedure ArrayOfHelperTests.UniqueElements.ResultOrder_UsingNaturalNumber.ReturnsElementsInAscendingOrderWhenGivenElementsInAscendingOrder;
-begin
-  var Actual: ArrayOf<NaturalNumber> := ArrayOf.UniqueElements<NaturalNumber>([5,10,35,55]);
-  System.Assert(4 = System.Length(Actual));
-  System.Assert(5 = Actual[System.Low(Actual)]);
-  System.Assert(10 = Actual[System.Low(Actual) + 1]);
-  System.Assert(35 = Actual[System.Low(Actual) + 2]);
-  System.Assert(55 = Actual[System.Low(Actual) + 3]);
-end;
-
-class procedure ArrayOfHelperTests.UniqueElements.ResultOrder_UsingNaturalNumber.ReturnsElementsInDescendingOrderWhenGivenElementsInDescendingOrder;
-begin
-  var Actual: ArrayOf<NaturalNumber> := ArrayOf.UniqueElements<NaturalNumber>([101,42,13]);
-  System.Assert(3 = System.Length(Actual));
-  System.Assert(101 = Actual[System.Low(Actual)]);
-  System.Assert(42 = Actual[System.Low(Actual) + 1]);
-  System.Assert(13 = Actual[System.Low(Actual) + 2]);
-end;
-
-class procedure ArrayOfHelperTests.UniqueElements.ResultOrder_UsingNaturalNumber.ReturnsElementsInMixedOrderWhenGivenElementsInMixedOrder;
-begin
-  var Actual: ArrayOf<NaturalNumber> := ArrayOf.UniqueElements<NaturalNumber>([123,350,77]);
-  System.Assert(3 = System.Length(Actual));
-  System.Assert(123 = Actual[System.Low(Actual)]);
-  System.Assert(350 = Actual[System.Low(Actual) + 1]);
-  System.Assert(77 = Actual[System.Low(Actual) + 2]);
-end;
-
-{ ArrayOfHelperTests }
-
-class procedure ArrayOfHelperTests.Exercise;
-begin
-  UniqueElements.ResultOrder_UsingNaturalNumber.Exercise();
-end;
-
-{ ArrayOfHelperTests<TypeUnderTest>.UniqueElements.RepeatedElementsAreFilteredOut }
-
-class procedure ArrayOfHelperTestsG.UniqueElements<TypeUnderTest>.RepeatedElementsAreFilteredOut.Exercise;
-begin
-  Returns1DefaultElementWhenGiven1DefaultElement();
-  Returns1DefaultElementWhenGiven3DefaultElements();
-  Returns1NonDefaultElementWhenGiven1NonDefaultElement();
-  Returns1NonDefaultElementWhenGiven3OfTheSameNonDefaultElements();
-  Returns3UniqueNonDefaultElementsWhenGivenTheSame3UniqueNonDefaultElements();
-  Returns3UniqueNonDefaultElementsAnd1DefaultElementWhenGivenTheSame3UniqueNonDefaultElementsAmongstNonDefaultElements();
-end;
-
-class procedure ArrayOfHelperTestsG.UniqueElements<TypeUnderTest>.RepeatedElementsAreFilteredOut.Returns1DefaultElementWhenGiven1DefaultElement;
-begin
-  var Actual: ArrayOf<TypeUnderTest> := ArrayOf.UniqueElements<TypeUnderTest>([System.Default(TypeUndertest)]);
-  System.Assert(1 = System.Length(Actual));
-  System.Assert(System.Default(TypeUnderTest) = Actual[0]);
-end;
-
-class procedure ArrayOfHelperTestsG.UniqueElements<TypeUnderTest>.RepeatedElementsAreFilteredOut.Returns1DefaultElementWhenGiven3DefaultElements;
-begin
-  var Actual: ArrayOf<TypeUnderTest> := ArrayOf.UniqueElements<TypeUnderTest>([System.Default(TypeUndertest), System.Default(TypeUndertest), System.Default(TypeUndertest)]);
-  System.Assert(1 = System.Length(Actual));
-  System.Assert(System.Default(TypeUnderTest) = Actual[0]);
-end;
-
-class procedure ArrayOfHelperTestsG.UniqueElements<TypeUnderTest>.RepeatedElementsAreFilteredOut.Returns1NonDefaultElementWhenGiven1NonDefaultElement;
-begin
-  var Actual: ArrayOf<TypeUnderTest> := ArrayOf.UniqueElements<TypeUnderTest>([Rando.NonDefaultValue<TypeUndertest>()]);
-  System.Assert(1 = System.Length(Actual));
-  System.Assert(System.Default(TypeUnderTest) <> Actual[0]);
-end;
-
-class procedure ArrayOfHelperTestsG.UniqueElements<TypeUnderTest>.RepeatedElementsAreFilteredOut.Returns1NonDefaultElementWhenGiven3OfTheSameNonDefaultElements;
-begin
-  var DataElement: TypeUnderTest := Rando.NonDefaultValue<TypeUnderTest>();
-  var Actual: ArrayOf<TypeUnderTest> := ArrayOf.UniqueElements<TypeUnderTest>([DataElement, DataElement, DataElement]);
-  System.Assert(1 = System.Length(Actual));
-  System.Assert(System.Default(TypeUnderTest) <> Actual[0]);
-end;
-
-class procedure ArrayOfHelperTestsG.UniqueElements<TypeUnderTest>.RepeatedElementsAreFilteredOut.Returns3UniqueNonDefaultElementsAnd1DefaultElementWhenGivenTheSame3UniqueNonDefaultElementsAmongstNonDefaultElements;
-begin
-  var Expected: ArrayOf<TypeUnderTest> := [System.Default(TypeUnderTest), Rando.NonDefaultValue<TypeUnderTest>(), Rando.NonDefaultValue<TypeUnderTest>(), Rando.NonDefaultValue<TypeUnderTest>()];
-  System.Assert(4 = System.Length(Expected));
-  System.Assert(Expected[System.Low(Expected)] <> Expected[System.Low(Expected) + 1]);
-  System.Assert(Expected[System.Low(Expected)] <> Expected[System.Low(Expected) + 2]);
-  System.Assert(Expected[System.Low(Expected)] <> Expected[System.Low(Expected) + 3]);
-  System.Assert(Expected[System.Low(Expected) + 1] <> Expected[System.Low(Expected) + 2]);
-  System.Assert(Expected[System.Low(Expected) + 1] <> Expected[System.Low(Expected) + 3]);
-  System.Assert(Expected[System.Low(Expected) + 2] <> Expected[System.Low(Expected) + 3]);
-  var Data: ArrayOf<TypeUnderTest> := [Expected[System.Low(Expected)], System.Default(TypeUnderTest), Expected[System.Low(Expected) + 1], System.Default(TypeUnderTest), Expected[System.Low(Expected) + 2], System.Default(TypeUnderTest), Expected[System.Low(Expected) + 3]];
-  var Actual: ArrayOf<TypeUnderTest> := ArrayOf.UniqueElements<TypeUnderTest>( Expected);
-  System.Assert(4 = System.Length(Actual));
-  System.Assert(Expected[System.Low(Expected)] = Actual[System.Low(Actual)]);
-  System.Assert(Expected[System.Low(Expected) + 1] = Actual[System.Low(Actual) + 1]);
-  System.Assert(Expected[System.Low(Expected) + 2] = Actual[System.Low(Actual) + 2]);
-  System.Assert(Expected[System.Low(Expected) + 3] = Actual[System.Low(Actual) + 3]);
-end;
-
-class procedure ArrayOfHelperTestsG.UniqueElements<TypeUnderTest>.RepeatedElementsAreFilteredOut.Returns3UniqueNonDefaultElementsWhenGivenTheSame3UniqueNonDefaultElements;
-begin
-  var Expected: ArrayOf<TypeUnderTest> := [Rando.NonDefaultValue<TypeUnderTest>(), Rando.NonDefaultValue<TypeUnderTest>(), Rando.NonDefaultValue<TypeUnderTest>()];
-  System.Assert(3 = System.Length(Expected));
-  System.Assert(Expected[System.Low(Expected)] <> Expected[System.Low(Expected) + 1]);
-  System.Assert(Expected[System.Low(Expected)] <> Expected[System.Low(Expected) + 2]);
-  System.Assert(Expected[System.Low(Expected) + 1] <> Expected[System.Low(Expected) + 2]);
-  var Actual: ArrayOf<TypeUnderTest> := ArrayOf.UniqueElements<TypeUnderTest>(Expected);
-  System.Assert(3 = System.Length(Actual));
-  System.Assert(Expected[System.Low(Expected)] = Actual[System.Low(Actual)]);
-  System.Assert(Expected[System.Low(Expected) + 1] = Actual[System.Low(Actual) + 1]);
-  System.Assert(Expected[System.Low(Expected) + 2] = Actual[System.Low(Actual) + 2]);
 end;
 
 end.

@@ -100,7 +100,9 @@
         <DCCReference Include="Delphi\PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas"/>
         <DCCReference Include="Delphi\PE.Delphi.TypeIdentity.Proven.AtCompileTime.pas"/>
         <DCCReference Include="Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas"/>
+        <DCCReference Include="Source\PE.Routines.Pas"/>
         <DCCReference Include="Tests\PE.Tests.Behavioral.Buckets.pas"/>
+        <DCCReference Include="Tests\PE.Tests.Routines.pas"/>
         <DCCReference Include="Tests\PE.Tests.Types.pas"/>
         <DCCReference Include="Tests\PE.Tests.Types.Buckets.pas"/>
         <DCCReference Include="Source\PE.Types.pas"/>
