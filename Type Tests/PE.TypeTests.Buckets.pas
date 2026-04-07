@@ -13,10 +13,10 @@ interface
 uses
   {PE}
   PE.Buckets,
+  PE.Delphi.TypeIdentity.Proven.AtCompileTime,
   PE.DomainTests.Buckets,
   PE.ImplicitlyTrusted.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
   PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
-  PE.ImplicitlyTrusted.Delphi.TypeIdentity.Proven.AtCompileTime,
   PE.Types;
 
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
@@ -96,13 +96,13 @@ end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
 begin
-  System.Assert(SystemDotTypeInfo.ForNativeStringType() = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  System.Assert(System.TypeInfo(string) = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
   System.Assert(System.Default(string) = BucketIn<T>.Create(nil, System.Default(string)).Name);
 end;
 
 class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
 begin
-  System.Assert(SystemDotTypeInfo.ForNativeStringType() = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  System.Assert(System.TypeInfo(string) = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
   System.Assert('a' <> System.Default(string));
   System.Assert('a' = BucketIn<T>.Create(nil, 'a').Name);
 end;
@@ -127,7 +127,7 @@ end;
 class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
 begin
   {$IF (System.TypeInfo(string) <> System.TypeInfo(Integer)) and (System.TypeInfo(string) = System.TypeInfo(string))}
-  System.Assert(SystemDotTypeInfo.ForNativeStringType() = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  System.Assert(System.TypeInfo(string) = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
   var Expected: string;
   var Actual: BucketIn<T>;
   Expected := Actual.Name;
@@ -212,7 +212,7 @@ end;
 class procedure BucketOut_TypeTests.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
 begin
   {$IF (System.TypeInfo(string) <> System.TypeInfo(Integer)) and (System.TypeInfo(string) = System.TypeInfo(string))}
-  Assert(SystemDotTypeInfo.ForNativeStringType() = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
+  Assert(System.TypeInfo(string) = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
   var Expected: string;
   var Actual: BucketIn<T>;
   Actual.Name := Expected;

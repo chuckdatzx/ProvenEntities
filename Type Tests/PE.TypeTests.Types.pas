@@ -8,22 +8,14 @@ interface
 
 uses
   {PE}
-  PE.Delphi.Rando;
+  PE.Delphi.Rando,
+  PE.Delphi.TypeIdentity.Proven.AtCompileTime,
+  PE.Types;
 
 type
   AllTests = record
   public
     class procedure Exercise(); static; inline;
-  end;
-
-type
-  ///<summary>Delphi specific entity for establishing facts about TypeUnderTest</summary>
-  ///<notes>This should probably be moved to "higher ground" (a Delphi-specific namespace)</notes>
-  TypeEquivalenceInquiry<TypeUnderTest> = record
-  public
-    class procedure DoesNotShareTypeIdentityWith<ThisGuy>(); static; inline;
-    class procedure HasANonNullSystemDotTypeInfoValue(); static; inline;
-    class procedure SharesTypeIdentityWith<ThisGuy>(); static; inline;
   end;
 
 type
@@ -134,11 +126,6 @@ type
 
 implementation
 
-uses
-  {PE}
-  PE.ImplicitlyTrusted.Delphi.TypeIdentity.Proven.AtCompileTime,
-  PE.Types;
-
 { Exercise }
 
 class procedure AllTests.Exercise();
@@ -196,25 +183,6 @@ end;
 class procedure NaturalNumber_TypeTests.TheLowestPossibleValueIsZero;
 begin
   System.Assert(0 = System.Low(NaturalNumber));
-end;
-
-{ TypeEquivalenceInquiry<TypeUnderTest> }
-
-class procedure TypeEquivalenceInquiry<TypeUnderTest>.DoesNotShareTypeIdentityWith<ThisGuy>;
-begin  //Of course assuming that TypeUnderTest <> ThisGuy
-  System.Assert(SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime);
-  System.Assert(not (System.TypeInfo(TypeUnderTest) = System.TypeInfo(ThisGuy)));
-end;
-
-class procedure TypeEquivalenceInquiry<TypeUnderTest>.HasANonNullSystemDotTypeInfoValue;
-begin
-  System.Assert(SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime);
-  System.Assert(System.Assigned(System.TypeInfo(TypeUnderTest)));
-end;
-
-class procedure TypeEquivalenceInquiry<TypeUnderTest>.SharesTypeIdentityWith<ThisGuy>;
-begin
-  System.Assert(System.TypeInfo(TypeUnderTest) = System.TypeInfo(ThisGuy));
 end;
 
 { NaturalNumber32_TypeTests }

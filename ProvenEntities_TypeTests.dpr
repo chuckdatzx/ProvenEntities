@@ -12,16 +12,16 @@ and not just assume, without pause, that it is unbreakable.}
 {$APPTYPE CONSOLE}
 {$STRONGLINKTYPES ON}
 uses
+  CategorizingWithBuckets in 'Examples\Delphi\CategorizingWithBuckets.pas',
   PE.Buckets in 'Source\PE.Buckets.pas',
   PE.Delphi.Rando in 'Delphi\PE.Delphi.Rando.pas',
-  PE.Types in 'Source\PE.Types.pas',
+  PE.Delphi.TypeIdentity.Proven.AtCompileTime in 'Delphi\PE.Delphi.TypeIdentity.Proven.AtCompileTime.pas',
   PE.DomainTests.Buckets in 'Domain Tests\PE.DomainTests.Buckets.pas',
   PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas',
-  PE.ImplicitlyTrusted.Delphi.TypeIdentity.Proven.AtCompileTime in 'Delphi\PE.ImplicitlyTrusted.Delphi.TypeIdentity.Proven.AtCompileTime.pas',
   PE.ImplicitlyTrusted.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.ImplicitlyTrusted.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas',
+  PE.Types in 'Source\PE.Types.pas',
   PE.TypeTests.Buckets in 'Type Tests\PE.TypeTests.Buckets.pas',
-  PE.TypeTests.Types in 'Type Tests\PE.TypeTests.Types.pas',
-  CategorizingWithBuckets in 'Examples\Delphi\CategorizingWithBuckets.pas';
+  PE.TypeTests.Types in 'Type Tests\PE.TypeTests.Types.pas';
 
 { TODO -oChuck -cMusing :
 I've noticed that the more I lean on my own definitions, the leaner the end binary becomes.

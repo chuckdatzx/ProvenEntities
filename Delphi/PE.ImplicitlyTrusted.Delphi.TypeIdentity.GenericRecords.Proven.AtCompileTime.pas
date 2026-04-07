@@ -18,7 +18,7 @@ interface
 
 uses
   {PE}
-  PE.ImplicitlyTrusted.Delphi.TypeIdentity.Proven.AtCompileTime;
+  PE.Delphi.TypeIdentity.Proven.AtCompileTime;
 
 {$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and
   SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}

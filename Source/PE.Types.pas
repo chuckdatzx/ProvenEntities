@@ -14,7 +14,7 @@ type {Foundational Types}
 type
   ArrayOf = class sealed
   public
-    class function UniqueElements<T>(const DataStream: ArrayOf<T>): ArrayOf<T>;
+    class function UniqueElements<T>(const DataStream: ArrayOf<T>): ArrayOf<T>; inline;
   end;
 
 type

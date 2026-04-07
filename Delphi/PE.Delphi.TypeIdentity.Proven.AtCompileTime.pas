@@ -1,4 +1,4 @@
-unit PE.ImplicitlyTrusted.Delphi.TypeIdentity.Proven.AtCompileTime;
+unit PE.Delphi.TypeIdentity.Proven.AtCompileTime;
 {Chuck C.T.
 Full Declaration of Transparency:
 You should only consider the code under test proven insofar as you agree with everything presented
@@ -39,25 +39,35 @@ const
   {$IFEND}
 
 {$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}
+  ///<summary>Delphi specific entity for establishing facts about TypeUnderTest</summary>
 type
-  SystemDotTypeInfo = record
+  TypeEquivalenceInquiry<TypeUnderTest> = record
   public
-    class function ForCardinalType(): Pointer; static; inline;
-    class function ForNativeStringType(): Pointer; static; inline;
+    class procedure DoesNotShareTypeIdentityWith<ThisGuy>(); static; inline;
+    class procedure HasANonNullSystemDotTypeInfoValue(); static; inline;
+    class procedure SharesTypeIdentityWith<ThisGuy>(); static; inline;
   end;
 {$IFEND}
 
 implementation
 
 {$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}
-class function SystemDotTypeInfo.ForCardinalType(): Pointer;
-begin
-  Result := System.TypeInfo(Cardinal);
+{ TypeEquivalenceInquiry<TypeUnderTest> }
+class procedure TypeEquivalenceInquiry<TypeUnderTest>.DoesNotShareTypeIdentityWith<ThisGuy>;
+begin  //Of course assuming that TypeUnderTest <> ThisGuy
+  System.Assert(SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime);
+  System.Assert(not (System.TypeInfo(TypeUnderTest) = System.TypeInfo(ThisGuy)));
 end;
 
-class function SystemDotTypeInfo.ForNativeStringType(): Pointer;
+class procedure TypeEquivalenceInquiry<TypeUnderTest>.HasANonNullSystemDotTypeInfoValue;
 begin
-  Result := System.TypeInfo(string);
+  System.Assert(SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime);
+  System.Assert(System.Assigned(System.TypeInfo(TypeUnderTest)));
+end;
+
+class procedure TypeEquivalenceInquiry<TypeUnderTest>.SharesTypeIdentityWith<ThisGuy>;
+begin
+  System.Assert(System.TypeInfo(TypeUnderTest) = System.TypeInfo(ThisGuy));
 end;
 {$IFEND}
 
