@@ -12,8 +12,8 @@ interface
 
 uses
   {PE Assertions}
-  PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
-  PE.ImplicitlyTrusted.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
+  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
+  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
   {PE System}
   PE.Types;
 
@@ -23,7 +23,7 @@ uses
 {$REGION 'Type Test Harness'}
 type
   ///<summary>Essentially here to minimize the distance between tests and SUT</summary>
-  ///<remarks>If I come up with a means of retrieving a type definition from a record's property; there's no longer a need for this entity</remarks>
+  ///<remarks>If I come up with a means of retrieving a type definition from a record's property, then there's no longer a need for this entity</remarks>
   TypeTestHarness = record
   public type
     BucketIn<T> = record

@@ -1,4 +1,4 @@
-unit PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime;
+unit PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime;
 {Chuck C.T.
 Full Declaration of Transparency:
 You should only consider the code under test proven insofar as you agree with everything presented
@@ -31,7 +31,7 @@ type
   T=ByteBool;  {The "simplest type" I could come up with (I'm claiming "simplest type" based on the following):
                 1) from a structural/engineering/"hard science" perspective, everyone knows what a byte is
                 2) from a "legal" perspective, we know that ByteBool is a simple type 'cause it's defined as such by the product's own documentation
-                3) from an abstraction-based/conceptual perspective, I think it's safe to say that everyone knows that Boolean means
+                3) from an abstraction-based/conceptual perspective, I think it's safe to say that everyone knows what Boolean means
 
                 However...
 
