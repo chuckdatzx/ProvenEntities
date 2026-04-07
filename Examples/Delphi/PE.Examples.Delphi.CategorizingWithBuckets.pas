@@ -1,4 +1,4 @@
-unit CategorizingWithBuckets;
+unit PE.Examples.Delphi.CategorizingWithBuckets;
 
 interface
 

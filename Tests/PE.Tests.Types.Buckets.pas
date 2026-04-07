@@ -1,4 +1,4 @@
-unit PE.TypeTests.Buckets;
+unit PE.Tests.Types.Buckets;
 {Chuck C.T.
 Full Declaration of Transparency:
 You should only consider the code under test proven insofar as you agree with everything presented
@@ -16,7 +16,7 @@ uses
   PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
   PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
   PE.Delphi.TypeIdentity.Proven.AtCompileTime,
-  PE.DomainTests.Buckets,
+  PE.Tests.Behavioral.Buckets,
   PE.Types;
 
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and

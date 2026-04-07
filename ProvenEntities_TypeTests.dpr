@@ -12,16 +12,16 @@ and not just assume, without pause, that it is unbreakable.}
 {$APPTYPE CONSOLE}
 {$STRONGLINKTYPES ON}
 uses
-  CategorizingWithBuckets in 'Examples\Delphi\CategorizingWithBuckets.pas',
   PE.Buckets in 'Source\PE.Buckets.pas',
   PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas',
   PE.Delphi.Rando in 'Delphi\PE.Delphi.Rando.pas',
   PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas',
   PE.Delphi.TypeIdentity.Proven.AtCompileTime in 'Delphi\PE.Delphi.TypeIdentity.Proven.AtCompileTime.pas',
-  PE.DomainTests.Buckets in 'Domain Tests\PE.DomainTests.Buckets.pas',
-  PE.Types in 'Source\PE.Types.pas',
-  PE.TypeTests.Buckets in 'Type Tests\PE.TypeTests.Buckets.pas',
-  PE.TypeTests.Types in 'Type Tests\PE.TypeTests.Types.pas';
+  PE.Examples.Delphi.CategorizingWithBuckets in 'Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
+  PE.Tests.Behavioral.Buckets in 'Tests\PE.Tests.Behavioral.Buckets.pas',
+  PE.Tests.Types in 'Tests\PE.Tests.Types.pas',
+  PE.Tests.Types.Buckets in 'Tests\PE.Tests.Types.Buckets.pas',
+  PE.Types in 'Source\PE.Types.pas';
 
 { TODO -oChuck -cMusing :
 I've noticed that the more I lean on my own definitions, the leaner the end binary becomes.
@@ -42,9 +42,9 @@ begin
   System.Write('Tests Started...');
   //If you want to cover more ground, just copy/paste(the line of source code below that tests what you want to cover) and replace T with whatever type.
   //just make sure to keep it between the first and last System.Write (that way you can be sure no errors could have occurred)
-  PE.TypeTests.Types.AllTests.Exercise();
-  PE.TypeTests.Buckets.TypeTests<T>.Exercise();
-  PE.DomainTests.Buckets.DomainTests<T>.Exercise();
-  CategorizingWithBuckets.Exercise.AllTests();
+  PE.Tests.Types.AllTests.Exercise();
+  PE.Tests.Types.Buckets.TypeTests<T>.Exercise();
+  PE.Tests.Behavioral.Buckets.DomainTests<T>.Exercise();
+  Pe.Examples.Delphi.CategorizingWithBuckets.Exercise.AllTests();
   System.Write('Tests Completed');
 end.

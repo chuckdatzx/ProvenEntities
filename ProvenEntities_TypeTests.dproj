@@ -94,16 +94,16 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="Examples\Delphi\CategorizingWithBuckets.pas"/>
         <DCCReference Include="Source\PE.Buckets.pas"/>
         <DCCReference Include="Delphi\PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas"/>
         <DCCReference Include="Delphi\PE.Delphi.Rando.pas"/>
         <DCCReference Include="Delphi\PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas"/>
         <DCCReference Include="Delphi\PE.Delphi.TypeIdentity.Proven.AtCompileTime.pas"/>
-        <DCCReference Include="Domain Tests\PE.DomainTests.Buckets.pas"/>
+        <DCCReference Include="Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas"/>
+        <DCCReference Include="Tests\PE.Tests.Behavioral.Buckets.pas"/>
+        <DCCReference Include="Tests\PE.Tests.Types.pas"/>
+        <DCCReference Include="Tests\PE.Tests.Types.Buckets.pas"/>
         <DCCReference Include="Source\PE.Types.pas"/>
-        <DCCReference Include="Type Tests\PE.TypeTests.Buckets.pas"/>
-        <DCCReference Include="Type Tests\PE.TypeTests.Types.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
