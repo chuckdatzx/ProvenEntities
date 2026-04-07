@@ -13,6 +13,7 @@ and not just assume, without pause, that it is unbreakable.}
 {$STRONGLINKTYPES ON}
 uses
   PE.Buckets in 'Source\PE.Buckets.pas',
+  PE.Delphi.Rando in 'Delphi\PE.Delphi.Rando.pas',
   PE.Types in 'Source\PE.Types.pas',
   PE.DomainTests.Buckets in 'Domain Tests\PE.DomainTests.Buckets.pas',
   PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas',
@@ -44,6 +45,6 @@ begin
   PE.TypeTests.Types.AllTests.Exercise();
   PE.TypeTests.Buckets.TypeTests<T>.Exercise();
   PE.DomainTests.Buckets.DomainTests<T>.Exercise();
-  CategorizingWithBuckets.OrganizingNumbers.ByOddsAndEvens();
+  CategorizingWithBuckets.Exercise.AllTests();
   System.Write('Tests Completed');
 end.

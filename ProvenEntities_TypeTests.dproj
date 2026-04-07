@@ -95,6 +95,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="Source\PE.Buckets.pas"/>
+        <DCCReference Include="Delphi\PE.Delphi.Rando.pas"/>
         <DCCReference Include="Source\PE.Types.pas"/>
         <DCCReference Include="Domain Tests\PE.DomainTests.Buckets.pas"/>
         <DCCReference Include="Delphi\PE.ImplicitlyTrusted.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas"/>

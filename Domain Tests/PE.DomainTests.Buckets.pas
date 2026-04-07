@@ -111,8 +111,8 @@ uses
 
 class procedure CategorizeRoutine_SignatureTests<T>.Exercise();
 begin
-  Array_TypeTests<BucketIn<T>>.Exercise(); //Validating dependencies
-  Array_TypeTests<BucketOut>.Exercise(); //Validating dependencies
+  ArrayOf_TypeTests<BucketIn<T>>.Exercise(); //Validating dependencies
+  ArrayOf_TypeTests<BucketOut>.Exercise(); //Validating dependencies
   The1stParameterAcceptsAnEmptyArrayOfT();
   The2ndParameterAcceptsAnEmptyArrayOfBucketInOfT();
   ReturnsAnEmptyArrayOfBucketOut();

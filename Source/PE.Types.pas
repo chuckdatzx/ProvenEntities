@@ -12,8 +12,28 @@ type {Foundational Types}
   NaturalNumber64 = type UInt64;
 
 type
+  ArrayOf = class sealed
+  public
+    class function UniqueElements<T>(const DataStream: ArrayOf<T>): ArrayOf<T>;
+  end;
+
+type
   SmartClaw<T> = reference to function (const AValue: T): Boolean;
 
 implementation
+
+uses
+  {Delphi}
+  System.Generics.Collections;
+
+{ ArrayOf<T> }
+
+class function ArrayOf.UniqueElements<T>(const DataStream: ArrayOf<T>): ArrayOf<T>;
+begin
+  Result := [];
+  for var Each: T in DataStream do
+    if (not TArray.Contains<T>(Result, Each)) then
+      Result := Result + [Each];
+end;
 
 end.
