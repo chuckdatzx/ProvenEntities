@@ -39,8 +39,8 @@ const
   {$IFEND}
 
 {$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}
-  ///<summary>Delphi specific entity for establishing facts about TypeUnderTest</summary>
 type
+  ///<summary>Delphi specific entity for establishing facts about TypeUnderTest</summary>
   TypeEquivalenceInquiry<TypeUnderTest> = record
   public
     class procedure DoesNotShareTypeIdentityWith<ThisGuy>(); static; inline;
@@ -52,7 +52,7 @@ type
 implementation
 
 {$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}
-{ TypeEquivalenceInquiry<TypeUnderTest> }
+{TypeEquivalenceInquiry<TypeUnderTest>}
 class procedure TypeEquivalenceInquiry<TypeUnderTest>.DoesNotShareTypeIdentityWith<ThisGuy>;
 begin  //Of course assuming that TypeUnderTest <> ThisGuy
   System.Assert(SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime);

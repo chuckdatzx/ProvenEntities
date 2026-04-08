@@ -8,7 +8,13 @@ uses
   System.TypInfo;
 
 type
-  Rando = record
+  ///<summary>Rando currently exists to add some variety into the boring world of System.Default()</summary>
+  ///<notes>While attempting to prove out behaviors for simple generic algorithms(i.e. simple categorization by value),
+  /// I noticed that I couldn't do much at the type level. Well, that is until I was able to draw a distinction
+  /// between default and non-default values. That opens up a whole new chapter of what can be tested at the type level.
+  /// Later still, I realized "Why stop with default/non-default values when you could generate random ones and go further?"
+  /// For now, Rando has an unfortunate title. I should consider adding proof for Rando. But until then, the title stays.</notes>
+  Rando_TheUntrustworthy = record
   public
     class function NonDefaultValue<T>(): T; static; inline;
   end;
@@ -17,7 +23,7 @@ implementation
 
 { Rando }
 
-class function Rando.NonDefaultValue<T>: T;
+class function Rando_TheUntrustworthy.NonDefaultValue<T>: T;
 begin
   System.Assert(System.GetTypeKind(T) = tkInteger, 'Rando is not prepared for any other type kind than tkInteger');
   var ATypeInfo: PTypeInfo := System.TypeInfo(T);

@@ -178,14 +178,14 @@ end;
 
 class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns1NonDefaultElementWhenGiven1NonDefaultElement;
 begin
-  var Actual: ArrayOf<TypeUnderTest2> := DataStream.UniqueElements<TypeUnderTest2>([Rando.NonDefaultValue<TypeUnderTest2>()]);
+  var Actual: ArrayOf<TypeUnderTest2> := DataStream.UniqueElements<TypeUnderTest2>([Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>()]);
   System.Assert(1 = System.Length(Actual));
   System.Assert(System.Default(TypeUnderTest2) <> Actual[0]);
 end;
 
 class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns1NonDefaultElementWhenGiven3OfTheSameNonDefaultElements;
 begin
-  var DataElement: TypeUnderTest2 := Rando.NonDefaultValue<TypeUnderTest2>();
+  var DataElement: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
   var Actual: ArrayOf<TypeUnderTest2> := DataStream.UniqueElements<TypeUnderTest2>([DataElement, DataElement, DataElement]);
   System.Assert(1 = System.Length(Actual));
   System.Assert(System.Default(TypeUnderTest2) <> Actual[0]);
@@ -193,7 +193,7 @@ end;
 
 class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns3UniqueNonDefaultElementsAnd1DefaultElementWhenGivenTheSame3UniqueNonDefaultElementsAmongstNonDefaultElements;
 begin
-  var Expected: ArrayOf<TypeUnderTest2> := [System.Default(TypeUnderTest2), Rando.NonDefaultValue<TypeUnderTest2>(), Rando.NonDefaultValue<TypeUnderTest2>(), Rando.NonDefaultValue<TypeUnderTest2>()];
+  var Expected: ArrayOf<TypeUnderTest2> := [System.Default(TypeUnderTest2), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>()];
   System.Assert(4 = System.Length(Expected));
   System.Assert(Expected[System.Low(Expected)] <> Expected[System.Low(Expected) + 1]);
   System.Assert(Expected[System.Low(Expected)] <> Expected[System.Low(Expected) + 2]);
@@ -212,7 +212,7 @@ end;
 
 class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns3UniqueNonDefaultElementsWhenGivenTheSame3UniqueNonDefaultElements;
 begin
-  var Expected: ArrayOf<TypeUnderTest2> := [Rando.NonDefaultValue<TypeUnderTest2>(), Rando.NonDefaultValue<TypeUnderTest2>(), Rando.NonDefaultValue<TypeUnderTest2>()];
+  var Expected: ArrayOf<TypeUnderTest2> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>()];
   System.Assert(3 = System.Length(Expected));
   System.Assert(Expected[System.Low(Expected)] <> Expected[System.Low(Expected) + 1]);
   System.Assert(Expected[System.Low(Expected)] <> Expected[System.Low(Expected) + 2]);
