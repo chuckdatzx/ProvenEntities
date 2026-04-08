@@ -19,7 +19,7 @@ uses
   PE.Delphi.TypeIdentity.Proven.AtCompileTime in 'Delphi\PE.Delphi.TypeIdentity.Proven.AtCompileTime.pas',
   PE.Examples.Delphi.CategorizingWithBuckets in 'Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
   PE.Routines in 'Source\PE.Routines.Pas',
-  PE.Tests.Behavioral.Buckets in 'Tests\PE.Tests.Behavioral.Buckets.pas',
+  PE.Tests.Routines.Buckets in 'Tests\PE.Tests.Routines.Buckets.pas',
   PE.Tests.Routines in 'Tests\PE.Tests.Routines.pas',
   PE.Tests.Types in 'Tests\PE.Tests.Types.pas',
   PE.Tests.Types.Buckets in 'Tests\PE.Tests.Types.Buckets.pas',
@@ -45,9 +45,9 @@ begin
   //If you want to cover more ground, just copy/paste(the line of source code below that tests what you want to cover) and replace T with whatever type.
   //just make sure to keep it between the first and last System.Write (that way you can be sure no errors could have occurred)
   PE.Tests.Routines.AllTests.Exercise();
+  PE.Tests.Routines.Buckets.DomainTests<T>.Exercise();
   PE.Tests.Types.AllTests.Exercise();
   PE.Tests.Types.Buckets.TypeTests<T>.Exercise();
-  PE.Tests.Behavioral.Buckets.DomainTests<T>.Exercise();
-  Pe.Examples.Delphi.CategorizingWithBuckets.Exercise.AllTests();
+  PE.Examples.Delphi.CategorizingWithBuckets.Exercise.AllTests();
   System.Write('Tests Completed');
 end.

@@ -16,7 +16,7 @@ uses
   PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
   PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
   PE.Delphi.TypeIdentity.Proven.AtCompileTime,
-  PE.Tests.Behavioral.Buckets,
+  PE.Tests.Routines.Buckets,
   PE.Types;
 
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
@@ -34,22 +34,25 @@ type
  While the above seems true, I can also argue "stop trying to break it". I guess I'll see where I land at a later point.}
 
 type
-  BucketIn_TypeTests<T> = record {Type ID and symmetric assignment compatibility tests are ignored; should have been handled by compiler flags}
+  BucketIn_TypeTests<T> = record
   strict private class function Expected(const AValue: T): Boolean; static; inline;
-  strict private class var ExpectedNaturalNumber: UInt64;
-  strict private {Language Tests: Property Tests}
+  strict private class var ExpectedNaturalNumber: UInt64;  //This is declared here to prevent compiler hints from occuring
+  public {Intent: Domain // Practicality :: Delphi // Rules: Contains one property each of the NaturalNumber, the SmartClaw<T>, and the native string types}
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheSmartClawType(); static; inline;
     class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
+  public {Intent: Domain // Practicality :: Delphi // Rules: All 3 properties are initialized to their respective default values}
     class procedure All3PropertiesInitializedToDefaultValues(); static; inline;
-  strict private {Language Tests: Constructor Tests}
+  public {Intent: Domain // Practicality :: Delphi // Rules: All 3 properties can be initialized to default/non-default values through the entity constructor}
     class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue(); static; inline;
     class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue(); static; inline;
     class procedure ConstructorInitializesTheNamePropertyWhenGivenADefaultValue(); static; inline;
     class procedure ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue(); static; inline;
     class procedure ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue(); static; inline;
     class procedure ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue(); static; inline;
-  public {Wrapper}
+  public {Intent: Delphi // Practicality :: Delphi // Note: Is type identical and assignment compatible with other same-typed closed instances}
+    class procedure IsTypeIdenticalAndIsSymmetricallyAssignmentCompatibleWithItself(); static; inline;
+  public {Intent: Domain // Practicality :: Delphi // Note: Simple wrapper for executing all tests from this container}
     class procedure Exercise(); static; inline;
   end;
 
@@ -157,10 +160,21 @@ begin
   ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
   ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue();
   ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue();
+  IsTypeIdenticalAndIsSymmetricallyAssignmentCompatibleWithItself();
 end;
 
 class function BucketIn_TypeTests<T>.Expected(const AValue: T): Boolean;
 begin Result := False; end;
+
+class procedure BucketIn_TypeTests<T>.IsTypeIdenticalAndIsSymmetricallyAssignmentCompatibleWithItself();
+var
+  X, Y: BucketIn<T>;
+begin
+  TypeEquivalenceInquiry<BucketIn<T>>.HasANonNullSystemDotTypeInfoValue();
+  TypeEquivalenceInquiry<BucketIn<T>>.SharesTypeIdentityWith<BucketIn<T>>();
+  X := Y;
+  Y := X;
+end;
 
 { BucketOut_TypeTests :: Type Tests }
 

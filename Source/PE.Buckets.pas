@@ -69,7 +69,7 @@ type
 
   Routines = record
   public
-    ///<summary>Iterates each element of the provided data stream while giving each bucket has a chance to determine inclusion (using whatever you put into place for the "grabby arm")</summary>
+    ///<summary>Iterates each element of the provided data stream while giving each bucket a chance to determine inclusion (using whatever you put into place for the "grabby arm")</summary>
     class function Categorize<T>(const DataStream: ArrayOf<T>; const Buckets: ArrayOf<BucketIn<T>>): ArrayOf<BucketOut>; static; inline;
     { TODO -oChuck -cPotential Feature :
 An obvious feature upgrade would be to extend the "mouth" of the Categorize<T> routine.
