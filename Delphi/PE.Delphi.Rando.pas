@@ -21,9 +21,9 @@ class function Rando.NonDefaultValue<T>: T;
 begin
   System.Assert(System.GetTypeKind(T) = tkInteger, 'Rando is not prepared for any other type kind than tkInteger');
   var ATypeInfo: PTypeInfo := System.TypeInfo(T);
-  System.Assert(System.Assigned(ATypeInfo));
+  System.Assert(System.Assigned(ATypeInfo), 'Rando cannot continue because the provided type T does not seem to generate type info');
   var ATypeData := GetTypeData(ATypeInfo);
-  System.Assert(System.Assigned(ATypeData));
+  System.Assert(System.Assigned(ATypeData), 'Rando cannot continue because the provided type T does not seem to have type data');
   var AValue := TValue.Empty;
   case ATypeData.OrdType of
     TOrdType.otSByte, TOrdType.otUByte: AValue := TValue.FromOrdinal(ATypeInfo, Random(256) + 1);
