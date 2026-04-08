@@ -27,6 +27,7 @@ type
         public
           class procedure Exercise(); static; inline;
         end;
+        ///<summary>Proving out filtering using {x} elements with values of either default or non-default</summary>
         RepeatedElementsAreFilteredOut<TypeUnderTest2> = record
         strict private
           class procedure Returns1DefaultElementWhenGiven1DefaultElement(); static; inline;
@@ -43,7 +44,7 @@ type
     end;
   end;
 
-  ArrayOfHelperTests = record
+  DataStreamTests_Closed = record
   public type
     UniqueElements = record
     public type
@@ -68,13 +69,17 @@ implementation
 class procedure AllTests.Exercise;
 begin
   {Helpers for helped types}
-  ArrayOfHelperTests.Exercise();
+  DataStreamTests_Closed.Exercise();
   DataStreamTests.UniqueElements<NaturalNumber>.Exercise();
   DataStreamTests.UniqueElements<NaturalNumber32>.Exercise();
-  //DataStreamTests.UniqueElements<NaturalNumber64>.Exercise();
+  {$IFDEF CPU64BITS}
+  DataStreamTests.UniqueElements<NaturalNumber64>.Exercise();
+  {$ELSE}
+    {$MESSAGE WARN 'PE.Routines.DataStream cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
   { TODO -oChuck -cMusings :
 Seems like the same issue I've encountered before (F2084 Internal Error: C2252).
 Makes it seem like there's some inherent 32/64 bit issue I haven't yet grasped. }
+  {$IFEND}
 end;
 
 { DataStreamTests.UniqueElements<TypeUnderTest>.RoutineStructure }
@@ -106,16 +111,16 @@ begin
   RepeatedElementsAreFilteredOut<TypeUnderTest1>.Exercise();
 end;
 
-{ ArrayOfHelperTests.UniqueElements.ResultOrder }
+{ DataStreamTests_Closed.UniqueElements.ResultOrder }
 
-class procedure ArrayOfHelperTests.UniqueElements.ResultOrder_UsingNaturalNumber.Exercise;
+class procedure DataStreamTests_Closed.UniqueElements.ResultOrder_UsingNaturalNumber.Exercise;
 begin
   ReturnsElementsInAscendingOrderWhenGivenElementsInAscendingOrder();
   ReturnsElementsInDescendingOrderWhenGivenElementsInDescendingOrder();
   ReturnsElementsInMixedOrderWhenGivenElementsInMixedOrder();
 end;
 
-class procedure ArrayOfHelperTests.UniqueElements.ResultOrder_UsingNaturalNumber.ReturnsElementsInAscendingOrderWhenGivenElementsInAscendingOrder;
+class procedure DataStreamTests_Closed.UniqueElements.ResultOrder_UsingNaturalNumber.ReturnsElementsInAscendingOrderWhenGivenElementsInAscendingOrder;
 begin
   var Actual: ArrayOf<NaturalNumber> := DataStream.UniqueElements<NaturalNumber>([5,10,35,55]);
   System.Assert(4 = System.Length(Actual));
@@ -125,7 +130,7 @@ begin
   System.Assert(55 = Actual[System.Low(Actual) + 3]);
 end;
 
-class procedure ArrayOfHelperTests.UniqueElements.ResultOrder_UsingNaturalNumber.ReturnsElementsInDescendingOrderWhenGivenElementsInDescendingOrder;
+class procedure DataStreamTests_Closed.UniqueElements.ResultOrder_UsingNaturalNumber.ReturnsElementsInDescendingOrderWhenGivenElementsInDescendingOrder;
 begin
   var Actual: ArrayOf<NaturalNumber> := DataStream.UniqueElements<NaturalNumber>([101,42,13]);
   System.Assert(3 = System.Length(Actual));
@@ -134,7 +139,7 @@ begin
   System.Assert(13 = Actual[System.Low(Actual) + 2]);
 end;
 
-class procedure ArrayOfHelperTests.UniqueElements.ResultOrder_UsingNaturalNumber.ReturnsElementsInMixedOrderWhenGivenElementsInMixedOrder;
+class procedure DataStreamTests_Closed.UniqueElements.ResultOrder_UsingNaturalNumber.ReturnsElementsInMixedOrderWhenGivenElementsInMixedOrder;
 begin
   var Actual: ArrayOf<NaturalNumber> := DataStream.UniqueElements<NaturalNumber>([123,350,77]);
   System.Assert(3 = System.Length(Actual));
@@ -143,9 +148,7 @@ begin
   System.Assert(77 = Actual[System.Low(Actual) + 2]);
 end;
 
-{ ArrayOfHelperTests }
-
-class procedure ArrayOfHelperTests.Exercise;
+class procedure DataStreamTests_Closed.Exercise;
 begin
   UniqueElements.ResultOrder_UsingNaturalNumber.Exercise();
 end;
