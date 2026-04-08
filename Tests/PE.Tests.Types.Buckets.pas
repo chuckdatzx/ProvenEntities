@@ -14,13 +14,16 @@ uses
   {PE}
   PE.Buckets,
   PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
+  PE.Delphi.Rando,
   PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
   PE.Delphi.TypeIdentity.Proven.AtCompileTime,
   PE.Tests.Routines.Buckets,
   PE.Types;
 
-{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
- IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
+{$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime) or
+ (not IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime)}
+   {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}
+{$ENDIF}
 
 type
   ///<summary>Exercises all type tests for this namespace</summary>
@@ -34,26 +37,44 @@ type
  While the above seems true, I can also argue "stop trying to break it". I guess I'll see where I land at a later point.}
 
 type
-  BucketIn_TypeTests<T> = record
-  strict private class function Expected(const AValue: T): Boolean; static; inline;
-  strict private class var ExpectedNaturalNumber: UInt64;  //This is declared here to prevent compiler hints from occuring
-  public {Intent: Domain // Practicality :: Delphi // Rules: Contains one property each of the NaturalNumber, the SmartClaw<T>, and the native string types}
-    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType(); static; inline;
-    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheSmartClawType(); static; inline;
-    class procedure ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType(); static; inline;
-  public {Intent: Domain // Practicality :: Delphi // Rules: All 3 properties are initialized to their respective default values}
-    class procedure All3PropertiesInitializedToDefaultValues(); static; inline;
-  public {Intent: Domain // Practicality :: Delphi // Rules: All 3 properties can be initialized to default/non-default values through the entity constructor}
-    class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue(); static; inline;
-    class procedure ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue(); static; inline;
-    class procedure ConstructorInitializesTheNamePropertyWhenGivenADefaultValue(); static; inline;
-    class procedure ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue(); static; inline;
-    class procedure ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue(); static; inline;
-    class procedure ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue(); static; inline;
-  public {Intent: Delphi // Practicality :: Delphi // Note: Is type identical and assignment compatible with other same-typed closed instances}
-    class procedure IsTypeIdenticalAndIsSymmetricallyAssignmentCompatibleWithItself(); static; inline;
-  public {Intent: Domain // Practicality :: Delphi // Note: Simple wrapper for executing all tests from this container}
-    class procedure Exercise(); static; inline;
+  BucketInTests = record
+  public type
+    AssignmentOperator<TypeUnderTest> = record
+    public
+      class procedure IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll3PropertyValues(); static; inline;
+    end;
+    &Constructor<TypeUnderTest> = record
+    public
+      class procedure InitializesTheGrabbyArmPropertyWhenGivenADefaultValue(); static; inline;
+      class procedure InitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue(); static; inline;
+      class procedure InitializesTheNamePropertyWhenGivenADefaultValue(); static; inline;
+      class procedure InitializesTheNamePropertyWhenGivenANonDefaultValue(); static; inline;
+      class procedure InitializesThePredictionPropertyWhenGivenADefaultValue(); static; inline;
+      class procedure InitializesThePredictionPropertyWhenGivenANonDefaultValue(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    EqualityOperator<TypeUnderTest> = record
+    strict private
+      class procedure ReturnsTrueWhenComparingIdenticalInstancesAndAll3PropertiesHaveDefaultValues(); static; inline;
+      class procedure ReturnsTrueWhenComparingIdenticalInstancesAndAll3PropertiesHaveIdenticalNonDefaultValues(); static; inline;
+      class procedure ReturnsTrueWhenComparingSeparateInstancesAndAll3PropertiesHaveDefaultValues(); static; inline;
+      class procedure ReturnsTrueWhenComparingSeparateInstancesAndAll3PropertiesHaveIdenticalNonDefaultValues(); static; inline;
+    strict private
+      class procedure ReturnsFalseWhenComparingSeparateInstancesAndAllPropertiesSaveTheGrabbyArmHaveIdenticalNonDefaultValues(); static; inline;
+      class procedure ReturnsFalseWhenComparingSeparateInstancesAndAllPropertiesSaveTheNameHaveIdenticalDefaultValues(); static; inline;
+      class procedure ReturnsFalseWhenComparingSeparateInstancesAndAllPropertiesSaveThePredictionHaveIdenticalDefaultValues(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    Properties<TypeUnderTest> = record
+    strict private
+      class procedure ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNativeStringTypeAndInitializedToTheNativeStringDefault(); static; inline;
+      class procedure ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault(); static; inline;
+      class procedure ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheSmartClawType(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
   end;
 
   BucketOut_TypeTests = record
@@ -71,109 +92,221 @@ type
     class procedure Exercise(); static; inline;
   end;
 
-{$ENDIF}
-
 implementation
 
-{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
- IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
+{ BucketInTests.AssignmentOperator<TypeUnderTest> }
 
-{ BucketIn_TypeTests<T> :: Type Tests }
-class procedure BucketIn_TypeTests<T>.All3PropertiesInitializedToDefaultValues();
+class procedure BucketInTests.AssignmentOperator<TypeUnderTest>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll3PropertyValues;
 begin
-  var Actual: BucketIn<T>;
-  System.Assert(System.Default(NaturalNumber) = Actual.Prediction);
-  System.Assert(System.Default(SmartClaw<T>) = Actual.GrabbyArm);
+  var Expected: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end, 'a', Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>);
+  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = Expected.GrabbyArm));
+  System.Assert(not (System.Default(string) = Expected.Name));
+  System.Assert(not (System.Default(NaturalNumber) = Expected.Prediction));
+  var Actual: BucketIn<TypeUnderTest>;
+  System.Assert(System.Default(SmartClaw<TypeUnderTest>) = Actual.GrabbyArm);
   System.Assert(System.Default(string) = Actual.Name);
+  System.Assert(System.Default(NaturalNumber) = Actual.Prediction);
+  Actual := Expected;
+  Expected := BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>));
+  System.Assert(System.Default(SmartClaw<TypeUnderTest>) = Expected.GrabbyArm);
+  System.Assert(System.Default(string) = Expected.Name);
+  System.Assert(System.Default(NaturalNumber) = Expected.Prediction);
+  Expected := Actual;
+  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = Expected.GrabbyArm));
+  System.Assert(not (System.Default(string) = Expected.Name));
+  System.Assert(not (System.Default(NaturalNumber) = Expected.Prediction));
 end;
 
-class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
+{ BucketInTests.Constructor<TypeUnderTest> }
+
+class procedure BucketInTests.&Constructor<TypeUnderTest>.Exercise;
 begin
-  System.Assert(System.Default(SmartClaw<T>) = BucketIn<T>.Create(System.Default(SmartClaw<T>)).GrabbyArm);
+  InitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
+  InitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
+  InitializesTheNamePropertyWhenGivenADefaultValue();
+  InitializesTheNamePropertyWhenGivenANonDefaultValue();
+  InitializesThePredictionPropertyWhenGivenADefaultValue();
+  InitializesThePredictionPropertyWhenGivenANonDefaultValue();
 end;
 
-class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
+class procedure BucketInTests.&Constructor<TypeUnderTest>.InitializesTheGrabbyArmPropertyWhenGivenADefaultValue;
 begin
-  System.Assert(not (System.Default(SmartClaw<T>) = BucketIn<T>.Create(Expected).GrabbyArm));
+  System.Assert(System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>)).GrabbyArm);
 end;
 
-class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
+class procedure BucketInTests.&Constructor<TypeUnderTest>.InitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue;
 begin
-  System.Assert(System.TypeInfo(string) = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
-  System.Assert(System.Default(string) = BucketIn<T>.Create(nil, System.Default(string)).Name);
+  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end).GrabbyArm));
 end;
 
-class procedure BucketIn_TypeTests<T>.ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
+class procedure BucketInTests.&Constructor<TypeUnderTest>.InitializesTheNamePropertyWhenGivenADefaultValue;
 begin
-  System.Assert(System.TypeInfo(string) = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
-  System.Assert('a' <> System.Default(string));
-  System.Assert('a' = BucketIn<T>.Create(nil, 'a').Name);
+  System.Assert(System.Default(string) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(string)).Name);
 end;
 
-class procedure BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue();
+class procedure BucketInTests.&Constructor<TypeUnderTest>.InitializesTheNamePropertyWhenGivenANonDefaultValue;
+const Expected: Char = 'a';
 begin
-  System.Assert(System.Default(NaturalNumber) = BucketIn<T>.Create(nil, '', System.Default(NaturalNumber)).Prediction);
+  System.Assert(not (System.Default(string) = Expected));
+  System.Assert(Expected = BucketIn<T>.Create(nil, Expected).Name);
 end;
 
-class procedure BucketIn_TypeTests<T>.ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue();
+class procedure BucketInTests.&Constructor<TypeUnderTest>.InitializesThePredictionPropertyWhenGivenADefaultValue;
 begin
-  System.Assert(System.Default(NaturalNumber) <> BucketIn<T>.Create(nil, '', System.Default(NaturalNumber) + 1).Prediction);
+  System.Assert(System.Default(NaturalNumber) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(string), System.Default(NaturalNumber)).Prediction);
 end;
 
-class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheSmartClawType();
+class procedure BucketInTests.&Constructor<TypeUnderTest>.InitializesThePredictionPropertyWhenGivenANonDefaultValue;
 begin
-  System.Assert(System.TypeInfo(SmartClaw<T>) = TypeTestHarness.BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo);
-  var Expected: SmartClaw<T> := BucketIn<T>.Create(nil).GrabbyArm;
-  System.Assert(BucketIn<T>.Create(Expected).GrabbyArm = Expected);
+  var Expected: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
+  System.Assert(not (System.Default(NaturalNumber) = Expected));
+  System.Assert(Expected = BucketIn<T>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(string), Expected).Prediction);
 end;
 
-class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
+{ BucketInTests.EqualityOperator<TypeUnderTest> }
+
+class procedure BucketInTests.EqualityOperator<TypeUnderTest>.Exercise;
 begin
-  {$IF (System.TypeInfo(string) <> System.TypeInfo(Integer)) and (System.TypeInfo(string) = System.TypeInfo(string))}
-  System.Assert(System.TypeInfo(string) = TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo());
-  var Expected: string;
-  var Actual: BucketIn<T>;
-  Expected := Actual.Name;
+  ReturnsFalseWhenComparingSeparateInstancesAndAllPropertiesSaveTheGrabbyArmHaveIdenticalNonDefaultValues();
+  ReturnsFalseWhenComparingSeparateInstancesAndAllPropertiesSaveTheNameHaveIdenticalDefaultValues();
+  ReturnsFalseWhenComparingSeparateInstancesAndAllPropertiesSaveThePredictionHaveIdenticalDefaultValues();
+  ReturnsTrueWhenComparingIdenticalInstancesAndAll3PropertiesHaveDefaultValues();
+  ReturnsTrueWhenComparingIdenticalInstancesAndAll3PropertiesHaveIdenticalNonDefaultValues();
+  ReturnsTrueWhenComparingSeparateInstancesAndAll3PropertiesHaveDefaultValues();
+  ReturnsTrueWhenComparingSeparateInstancesAndAll3PropertiesHaveIdenticalNonDefaultValues();
+end;
+
+class procedure BucketInTests.EqualityOperator<TypeUnderTest>.ReturnsFalseWhenComparingSeparateInstancesAndAllPropertiesSaveTheGrabbyArmHaveIdenticalNonDefaultValues;
+begin
+  var Left: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end, 'a', Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>());
+  var Right: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), Left.Name, Left.Prediction);
+  System.Assert(not (@Left = @Right));
+  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = Left.GrabbyArm));
+  System.Assert(not (System.Default(string) = Left.Name));
+  System.Assert(not (System.Default(NaturalNumber) = Left.Prediction));
+  System.Assert(not (Left.GrabbyArm = Right.GrabbyArm));
+  System.Assert(Left.Name = Right.Name);
+  System.Assert(Left.Prediction = Right.Prediction);
+  System.Assert(not (Left = Right));
+end;
+
+class procedure BucketInTests.EqualityOperator<TypeUnderTest>.ReturnsFalseWhenComparingSeparateInstancesAndAllPropertiesSaveTheNameHaveIdenticalDefaultValues;
+begin
+  var Left: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<T>), 'a');
+  var Right: BucketIn<TypeUnderTest>;
+  System.Assert(not (@Left = @Right));
+  System.Assert((System.Default(SmartClaw<TypeUnderTest>) = Left.GrabbyArm));
+  System.Assert(not (System.Default(string) = Left.Name));
+  System.Assert(System.Default(NaturalNumber) = Left.Prediction);
+  System.Assert(Left.GrabbyArm = Right.GrabbyArm);
+  System.Assert(not (Left.Name = Right.Name));
+  System.Assert(Left.Prediction = Right.Prediction);
+  System.Assert(not (Left = Right));
+end;
+
+class procedure BucketInTests.EqualityOperator<TypeUnderTest>.ReturnsFalseWhenComparingSeparateInstancesAndAllPropertiesSaveThePredictionHaveIdenticalDefaultValues;
+begin
+  var Left: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<T>), System.Default(string), Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>);
+  var Right: BucketIn<TypeUnderTest>;
+  System.Assert(not (@Left = @Right));
+  System.Assert((System.Default(SmartClaw<TypeUnderTest>) = Left.GrabbyArm));
+  System.Assert(System.Default(string) = Left.Name);
+  System.Assert(not (System.Default(NaturalNumber) = Left.Prediction));
+  System.Assert(Left.GrabbyArm = Right.GrabbyArm);
+  System.Assert(Left.Name = Right.Name);
+  System.Assert(not (Left.Prediction = Right.Prediction));
+  System.Assert(not (Left = Right));
+end;
+
+class procedure BucketInTests.EqualityOperator<TypeUnderTest>.ReturnsTrueWhenComparingIdenticalInstancesAndAll3PropertiesHaveDefaultValues;
+begin
+  var ADefault: BucketIn<TypeUnderTest> := System.Default(BucketIn<TypeUnderTest>);
+  System.Assert(System.Default(SmartClaw<TypeUnderTest>) = ADefault.GrabbyArm);
+  System.Assert(System.Default(string) = ADefault.Name);
+  System.Assert(System.Default(NaturalNumber) = ADefault.Prediction);
+  System.Assert(ADefault = ADefault);
+end;
+
+class procedure BucketInTests.EqualityOperator<TypeUnderTest>.ReturnsTrueWhenComparingIdenticalInstancesAndAll3PropertiesHaveIdenticalNonDefaultValues;
+begin
+  var ADefault: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end, 'a', Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>);
+  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = ADefault.GrabbyArm));
+  System.Assert(not (System.Default(string) = ADefault.Name));
+  System.Assert(not (System.Default(NaturalNumber) = ADefault.Prediction));
+  System.Assert(ADefault = ADefault);
+end;
+
+class procedure BucketInTests.EqualityOperator<TypeUnderTest>.ReturnsTrueWhenComparingSeparateInstancesAndAll3PropertiesHaveDefaultValues;
+begin
+  var Left: BucketIn<TypeUnderTest> := System.Default(BucketIn<TypeUnderTest>);
+  var Right: BucketIn<TypeUnderTest> := System.Default(BucketIn<TypeUnderTest>);
+  System.Assert(not (@Left = @Right));
+  System.Assert(System.Default(SmartClaw<TypeUnderTest>) = Left.GrabbyArm);
+  System.Assert(System.Default(string) = Left.Name);
+  System.Assert(System.Default(NaturalNumber) = Left.Prediction);
+  System.Assert(Left.GrabbyArm = Right.GrabbyArm);
+  System.Assert(Left.Name = Right.Name);
+  System.Assert(Left.Prediction = Right.Prediction);
+  System.Assert(Left = Right);
+end;
+
+class procedure BucketInTests.EqualityOperator<TypeUnderTest>.ReturnsTrueWhenComparingSeparateInstancesAndAll3PropertiesHaveIdenticalNonDefaultValues;
+begin
+  var Left: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end, 'a', Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>());
+  var Right: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(Left.GrabbyArm, Left.Name, Left.Prediction);
+  System.Assert(not (@Left = @Right));
+  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = Left.GrabbyArm));
+  System.Assert(not (System.Default(string) = Left.Name));
+  System.Assert(not (System.Default(NaturalNumber) = Left.Prediction));
+  System.Assert(Left.GrabbyArm = Right.GrabbyArm);
+  System.Assert(Left.Name = Right.Name);
+  System.Assert(Left.Prediction = Right.Prediction);
+  System.Assert(Left = Right);
+end;
+
+{ BucketInTests.Properties<TypeUnderTest> }
+
+class procedure BucketInTests.Properties<TypeUnderTest>.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNativeStringTypeAndInitializedToTheNativeStringDefault;
+begin
+  var Expected: string := '4';;
+  var Actual: BucketIn<TypeUnderTest>;
+  System.Assert(not (System.Default(string) = Expected));
+  System.Assert(System.Default(string) = Actual.Name);
   Actual.Name := Expected;
-  {$ELSE}
-  Assert(False, 'We do not seem to have compile time type identity established for the native string');
-  {$IFEND}
+  Expected := Actual.Name;
+  System.Assert(not (System.Default(string) = Expected));
+  System.Assert(Expected = Actual.Name);
 end;
 
-class procedure BucketIn_TypeTests<T>.ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
+class procedure BucketInTests.Properties<TypeUnderTest>.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault;
 begin
-  System.Assert(System.TypeInfo(NaturalNumber) = TypeTestHarness.BucketIn<T>.PredictionProperty_SystemDotTypeInfo());
-  var Actual: BucketIn<T>;
-  Actual.Prediction := ExpectedNaturalNumber;
-  ExpectedNaturalNumber := Actual.Prediction;
+  var Expected: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>;
+  var Actual: BucketIn<TypeUnderTest>;
+  System.Assert(not (System.Default(NaturalNumber) = Expected));
+  System.Assert(System.Default(NaturalNumber) = Actual.Prediction);
+  Actual.Prediction := Expected;
+  Expected := Actual.Prediction;
+  System.Assert(not (System.Default(NaturalNumber) = Expected));
+  System.Assert(Expected = Actual.Prediction);
 end;
 
-class procedure BucketIn_TypeTests<T>.Exercise();
+class procedure BucketInTests.Properties<TypeUnderTest>.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheSmartClawType;
 begin
-  ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNaturalNumberType();
-  ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheSmartClawType();
-  ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
-  All3PropertiesInitializedToDefaultValues();
-  ConstructorInitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
-  ConstructorInitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
-  ConstructorInitializesTheNamePropertyWhenGivenADefaultValue();
-  ConstructorInitializesTheNamePropertyWhenGivenANonDefaultValue();
-  ConstructorInitializesThePredictionPropertyWhenGivenADefaultValue();
-  ConstructorInitializesThePredictionPropertyWhenGivenANonDefaultValue();
-  IsTypeIdenticalAndIsSymmetricallyAssignmentCompatibleWithItself();
+  var Expected: SmartClaw<TypeUnderTest> := function (const A: TypeUnderTest): Boolean begin Result := False end;
+  var Actual: BucketIn<TypeUnderTest>;
+  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = Expected));
+  System.Assert(System.Default(SmartClaw<TypeUnderTest>) = Actual.GrabbyArm);
+  Actual.GrabbyArm := Expected;
+  Expected := Actual.GrabbyArm;
+  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = Expected));
+  System.Assert(Expected = Actual.GrabbyArm);
 end;
 
-class function BucketIn_TypeTests<T>.Expected(const AValue: T): Boolean;
-begin Result := False; end;
-
-class procedure BucketIn_TypeTests<T>.IsTypeIdenticalAndIsSymmetricallyAssignmentCompatibleWithItself();
-var
-  X, Y: BucketIn<T>;
+class procedure BucketInTests.Properties<TypeUnderTest>.Exercise;
 begin
-  TypeEquivalenceInquiry<BucketIn<T>>.HasANonNullSystemDotTypeInfoValue();
-  TypeEquivalenceInquiry<BucketIn<T>>.SharesTypeIdentityWith<BucketIn<T>>();
-  X := Y;
-  Y := X;
+  ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNativeStringTypeAndInitializedToTheNativeStringDefault();
+  ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault();
+  ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheSmartClawType();
 end;
 
 { BucketOut_TypeTests :: Type Tests }
@@ -246,11 +379,15 @@ begin
   ContainsASinglePropertyWhichIsTypeIdenticalAndSymmetricallyAssignmentCompatibleWithTheNativeStringType();
 end;
 
+{TypeTests<T>}
+
 class procedure TypeTests<T>.Exercise();
 begin
-  BucketIn_TypeTests<T>.Exercise();
+  BucketInTests.AssignmentOperator<T>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll3PropertyValues();
+  BucketInTests.&Constructor<T>.Exercise();
+  BucketInTests.EqualityOperator<T>.Exercise();
+  BucketInTests.Properties<T>.Exercise();
   BucketOut_TypeTests.Exercise();
 end;
-{$IFEND}
 
 end.

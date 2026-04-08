@@ -17,8 +17,10 @@ uses
   {PE System}
   PE.Types;
 
-{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
- IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
+{$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime) or
+ (not IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime)}
+   {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}
+{$ENDIF}
 
 {$REGION 'Type Test Harness'}
 type
@@ -48,11 +50,13 @@ type
     FName: string;
     FPrediction: NaturalNumber;
   public
+    class operator Equal(const Left, Right: BucketIn<T>): Boolean; static; inline;
+  public
     property GrabbyArm: SmartClaw<T> read FGrabbyArm write FGrabbyArm;
     property Name: string read FName write FName;
     property Prediction: NaturalNumber read FPrediction write FPrediction;
   public
-    constructor Create(const GrabbyArm: SmartClaw<T>; const Name: string = ''; const Prediction: NaturalNumber = Default(NaturalNumber));
+    constructor Create(const GrabbyArm: SmartClaw<T>; const Name: string = System.Default(string); const Prediction: NaturalNumber = System.Default(NaturalNumber));
   end;
 
   ///<summary>Contains results of operations performed on a BucketIn{T} instance</summary>
@@ -77,12 +81,7 @@ For example, instead of just accepting a data stream of ArrayOf<T>, consider thi
 or possible TStream descendants. }
   end;
 
-{$IFEND}
-
 implementation
-
-{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
- IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
 
 { BucketIn<T> }
 
@@ -91,6 +90,13 @@ begin
   FGrabbyArm := GrabbyArm;
   FName := Name;
   FPrediction := Prediction;
+end;
+
+class operator BucketIn<T>.Equal(const Left, Right: BucketIn<T>): Boolean;
+begin
+  Result := (@Left = @Right);
+  if (not Result) then
+    Result := (Left.GrabbyArm = Right.GrabbyArm) and (Left.Name = Right.Name) and (Left.Prediction = Right.Prediction);
 end;
 
 { BucketOut }
@@ -151,7 +157,5 @@ class function TypeTestHarness.BucketOut.NameProperty_SystemDotTypeInfo: Pointer
 begin
   Result := System.TypeInfo(string);
 end;
-
-{$IFEND}
 
 end.

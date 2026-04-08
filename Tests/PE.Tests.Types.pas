@@ -8,6 +8,7 @@ interface
 
 uses
   {PE}
+  PE.Delphi.Rando,
   PE.Delphi.TypeIdentity.Proven.AtCompileTime,
   PE.Types;
 
@@ -31,7 +32,6 @@ type
 
 type
   NaturalNumber_Tests = record
-  strict private class var Expected: Cardinal;  //This is declared here to prevent compiler hints from occuring
   public {Intent: Domain // Practicality :: Delphi // Rules: The minimum number is zero; the maximum number is 4,294,967,295; default is zero}
     class procedure TheDefaultValueIsZero(); static; inline;
     class procedure TheLowestPossibleValueIsZero(); static; inline;
@@ -44,11 +44,6 @@ type
   end;
 
   NaturalNumber32_Tests = record
-  private type
-    Expected = record
-      private class var &Cardinal: Cardinal; //This is declared here to prevent compiler hints from occuring
-      private class var &NaturalNumber: NaturalNumber; //This is declared here to prevent compiler hints from occuring
-    end;
   public {Intent: Domain // Practicality :: Delphi // Rules: The minimum number is zero; the maximum number is 4,294,967,295; default is zero}
     class procedure TheDefaultValueIsZero(); static; inline;
     class procedure TheLowestPossibleValueIsZero(); static; inline;
@@ -62,7 +57,6 @@ type
   end;
 
   NaturalNumber64_Tests = record
-  strict private class var Expected: UInt64;  //This is declared here to prevent compiler hints from occuring
   public {Intent: Domain // Practicality :: Delphi // Rules: The minimum number is zero; the maximum number is really f-ing big; default is zero}
     class procedure TheDefaultValueIsZero(); static; inline;
     class procedure TheLowestPossibleValueIsZero(); static; inline;
@@ -138,9 +132,18 @@ end;
 
 class procedure ArrayOf_Tests<TypeUnderTest>.IsSymmetricallyAssignmentCompatibleWithTArrayOfT;
 begin
-  var Expected: TArray<TypeUnderTest>;
-  var Actual: ArrayOf<TypeUnderTest> := Expected;
+  var Expected: TArray<TypeUnderTest> := [System.Default(TypeUnderTest)];
+  var Actual: ArrayOf<TypeUnderTest>;
+  System.Assert(1 = System.Length(Expected));
+  System.Assert(0 = System.Length(Actual));
+  Actual := Expected;
+  System.Assert(1 = System.Length(Actual));
+//  System.Assert(Actual[System.Low(Actual)] = Expected[System.Low(Expected)]);
+  { TODO -oChuck -cMusings : I would love to include the above, but I currently get a F2084 Internal Error: C2252 }
+  Expected := [];
+  System.Assert(0 = System.Length(Expected));
   Expected := Actual;
+  System.Assert(1 = System.Length(Expected));
 end;
 
 {NaturalNumber_Tests}
@@ -161,8 +164,16 @@ end;
 
 class procedure NaturalNumber_Tests.IsSymmetricallyAssignmentCompatibleWithCardinal();
 begin
-  var Actual: NaturalNumber := Expected;
+  var Expected: Cardinal := Random(MaxInt) + 1;
+  System.Assert(not (System.Default(Cardinal) = Expected));
+  var Actual: NaturalNumber := System.Default(NaturalNumber);
+  System.Assert(not (Expected = Actual));
+  Actual := Expected;
+  System.Assert(Expected = Actual);
+  Expected := System.Default(Cardinal);
+  System.Assert(not (Expected = Actual));
   Expected := Actual;
+  System.Assert(Expected = Actual);
 end;
 
 class procedure NaturalNumber_Tests.TheDefaultValueIsZero;
@@ -192,14 +203,28 @@ end;
 
 class procedure NaturalNumber32_Tests.IsSymmetricallyAssignmentCompatibleWithCardinal;
 begin
-  var Actual: NaturalNumber32 := Expected.Cardinal;
-  Expected.Cardinal := Actual;
+  var Expected: Cardinal := Random(MaxInt) + 1;
+  System.Assert(not (System.Default(Cardinal) = Expected));
+  var Actual: NaturalNumber32 := System.Default(NaturalNumber32);
+  System.Assert(System.Default(Cardinal) = Actual);
+  Actual := Expected;
+  Expected := System.Default(Cardinal);
+  System.Assert(System.Default(Cardinal) = Expected);
+  Expected := Actual;
+  System.Assert(not (System.Default(Cardinal) = Expected));
 end;
 
 class procedure NaturalNumber32_Tests.IsSymmetricallyAssignmentCompatibleWithNaturalNumber;
 begin
-  var Actual: NaturalNumber32 := Expected.NaturalNumber;
-  Expected.NaturalNumber := Actual;
+  var Expected: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
+  System.Assert(not (System.Default(NaturalNumber) = Expected));
+  var Actual: NaturalNumber := System.Default(NaturalNumber);
+  System.Assert(System.Default(NaturalNumber) = Actual);
+  Actual := Expected;
+  Expected := System.Default(NaturalNumber);
+  System.Assert(System.Default(NaturalNumber) = Expected);
+  Expected := Actual;
+  System.Assert(not (System.Default(NaturalNumber) = Expected));
 end;
 
 class procedure NaturalNumber32_Tests.IsTypeIdenticalToNaturalNumber;
@@ -240,8 +265,16 @@ end;
 
 class procedure NaturalNumber64_Tests.IsSymmetricallyAssignmentCompatibleWithUInt64;
 begin
-  var Actual: NaturalNumber64 := Expected;
+  var Expected: UInt64;
+  Expected := System.Default(UInt64) + 1;
+  System.Assert(not (System.Default(UInt64) = Expected));
+  var Actual: NaturalNumber64 := System.Default(NaturalNumber64);
+  System.Assert(System.Default(NaturalNumber64) = Actual);
+  Actual := Expected;
+  Expected := System.Default(UInt64);
+  System.Assert(System.Default(UInt64) = Expected);
   Expected := Actual;
+  System.Assert(not (System.Default(UInt64) = Expected));
 end;
 
 class procedure NaturalNumber64_Tests.TheDefaultValueIsZero;
