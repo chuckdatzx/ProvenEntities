@@ -57,7 +57,7 @@ type
   public type
     AssignmentCompatibility = record
     strict private
-      class procedure IsSymmetricallyAssignmentCompatibleWithCardinal(); static; inline;
+      class procedure IsSymmetricallyAssignmentCompatibleWithCardinalWhileRetainingCardinalValues(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -104,7 +104,7 @@ type
   public type
     AssignmentCompatibility = record
     strict private
-      class procedure IsSymmetricallyAssignmentCompatibleWithUInt64(); static; inline;
+      class procedure IsSymmetricallyAssignmentCompatibleWithUInt64WhileRetainingUInt64Value(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -302,20 +302,23 @@ end;
 
 class procedure NaturalNumberTests.AssignmentCompatibility.Exercise;
 begin
-  IsSymmetricallyAssignmentCompatibleWithCardinal();
+  IsSymmetricallyAssignmentCompatibleWithCardinalWhileRetainingCardinalValues();
 end;
 
-class procedure NaturalNumberTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithCardinal;
+class procedure NaturalNumberTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithCardinalWhileRetainingCardinalValues;
 begin
   var Expected: Cardinal := Rando_TheUntrustworthy.NonDefaultValue<Cardinal>;
   System.Assert(not (System.Default(Cardinal) = Expected));
-  var Actual: NaturalNumber := System.Default(NaturalNumber);
-  System.Assert(not (Expected = Actual));
-  Actual := Expected;
-  Expected := System.Default(Cardinal);
-  System.Assert(System.Default(Cardinal) = Expected);
-  Expected := Actual;
-  System.Assert(not (System.Default(Cardinal) = Expected));
+  var ActualCardinal := Expected;
+  System.Assert(Expected = ActualCardinal);
+  var ActualNaturalNumber: NaturalNumber := System.Default(NaturalNumber);
+  System.Assert(not (ActualCardinal = ActualNaturalNumber));
+  ActualNaturalNumber := ActualCardinal;
+  System.Assert(ActualCardinal = ActualNaturalNumber);
+  ActualCardinal := System.Default(Cardinal);
+  System.Assert(not (ActualCardinal = ActualNaturalNumber));
+  ActualCardinal := ActualNaturalNumber;
+  System.Assert(Expected = ActualCardinal);
 end;
 
 { NaturalNumber32Tests }
@@ -359,20 +362,22 @@ end;
 
 class procedure NaturalNumber64Tests.AssignmentCompatibility.Exercise;
 begin
-  IsSymmetricallyAssignmentCompatibleWithUInt64();
+  IsSymmetricallyAssignmentCompatibleWithUInt64WhileRetainingUInt64Value();
 end;
 
-class procedure NaturalNumber64Tests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithUInt64;
+class procedure NaturalNumber64Tests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithUInt64WhileRetainingUInt64Value;
 begin
   var Expected: UInt64 := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();  //Using the NaturalNumber64 type causes a F2084 interna Error: C2252; so I'm using NaturalNumber instead
-  System.Assert(not (System.Default(UInt64) = Expected));
-  var Actual: NaturalNumber64 := System.Default(NaturalNumber64);
-  System.Assert(not (Expected = Actual));
-  Actual := Expected;
-  Expected := System.Default(UInt64);
-  System.Assert(System.Default(UInt64) = Expected);
-  Expected := Actual;
-  System.Assert(not (System.Default(UInt64) = Expected));
+  var ActualUInt64 := Expected;
+  System.Assert(not (System.Default(UInt64) = ActualUInt64));
+  var ActualNaturalNumber64: NaturalNumber64 := System.Default(NaturalNumber64);
+  System.Assert(not (ActualUInt64 = ActualNaturalNumber64));
+  ActualNaturalNumber64 := ActualUInt64;
+  System.Assert(ActualUInt64 = ActualNaturalNumber64);
+  ActualUInt64 := System.Default(UInt64);
+  System.Assert(System.Default(UInt64) = ActualUInt64);
+  ActualUInt64 := ActualNaturalNumber64;
+  System.Assert(Expected = ActualUInt64);
 end;
 
 { NaturalNumber64Tests.Defaults }

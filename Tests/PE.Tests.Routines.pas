@@ -76,9 +76,6 @@ begin
   DataStreamTests.UniqueElements<NaturalNumber64>.Exercise();
   {$ELSE}
     {$MESSAGE WARN 'PE.Routines.DataStream cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
-  { TODO -oChuck -cMusings :
-Seems like the same issue I've encountered before (F2084 Internal Error: C2252).
-Makes it seem like there's some inherent 32/64 bit issue I haven't yet grasped. }
   {$IFEND}
 end;
 
