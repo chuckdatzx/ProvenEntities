@@ -1,4 +1,4 @@
-unit PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime;
+unit PE.Delphi.AssignmentCompatibility;
 {Chuck C.T.
 Full Declaration of Transparency:
 You should only consider the code under test proven insofar as you agree with everything presented
@@ -18,7 +18,7 @@ interface
 
 uses
   {PE}
-  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime;
+  PE.Delphi.TypeIdentity;
 
 {$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime}
 const

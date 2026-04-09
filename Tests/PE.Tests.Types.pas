@@ -9,7 +9,7 @@ interface
 uses
   {PE}
   PE.Delphi.Rando,
-  PE.Delphi.TypeIdentity.Proven.AtCompileTime,
+  PE.Delphi.TypeIdentity,
   PE.Types;
 
 type

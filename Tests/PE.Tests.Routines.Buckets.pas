@@ -13,8 +13,8 @@ interface
 uses
   {PE}
   PE.Buckets,
-  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
-  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime;
+  PE.Delphi.AssignmentCompatibility,
+  PE.Delphi.TypeIdentity;
 
 {$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime) or
  (not IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime)}

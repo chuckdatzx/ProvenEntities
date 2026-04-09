@@ -13,10 +13,9 @@ interface
 uses
   {PE}
   PE.Buckets,
-  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
+  PE.Delphi.AssignmentCompatibility,
   PE.Delphi.Rando,
-  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
-  PE.Delphi.TypeIdentity.Proven.AtCompileTime,
+  PE.Delphi.TypeIdentity,
   PE.Tests.Routines.Buckets,
   PE.Tests.Types,
   PE.Types;

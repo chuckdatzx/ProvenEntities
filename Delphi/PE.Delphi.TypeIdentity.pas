@@ -1,4 +1,4 @@
-unit PE.Delphi.TypeIdentity.Proven.AtCompileTime;
+unit PE.Delphi.TypeIdentity;
 {Chuck C.T.
 Full Declaration of Transparency:
 You should only consider the code under test proven insofar as you agree with everything presented
@@ -48,6 +48,37 @@ type
     class procedure SharesTypeIdentityWith<ThisGuy>(); static; inline;
   end;
 {$IFEND}
+
+{$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and
+  SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}
+type
+  G<T>=record end;
+  {Here is my intent with the above type:
+    G<T> = the minimum possible definition to establish any generic record type in Delphi
+    If you have a better one, please let me know so that I can fix it!}
+
+  T=ByteBool;  {The "simplest type" I could come up with (I'm claiming "simplest type" based on the following):
+                1) from a structural/engineering/"hard science" perspective, everyone knows what a byte is
+                2) from a "legal" perspective, we know that ByteBool is a simple type 'cause it's defined as such by the product's own documentation
+                3) from an abstraction-based/conceptual perspective, I think it's safe to say that everyone knows what Boolean means
+
+                However...
+
+                Overall, the point I'm trying to make here is that the specific type of T doesn't matter. And if what I think is the "simplest type",
+                doesn't match your idea of "simplest type", don't sweat it. Just replace ByteBool with whatever other CLOSED Delphi type (I'm only
+                saying closed because I haven't investigated that direction yet) that does feel right to you.
+                }
+  Y=G<T>;
+  Z=G<T>;
+{$IFEND}
+
+const
+  {$IF System.TypeInfo(Y) = System.TypeInfo(Z))}
+  IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime = True;
+  {$ELSE}
+  IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime = False;
+  {$IFEND}
+
 
 implementation
 

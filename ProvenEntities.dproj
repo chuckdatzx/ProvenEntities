@@ -95,10 +95,9 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="Source\PE.Buckets.pas"/>
-        <DCCReference Include="Delphi\PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas"/>
+        <DCCReference Include="Delphi\PE.Delphi.AssignmentCompatibility.pas"/>
         <DCCReference Include="Delphi\PE.Delphi.Rando.pas"/>
-        <DCCReference Include="Delphi\PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas"/>
-        <DCCReference Include="Delphi\PE.Delphi.TypeIdentity.Proven.AtCompileTime.pas"/>
+        <DCCReference Include="Delphi\PE.Delphi.TypeIdentity.pas"/>
         <DCCReference Include="Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas"/>
         <DCCReference Include="Source\PE.Routines.Pas"/>
         <DCCReference Include="Tests\PE.Tests.Routines.Buckets.pas"/>

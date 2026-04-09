@@ -13,10 +13,9 @@ and not just assume, without pause, that it is unbreakable.}
 {$STRONGLINKTYPES ON}
 uses
   PE.Buckets in 'Source\PE.Buckets.pas',
-  PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime.pas',
+  PE.Delphi.AssignmentCompatibility in 'Delphi\PE.Delphi.AssignmentCompatibility.pas',
   PE.Delphi.Rando in 'Delphi\PE.Delphi.Rando.pas',
-  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime in 'Delphi\PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime.pas',
-  PE.Delphi.TypeIdentity.Proven.AtCompileTime in 'Delphi\PE.Delphi.TypeIdentity.Proven.AtCompileTime.pas',
+  PE.Delphi.TypeIdentity in 'Delphi\PE.Delphi.TypeIdentity.pas',
   PE.Examples.Delphi.CategorizingWithBuckets in 'Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
   PE.Routines in 'Source\PE.Routines.Pas',
   PE.Tests.Routines.Buckets in 'Tests\PE.Tests.Routines.Buckets.pas',
