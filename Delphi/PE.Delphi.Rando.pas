@@ -25,6 +25,8 @@ implementation
 
 class function Rando_TheUntrustworthy.NonDefaultValue<T>: T;
 begin
+  {$DEFINE RandoCanProceed := ((GetTypeKind(T) = tkInteger) or (GetTypeKind(T) = tkInt64))}
+  {$IFDEF RandoCanProceed}
   Result := System.Default(T);
   var ATypeInfo: PTypeInfo := System.TypeInfo(T);
   System.Assert(System.Assigned(ATypeInfo), 'Rando cannot continue because the provided type T does not seem to generate type info');
@@ -45,6 +47,9 @@ begin
   else
     System.Assert(False, 'Rando is not prepared for type kinds other than tkInteger and tkInt64');
   end;
+  {$ELSE}
+  Result := System.Default(T);
+  {$ENDIF}
   System.Assert(Result <> System.Default(T), 'Rando cannot return a value (non-default value = default value)');
 end;
 

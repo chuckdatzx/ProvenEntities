@@ -17,8 +17,7 @@ uses
   {PE System}
   PE.Types;
 
-{$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime) or
- (not IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime)}
+{$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime)}
    {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}
 {$ENDIF}
 
@@ -29,6 +28,8 @@ type
     FGrabbyArm: SmartClaw<T>;
     FName: string;
     FPrediction: NaturalNumber;
+  public
+    class constructor Create();
   public
     class operator Equal(const Left, Right: BucketIn<T>): Boolean; static; inline;
   public
@@ -66,6 +67,11 @@ begin
   FGrabbyArm := GrabbyArm;
   FName := Name;
   FPrediction := Prediction;
+end;
+
+class constructor BucketIn<T>.Create;
+begin
+  System.Assert(GenericRecordsOf<T>.AreSymmetricallyAssignmentCompatible());
 end;
 
 class operator BucketIn<T>.Equal(const Left, Right: BucketIn<T>): Boolean;

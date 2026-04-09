@@ -38,7 +38,13 @@ const
   SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime = False;
   {$IFEND}
 
-{$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}
+  {$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}
+  DelphiTypeIdentityEstablishedAtCompileTime = True;
+  {$ELSE}
+  DelphiTypeIdentityEstablishedAtCompileTime = False;
+  {$ENDIF}
+
+{$IF DelphiTypeIdentityEstablishedAtCompileTime}
 type
   ///<summary>Delphi specific entity for establishing facts about TypeUnderTest</summary>
   TypeEquivalenceInquiry<TypeUnderTest> = record
@@ -47,10 +53,7 @@ type
     class procedure HasANonNullSystemDotTypeInfoValue(); static; inline;
     class procedure SharesTypeIdentityWith<ThisGuy>(); static; inline;
   end;
-{$IFEND}
 
-{$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and
-  SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}
 type
   G<T>=record end;
   {Here is my intent with the above type:
@@ -72,17 +75,21 @@ type
   Z=G<T>;
 {$IFEND}
 
+{$IF DelphiTypeIdentityEstablishedAtCompileTime}
 const
   {$IF System.TypeInfo(Y) = System.TypeInfo(Z))}
   IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime = True;
   {$ELSE}
   IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime = False;
   {$IFEND}
+{$ELSE}
+  IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime = False;
+{$ENDIF}
 
 
 implementation
 
-{$IF SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime and SystemDotTypeInfoWillDistinguishBetweenIdenticallyDeclaredTraditionalRecordTypesAtCompileTime}
+{$IF DelphiTypeIdentityEstablishedAtCompileTime}
 {TypeEquivalenceInquiry<TypeUnderTest>}
 class procedure TypeEquivalenceInquiry<TypeUnderTest>.DoesNotShareTypeIdentityWith<ThisGuy>;
 begin  //Of course assuming that TypeUnderTest <> ThisGuy

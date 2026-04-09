@@ -18,73 +18,146 @@ type
     class procedure Exercise(); static; inline;
   end;
 
+{
+Sanity saver for myself:
+I could prove out many facts about the ArrayOf<T> type and others in this unit.
+However, any type that is symmetrically assignment compatible with a native Delphi type
+strongly begs the argument of "what else needs to be proven?"(at least in the context of Delphi)
+}
+
 type
+  {$REGION 'ArrayOf<T> type'}
   ArrayOfTests<T> = record
   public type
     AssignmentOperator<TypeUnderTest> = record
-    public
+    strict private
       class procedure IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
     end;
-    &Initialization<TypeUnderTest> = record
+    Defaults<TypeUnderTest> = record
+    strict private
       class procedure IsInitializedToAnEmptyCollectionOfElements(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
     end;
     TypeIdentity<TypeUnderTest> = record
-    public
+    strict private
       class procedure SharesTypeIdentityWithTArray(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
     end;
   public
     class procedure Exercise(); static; inline;
   end;
+  {$ENDREGION}
 
-type
-  NaturalNumber_Tests = record
-  public {Intent: Domain // Practicality :: Delphi // Rules: The minimum number is zero; the maximum number is 4,294,967,295; default is zero}
-    class procedure TheDefaultValueIsZero(); static; inline;
-    class procedure TheLowestPossibleValueIsZero(); static; inline;
-    class procedure TheHighestPossibleNumberIs4294967295(); static; inline;
-  public {Intent: Domain // Practicality :: Delphi // Rules: While not type identical to Delphi's cardinal, a NaturalNumber is still fully assignment compatible}
-    class procedure IsNotTypeIdenticalToCardinal(); static; inline;
-    class procedure IsSymmetricallyAssignmentCompatibleWithCardinal(); static; inline;
-  public {Intent: Domain // Practicality :: Delphi // Note: Simple wrapper for executing all tests from this container}
+  {$REGION 'NaturalNumber type'}
+  NaturalNumberTests = record
+  public type
+    AssignmentCompatibility = record
+    strict private
+      class procedure IsSymmetricallyAssignmentCompatibleWithCardinal(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    Boundaries = record
+    strict private
+      class procedure TheLowestPossibleValueIsZero(); static; inline;
+      class procedure TheHighestPossibleNumberIs4294967295(); static; inline; //4.2 billion
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    Defaults = record
+    strict private
+      class procedure ValueIsZero(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    TypeIdentity = record
+    strict private
+      class procedure HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeCardinal(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+  public
     class procedure Exercise(); static; inline;
   end;
+  {$ENDREGION}
 
-  NaturalNumber32_Tests = record
-  public {Intent: Domain // Practicality :: Delphi // Rules: The minimum number is zero; the maximum number is 4,294,967,295; default is zero}
-    class procedure TheDefaultValueIsZero(); static; inline;
-    class procedure TheLowestPossibleValueIsZero(); static; inline;
-    class procedure TheHighestPossibleNumberIs4294967295(); static; inline; //4,294,967,295
-  public {Intent: Domain // Practicality :: Delphi // Rules: Type identical to NaturalNumber and fully assignment compatible with cardinal}
-    class procedure IsSymmetricallyAssignmentCompatibleWithCardinal(); static; inline;
-    class procedure IsSymmetricallyAssignmentCompatibleWithNaturalNumber(); static; inline;
-    class procedure IsTypeIdenticalToNaturalNumber(); static; inline;
-  public {Intent: Domain // Practicality :: Delphi // Note: Simple wrapper for executing all tests from this container}
+  {$REGION 'NaturalNumber32 type'}
+  NaturalNumber32Tests = record
+  public type
+    TypeIdentity = record
+    strict private
+      class procedure IsTypeIdenticalToTheNaturalNumber(); static; inline;  //I believe this alignment alone allows me to leverage most tests executed against a NaturalNumber type
+    public
+      class procedure Exercise(); static; inline;
+    end;
+  public
     class procedure Exercise(); static; inline;
   end;
+  {$ENDREGION}
 
-  NaturalNumber64_Tests = record
-  public {Intent: Domain // Practicality :: Delphi // Rules: The minimum number is zero; the maximum number is really f-ing big; default is zero}
-    class procedure TheDefaultValueIsZero(); static; inline;
-    class procedure TheLowestPossibleValueIsZero(); static; inline;
-    class procedure TheHighestPossibleNumberIs18446744073709551615(); static; inline; //Approximately 18.45 quintillion
-  public {Intent: Domain // Practicality :: Delphi // Rules: Is not type identical to UInt64 yet is still fully assignment compatible}
-    class procedure IsNotTypeIdenticalToUInt64(); static; inline;
-    class procedure IsSymmetricallyAssignmentCompatibleWithUInt64(); static; inline;
-  public {Intent: Domain // Practicality :: Delphi // Note: Simple wrapper for executing all tests from this container}
+  {$REGION 'NaturalNumber64 type'}
+  NaturalNumber64Tests = record
+  public type
+    AssignmentCompatibility = record
+    strict private
+      class procedure IsSymmetricallyAssignmentCompatibleWithUInt64(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    Boundaries = record
+    strict private
+      class procedure TheLowestPossibleValueIsZero(); static; inline;
+      class procedure TheHighestPossibleNumberIs18446744073709551615(); static; inline; //Approximately 18.45 quintillion
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    Defaults = record
+      class procedure ValueIsZero(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    TypeIdentity = record
+    strict private
+      class procedure HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+  public
     class procedure Exercise(); static; inline;
   end;
+  {$ENDREGION}
 
-  SmartClaw_TypeTests<T> = record
-  strict private class function Expected(const AValue: T): Boolean; static; inline;
-  public {Intent: Domain // Practicality :: Delphi // Rules: Returns true when comprised of the smalleest possible form of equality comparison to T}
-    class procedure TheDefaultValueIsNil(); static; inline;
-    class procedure ReturnsTrueWhenOnlyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT(); static; inline;
-  public {Intent: Domain // Practicality :: Delphi // Rules: Is left-assignment compatible with anonymous method <x> of form <y>; Is left-assignment compatible with procedural method <x> of form <y>}
-    class procedure IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
-    class procedure IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfTheExpectedRoutinePresentlyLivingInThisTestCollection(); static; inline;
-  public {Intent: Domain // Practicality :: Delphi // Note: Simple wrapper for executing all tests from this container}
+  {$REGION 'SmartClaw<T> type'}
+  SmartClawTypeTests<T> = record
+  public type
+    AssignmentCompatibility = record
+    strict private
+      class function ExpectedProceduralType<TypeUnderTest>(const AValue: TypeUnderTest): Boolean; static; inline;
+    strict private
+      class procedure IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
+      class procedure IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    Behaviors = record
+      class procedure ReturnsFalseWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT(); static; inline;
+      class procedure ReturnsTrueWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    Defaults = record
+      class procedure TheDefaultValueIsNil(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+  public
     class procedure Exercise(); static; inline;
   end;
+  {$ENDREGION}
 
 implementation
 
@@ -93,9 +166,9 @@ implementation
 class procedure AllTests.Exercise();
 begin
   {Foundational Types by Foundational Types}
-  NaturalNumber_Tests.Exercise();
-  NaturalNumber32_Tests.Exercise();
-  NaturalNumber64_Tests.Exercise();
+  NaturalNumberTests.Exercise();
+  NaturalNumber32Tests.Exercise();
+  NaturalNumber64Tests.Exercise();
   ArrayOfTests<NaturalNumber>.Exercise();
   ArrayOfTests<NaturalNumber32>.Exercise();
   {$IFDEF CPU64BITS}
@@ -103,200 +176,23 @@ begin
   {$ELSE}
     {$MESSAGE WARN 'PE.Types.ArrayOf<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
   {$IFEND}
-  {2nd Gen. Types by 1st Gen. Types}
-  SmartClaw_TypeTests<NaturalNumber>.Exercise();
-  SmartClaw_TypeTests<NaturalNumber32>.Exercise();
+  SmartClawTypeTests<NaturalNumber>.Exercise();
+  SmartClawTypeTests<NaturalNumber32>.Exercise();
   {$IFDEF CPU64BITS}
-  SmartClaw_TypeTests<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
+  SmartClawTypeTests<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
   {$ELSE}
     {$MESSAGE WARN 'PE.Types.SmartClaw<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
   {$IFEND}
 end;
 
-{NaturalNumber_Tests}
+{ ArrayOfTests<T>.Defaults<TypeUnderTest> }
 
-class procedure NaturalNumber_Tests.Exercise;
+class procedure ArrayOfTests<T>.Defaults<TypeUnderTest>.Exercise;
 begin
-  TheDefaultValueIsZero();
-  TheLowestPossibleValueIsZero();
-  TheHighestPossibleNumberIs4294967295();
-  IsNotTypeIdenticalToCardinal();
-  IsSymmetricallyAssignmentCompatibleWithCardinal();
+  IsInitializedToAnEmptyCollectionOfElements();
 end;
 
-class procedure NaturalNumber_Tests.IsNotTypeIdenticalToCardinal;
-begin
-  TypeEquivalenceInquiry<NaturalNumber>.DoesNotShareTypeIdentityWith<Cardinal>();
-end;
-
-class procedure NaturalNumber_Tests.IsSymmetricallyAssignmentCompatibleWithCardinal();
-begin
-  var Expected: Cardinal := Random(MaxInt) + 1;
-  System.Assert(not (System.Default(Cardinal) = Expected));
-  var Actual: NaturalNumber := System.Default(NaturalNumber);
-  System.Assert(not (Expected = Actual));
-  Actual := Expected;
-  System.Assert(Expected = Actual);
-  Expected := System.Default(Cardinal);
-  System.Assert(not (Expected = Actual));
-  Expected := Actual;
-  System.Assert(Expected = Actual);
-end;
-
-class procedure NaturalNumber_Tests.TheDefaultValueIsZero;
-begin
-  System.Assert(0 = System.Default(NaturalNumber));
-end;
-
-class procedure NaturalNumber_Tests.TheHighestPossibleNumberIs4294967295;
-begin
-  System.Assert(4294967295 = System.High(NaturalNumber));
-end;
-
-class procedure NaturalNumber_Tests.TheLowestPossibleValueIsZero;
-begin
-  System.Assert(0 = System.Low(NaturalNumber));
-end;
-
-{ NaturalNumber32_Tests }
-
-class procedure NaturalNumber32_Tests.Exercise;
-begin
-  TheLowestPossibleValueIsZero();
-  TheHighestPossibleNumberIs4294967295();
-  IsSymmetricallyAssignmentCompatibleWithCardinal();
-  IsTypeIdenticalToNaturalNumber();
-end;
-
-class procedure NaturalNumber32_Tests.IsSymmetricallyAssignmentCompatibleWithCardinal;
-begin
-  var Expected: Cardinal := Random(MaxInt) + 1;
-  System.Assert(not (System.Default(Cardinal) = Expected));
-  var Actual: NaturalNumber32 := System.Default(NaturalNumber32);
-  System.Assert(System.Default(Cardinal) = Actual);
-  Actual := Expected;
-  Expected := System.Default(Cardinal);
-  System.Assert(System.Default(Cardinal) = Expected);
-  Expected := Actual;
-  System.Assert(not (System.Default(Cardinal) = Expected));
-end;
-
-class procedure NaturalNumber32_Tests.IsSymmetricallyAssignmentCompatibleWithNaturalNumber;
-begin
-  var Expected: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
-  System.Assert(not (System.Default(NaturalNumber) = Expected));
-  var Actual: NaturalNumber := System.Default(NaturalNumber);
-  System.Assert(System.Default(NaturalNumber) = Actual);
-  Actual := Expected;
-  Expected := System.Default(NaturalNumber);
-  System.Assert(System.Default(NaturalNumber) = Expected);
-  Expected := Actual;
-  System.Assert(not (System.Default(NaturalNumber) = Expected));
-end;
-
-class procedure NaturalNumber32_Tests.IsTypeIdenticalToNaturalNumber;
-begin
-  TypeEquivalenceInquiry<NaturalNumber32>.SharesTypeIdentityWith<NaturalNumber>();
-end;
-
-class procedure NaturalNumber32_Tests.TheDefaultValueIsZero;
-begin
-  System.Assert(0 = System.Default(NaturalNumber32));
-end;
-
-class procedure NaturalNumber32_Tests.TheHighestPossibleNumberIs4294967295;
-begin
-  System.Assert(4294967295 = System.High(NaturalNumber32));
-end;
-
-class procedure NaturalNumber32_Tests.TheLowestPossibleValueIsZero;
-begin
-  System.Assert(0 = System.Low(NaturalNumber32));
-end;
-
-{NaturalNumber64_Tests}
-
-class procedure NaturalNumber64_Tests.Exercise;
-begin
-  TheDefaultValueIsZero();
-  TheLowestPossibleValueIsZero();
-  TheHighestPossibleNumberIs18446744073709551615();
-  IsNotTypeIdenticalToUInt64();
-  IsSymmetricallyAssignmentCompatibleWithUInt64();
-end;
-
-class procedure NaturalNumber64_Tests.IsNotTypeIdenticalToUInt64();
-begin
-  TypeEquivalenceInquiry<NaturalNumber64>.DoesNotShareTypeIdentityWith<UInt64>();
-end;
-
-class procedure NaturalNumber64_Tests.IsSymmetricallyAssignmentCompatibleWithUInt64;
-begin
-  var Expected: UInt64;
-  Expected := System.Default(UInt64) + 1;
-  System.Assert(not (System.Default(UInt64) = Expected));
-  var Actual: NaturalNumber64 := System.Default(NaturalNumber64);
-  System.Assert(System.Default(NaturalNumber64) = Actual);
-  Actual := Expected;
-  Expected := System.Default(UInt64);
-  System.Assert(System.Default(UInt64) = Expected);
-  Expected := Actual;
-  System.Assert(not (System.Default(UInt64) = Expected));
-end;
-
-class procedure NaturalNumber64_Tests.TheDefaultValueIsZero;
-begin
-  System.Assert(0 = System.Default(NaturalNumber64));
-end;
-
-class procedure NaturalNumber64_Tests.TheHighestPossibleNumberIs18446744073709551615;
-begin
-  System.Assert(18446744073709551615 = System.High(NaturalNumber64));
-end;
-
-class procedure NaturalNumber64_Tests.TheLowestPossibleValueIsZero;
-begin
-  System.Assert(0 = System.Low(NaturalNumber64));
-end;
-
-{ SmartClaw_TypeTests<T> }
-
-class procedure SmartClaw_TypeTests<T>.Exercise;
-begin
-  TheDefaultValueIsNil();
-  ReturnsTrueWhenOnlyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
-  IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType();
-  IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfTheExpectedRoutinePresentlyLivingInThisTestCollection();
-end;
-
-class function SmartClaw_TypeTests<T>.Expected(const AValue: T): Boolean;
-begin Result := False end;
-
-class procedure SmartClaw_TypeTests<T>.IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType;
-begin
-  var Actual: SmartClaw<T> := function (const AValue: T): Boolean begin Result := False end;
-end;
-
-class procedure SmartClaw_TypeTests<T>.IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfTheExpectedRoutinePresentlyLivingInThisTestCollection;
-begin
-  Assert(not (Expected(System.Default(T))));
-  var Actual:SmartClaw<T> := Expected;
-end;
-
-class procedure SmartClaw_TypeTests<T>.ReturnsTrueWhenOnlyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT;
-begin
-  var Actual: SmartClaw<T> := function(const AValue: T):Boolean begin Result:=(AValue=System.Default(T))end;
-  System.Assert(Actual(System.Default(T)));
-end;
-
-class procedure SmartClaw_TypeTests<T>.TheDefaultValueIsNil;
-begin
-  System.Assert(not System.Assigned(System.Default(SmartClaw<T>)));
-end;
-
-{ ArrayOfTests<T>.Initialization<TypeUnderTest> }
-
-class procedure ArrayOfTests<T>.&Initialization<TypeUnderTest>.IsInitializedToAnEmptyCollectionOfElements;
+class procedure ArrayOfTests<T>.Defaults<TypeUnderTest>.IsInitializedToAnEmptyCollectionOfElements;
 begin
   var Actual: ArrayOf<TypeUnderTest> := System.Default(ArrayOf<TypeUnderTest>);
   System.Assert(0 = System.Length(Actual));
@@ -306,12 +202,17 @@ end;
 
 class procedure ArrayOfTests<T>.Exercise;
 begin
-  AssignmentOperator<T>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements();
-  &Initialization<T>.IsInitializedToAnEmptyCollectionOfElements();
-  TypeIdentity<T>.SharesTypeIdentityWithTArray();
+  AssignmentOperator<T>.Exercise();
+  Defaults<T>.Exercise();
+  TypeIdentity<T>.Exercise();
 end;
 
 { ArrayOfTests<T>.TypeIdentity<TypeUnderTest> }
+
+class procedure ArrayOfTests<T>.TypeIdentity<TypeUnderTest>.Exercise;
+begin
+  SharesTypeIdentityWithTArray();
+end;
 
 class procedure ArrayOfTests<T>.TypeIdentity<TypeUnderTest>.SharesTypeIdentityWithTArray();
 begin
@@ -319,6 +220,11 @@ begin
 end;
 
 { ArrayOfTests<T>.AssignmentOperator<TypeUnderTest> }
+
+class procedure ArrayOfTests<T>.AssignmentOperator<TypeUnderTest>.Exercise;
+begin
+  IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements();
+end;
 
 class procedure ArrayOfTests<T>.AssignmentOperator<TypeUnderTest>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements();
 begin
@@ -337,6 +243,244 @@ begin
   System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected)]);
   System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 1]);
   System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 2]);
+end;
+
+{ NaturalNumberTests.Defaults }
+
+class procedure NaturalNumberTests.Defaults.Exercise;
+begin
+  ValueIsZero();
+end;
+
+class procedure NaturalNumberTests.Defaults.ValueIsZero;
+begin
+  System.Assert(0 = System.Default(NaturalNumber));
+end;
+
+{ NaturalNumberTests }
+
+class procedure NaturalNumberTests.Exercise;
+begin
+  AssignmentCompatibility.Exercise();
+  Boundaries.Exercise();
+  Defaults.Exercise();
+  TypeIdentity.Exercise();
+end;
+
+{ NaturalNumberTests.Boundaries }
+
+class procedure NaturalNumberTests.Boundaries.Exercise;
+begin
+  Boundaries.TheLowestPossibleValueIsZero();
+  Boundaries.TheHighestPossibleNumberIs4294967295();
+end;
+
+class procedure NaturalNumberTests.Boundaries.TheHighestPossibleNumberIs4294967295;
+begin
+  System.Assert(4294967295 = System.High(NaturalNumber));
+end;
+
+class procedure NaturalNumberTests.Boundaries.TheLowestPossibleValueIsZero;
+begin
+  System.Assert(0 = System.Low(NaturalNumber));
+end;
+
+{ NaturalNumberTests.TypeIdentity }
+
+class procedure NaturalNumberTests.TypeIdentity.Exercise;
+begin
+  HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeCardinal();
+end;
+
+class procedure NaturalNumberTests.TypeIdentity.HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeCardinal;
+begin
+  TypeEquivalenceInquiry<NaturalNumber>.HasANonNullSystemDotTypeInfoValue();
+  TypeEquivalenceInquiry<NaturalNumber>.DoesNotShareTypeIdentityWith<Cardinal>();
+end;
+
+{ NaturalNumberTests.AssignmentCompatibility }
+
+class procedure NaturalNumberTests.AssignmentCompatibility.Exercise;
+begin
+  IsSymmetricallyAssignmentCompatibleWithCardinal();
+end;
+
+class procedure NaturalNumberTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithCardinal;
+begin
+  var Expected: Cardinal := Rando_TheUntrustworthy.NonDefaultValue<Cardinal>;
+  System.Assert(not (System.Default(Cardinal) = Expected));
+  var Actual: NaturalNumber := System.Default(NaturalNumber);
+  System.Assert(not (Expected = Actual));
+  Actual := Expected;
+  Expected := System.Default(Cardinal);
+  System.Assert(System.Default(Cardinal) = Expected);
+  Expected := Actual;
+  System.Assert(not (System.Default(Cardinal) = Expected));
+end;
+
+{ NaturalNumber32Tests }
+
+class procedure NaturalNumber32Tests.Exercise;
+begin
+  TypeIdentity.Exercise();
+end;
+
+{ NaturalNumber32Tests.TypeIdentity }
+
+class procedure NaturalNumber32Tests.TypeIdentity.Exercise;
+begin
+  IsTypeIdenticalToTheNaturalNumber();
+end;
+
+class procedure NaturalNumber32Tests.TypeIdentity.IsTypeIdenticalToTheNaturalNumber;
+begin
+  TypeEquivalenceInquiry<NaturalNumber32>.SharesTypeIdentityWith<NaturalNumber>();
+end;
+
+{ NaturalNumber64Tests.Boundaries }
+
+class procedure NaturalNumber64Tests.Boundaries.Exercise;
+begin
+  TheLowestPossibleValueIsZero();
+  TheHighestPossibleNumberIs18446744073709551615();
+end;
+
+class procedure NaturalNumber64Tests.Boundaries.TheHighestPossibleNumberIs18446744073709551615;
+begin
+  System.Assert(18446744073709551615 = System.High(NaturalNumber64));
+end;
+
+class procedure NaturalNumber64Tests.Boundaries.TheLowestPossibleValueIsZero;
+begin
+  System.Assert(0 = System.Low(NaturalNumber64));
+end;
+
+{ NaturalNumber64Tests.AssignmentCompatibility }
+
+class procedure NaturalNumber64Tests.AssignmentCompatibility.Exercise;
+begin
+  IsSymmetricallyAssignmentCompatibleWithUInt64();
+end;
+
+class procedure NaturalNumber64Tests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithUInt64;
+begin
+  var Expected: UInt64 := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();  //Using the NaturalNumber64 type causes a F2084 interna Error: C2252; so I'm using NaturalNumber instead
+  System.Assert(not (System.Default(UInt64) = Expected));
+  var Actual: NaturalNumber64 := System.Default(NaturalNumber64);
+  System.Assert(not (Expected = Actual));
+  Actual := Expected;
+  Expected := System.Default(UInt64);
+  System.Assert(System.Default(UInt64) = Expected);
+  Expected := Actual;
+  System.Assert(not (System.Default(UInt64) = Expected));
+end;
+
+{ NaturalNumber64Tests.Defaults }
+
+class procedure NaturalNumber64Tests.Defaults.Exercise;
+begin
+  ValueIsZero();
+end;
+
+class procedure NaturalNumber64Tests.Defaults.ValueIsZero;
+begin
+  System.Assert(0 = System.Default(NaturalNumber64));
+end;
+
+{ NaturalNumber64Tests.TypeIdentity }
+
+class procedure NaturalNumber64Tests.TypeIdentity.Exercise;
+begin
+  HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64();
+end;
+
+class procedure NaturalNumber64Tests.TypeIdentity.HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64;
+begin
+  TypeEquivalenceInquiry<NaturalNumber64>.HasANonNullSystemDotTypeInfoValue();
+  TypeEquivalenceInquiry<NaturalNumber64>.DoesNotShareTypeIdentityWith<UInt64>();
+end;
+
+{ NaturalNumber64Tests }
+
+class procedure NaturalNumber64Tests.Exercise;
+begin
+  AssignmentCompatibility.Exercise();
+  Boundaries.Exercise();
+  Defaults.Exercise();
+  TypeIdentity.Exercise();
+end;
+
+{ SmartClawTypeTests<T>.AssignmentCompatibility }
+
+class procedure SmartClawTypeTests<T>.AssignmentCompatibility.Exercise;
+begin
+  IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType();
+  IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType();
+end;
+
+class function SmartClawTypeTests<T>.AssignmentCompatibility.ExpectedProceduralType<TypeUnderTest>(const AValue: TypeUnderTest): Boolean; begin Result := False; end;
+
+class procedure SmartClawTypeTests<T>.AssignmentCompatibility.IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType;
+begin
+  var Actual: SmartClaw<T> := System.Default(SmartClaw<T>);
+  System.Assert(not System.Assigned(Actual));
+  Actual := function (const AValue: T): Boolean begin Result := False end;
+  System.Assert(System.Assigned(Actual));
+end;
+
+class procedure SmartClawTypeTests<T>.AssignmentCompatibility.IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType;
+begin
+  var Actual: SmartClaw<T> := System.Default(SmartClaw<T>);
+  System.Assert(not System.Assigned(Actual));
+  Actual := ExpectedProceduralType<T>;
+  System.Assert(System.Assigned(Actual));
+end;
+
+{ SmartClawTypeTests<T>.Behaviors }
+
+class procedure SmartClawTypeTests<T>.Behaviors.Exercise;
+begin
+  ReturnsFalseWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
+  ReturnsTrueWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
+end;
+
+class procedure SmartClawTypeTests<T>.Behaviors.ReturnsFalseWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT;
+begin
+  var ActualValue: T := Rando_TheUntrustworthy.NonDefaultValue<T>();
+  System.Assert(not (System.Default(T) = ActualValue));
+  var Actual: SmartClaw<T> := function(const AValue: T):Boolean begin Result:=(AValue=System.Default(T))end;
+  System.Assert(System.Assigned(Actual));
+  System.Assert(not Actual(ActualValue));
+end;
+
+class procedure SmartClawTypeTests<T>.Behaviors.ReturnsTrueWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT;
+begin
+  var ActualValue: T := System.Default(T);
+  System.Assert(System.Default(T) = ActualValue);
+  var Actual: SmartClaw<T> := function(const AValue: T):Boolean begin Result:=(AValue=System.Default(T))end;
+  System.Assert(System.Assigned(Actual));
+  System.Assert(Actual(ActualValue));
+end;
+
+{ SmartClawTypeTests<T>.Defaults }
+
+class procedure SmartClawTypeTests<T>.Defaults.Exercise;
+begin
+  TheDefaultValueIsNil();
+end;
+
+class procedure SmartClawTypeTests<T>.Defaults.TheDefaultValueIsNil;
+begin
+  System.Assert(not System.Assigned(System.Default(SmartClaw<T>)));
+end;
+
+{ SmartClawTypeTests<T> }
+
+class procedure SmartClawTypeTests<T>.Exercise;
+begin
+  AssignmentCompatibility.Exercise();
+  Behaviors.Exercise();
+  Defaults.Exercise();
 end;
 
 end.

@@ -16,30 +16,23 @@ If you don't agree with everything you see in this source code unit, then please
 If you find any problems, please let me know and I'll fix them.}
 interface
 
-uses
-  {PE}
-  PE.Delphi.TypeIdentity;
-
-{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime}
-const
-  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime = True;
-
-procedure ProvingThePoint();
-{$ELSE}
-const
-  IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime = False;
-{$IFEND}
+type
+  GenericRecordsOf<TypeUnderTest> = record
+  public
+    class function AreSymmetricallyAssignmentCompatible(): Boolean; static; inline;
+  end;
 
 implementation
 
-{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime}
-procedure ProvingThePoint();
+{ GenericRecordsOf }
+
+class function GenericRecordsOf<TypeUnderTest>.AreSymmetricallyAssignmentCompatible(): Boolean;
 begin
-  var X: G<T>;
-  var Y: G<T>;
-  X := Y;
-  Y := X;
+  var Left: GenericRecordsOf<TypeUnderTest>;
+  var Right: GenericRecordsOf<TypeUnderTest>;
+  Left := Right;
+  Right := Left;
+  Result := True;
 end;
-{$IFEND}
 
 end.
