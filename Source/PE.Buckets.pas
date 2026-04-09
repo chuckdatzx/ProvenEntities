@@ -22,26 +22,6 @@ uses
    {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}
 {$ENDIF}
 
-{$REGION 'Type Test Harness'}
-type
-  ///<summary>Essentially here to minimize the distance between tests and SUT</summary>
-  ///<remarks>If I come up with a means of retrieving a type definition from a record's property, then there's no longer a need for this entity</remarks>
-  TypeTestHarness = record
-  public type
-    BucketIn<T> = record
-    public
-      class function GrabbyArmProperty_SystemDotTypeInfo(): Pointer; static; inline;
-      class function NameProperty_SystemDotTypeInfo(): Pointer; static; inline;
-      class function PredictionProperty_SystemDotTypeInfo(): Pointer; static; inline;
-    end;
-    BucketOut = record
-    public
-      class function CountProperty_SystemDotTypeInfo(): Pointer; static; inline;
-      class function NameProperty_SystemDotTypeInfo(): Pointer; static; inline;
-    end;
-  end;
-{$ENDREGION}
-
 type
   ///<summary>Simple input container for bucket-related operations</summary>
   BucketIn<T> = record
@@ -75,10 +55,6 @@ type
   public
     ///<summary>Iterates each element of the provided data stream while giving each bucket a chance to determine inclusion (using whatever you put into place for the "grabby arm")</summary>
     class function Categorize<T>(const DataStream: ArrayOf<T>; const Buckets: ArrayOf<BucketIn<T>>): ArrayOf<BucketOut>; static; inline;
-    { TODO -oChuck -cPotential Feature :
-An obvious feature upgrade would be to extend the "mouth" of the Categorize<T> routine.
-For example, instead of just accepting a data stream of ArrayOf<T>, consider things like a TField instance,
-or possible TStream descendants. }
   end;
 
 implementation
@@ -114,48 +90,17 @@ var
 begin
   Result := [];
   SmartBuckets := [];
-  var I: NativeInt;
-  for I := Low(Buckets) to High(Buckets) do
+  for var I: NativeInt := Low(Buckets) to High(Buckets) do
   begin
     Result := Result + [Default(BucketOut)];
     Result[High(Result)].Name := Buckets[I].Name;
     if Assigned(Buckets[I].GrabbyArm) then
       SmartBuckets := SmartBuckets + [Buckets[I]];
   end;
-  var J: NativeInt;
-  for I := Low(DataStream) to High(DataStream) do
-    for J := Low(SmartBuckets) to High(SmartBuckets) do
+  for var I: NativeInt := Low(DataStream) to High(DataStream) do
+    for var J: NativeInt := Low(SmartBuckets) to High(SmartBuckets) do
       if SmartBuckets[J].GrabbyArm(DataStream[I]) then
         Result[J].Count := Result[J].Count + 1;
-end;
-
-{ TypeTestHarness.BucketIn }
-
-class function TypeTestHarness.BucketIn<T>.GrabbyArmProperty_SystemDotTypeInfo: Pointer;
-begin
-  Result := System.TypeInfo(SmartClaw<T>);
-end;
-
-class function TypeTestHarness.BucketIn<T>.NameProperty_SystemDotTypeInfo: Pointer;
-begin
-  Result := System.TypeInfo(string);
-end;
-
-class function TypeTestHarness.BucketIn<T>.PredictionProperty_SystemDotTypeInfo: Pointer;
-begin
-  Result := System.TypeInfo(NaturalNumber);
-end;
-
-{ TypeTestHarness.BucketOut }
-
-class function TypeTestHarness.BucketOut.CountProperty_SystemDotTypeInfo: Pointer;
-begin
-  Result := System.TypeInfo(NaturalNumber);
-end;
-
-class function TypeTestHarness.BucketOut.NameProperty_SystemDotTypeInfo: Pointer;
-begin
-  Result := System.TypeInfo(string);
 end;
 
 end.
