@@ -19,14 +19,20 @@ type
   end;
 
 type
-  ArrayOf_Tests<TypeUnderTest> = record
-  public {Intent: Domain // Practicality :: Delphi // Rule: Is initialized to an empty collection of elements}
-    class procedure IsInitializedToAnEmptyCollectionOfElements(); static; inline;
-  public {Intent: Delphi // Practicality :: Delphi // Rule: ArrayOf<T> is usable anywhere Delphi's TArray<T> can be used}
-    class procedure HasANonNullSystemDotTypeInfoValue(); static; inline;
-    class procedure IsNotTypeIdenticalWithTArray(); static; inline;
-    class procedure IsSymmetricallyAssignmentCompatibleWithTArrayOfT(); static; inline;
-  public {Intent: Domain // Practicality :: Delphi // Note: Simple wrapper for executing all tests from this container}
+  ArrayOfTests<T> = record
+  public type
+    AssignmentOperator<TypeUnderTest> = record
+    public
+      class procedure IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements(); static; inline;
+    end;
+    &Initialization<TypeUnderTest> = record
+      class procedure IsInitializedToAnEmptyCollectionOfElements(); static; inline;
+    end;
+    TypeIdentity<TypeUnderTest> = record
+    public
+      class procedure SharesTypeIdentityWithTArray(); static; inline;
+    end;
+  public
     class procedure Exercise(); static; inline;
   end;
 
@@ -90,60 +96,21 @@ begin
   NaturalNumber_Tests.Exercise();
   NaturalNumber32_Tests.Exercise();
   NaturalNumber64_Tests.Exercise();
-  ArrayOf_Tests<NaturalNumber>.Exercise();
-  ArrayOf_Tests<NaturalNumber32>.Exercise();
-  ArrayOf_Tests<NaturalNumber64>.Exercise();
+  ArrayOfTests<NaturalNumber>.Exercise();
+  ArrayOfTests<NaturalNumber32>.Exercise();
+  {$IFDEF CPU64BITS}
+  ArrayOfTests<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
+  {$ELSE}
+    {$MESSAGE WARN 'PE.Types.ArrayOf<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
+  {$IFEND}
   {2nd Gen. Types by 1st Gen. Types}
   SmartClaw_TypeTests<NaturalNumber>.Exercise();
   SmartClaw_TypeTests<NaturalNumber32>.Exercise();
-  //SmartClaw_TypeTests<NaturalNumber64>.Exercise();
-  { TODO -oChuck -c?sForThoseSeeingInsideTheCompiler :
-Uncommenting the above reproducably causes a "F2084 Internal Error: 2252". I have my theories,
-but none of those matter. The important part is that the SmartClaw<T> cannot be proven to handle
-the NaturalNumber64 type. So, for the time being, anyone using SmartClaw<T> where SmartClaw<NaturalNumber64> is hoping that the code works.
-For those of you reading this note, as long as 4.2 billion is a big enough natural number for you, just use SmartClaw<NaturalNumber> until I figure this out.}
-end;
-
-{ ArrayOf_Tests<TypeUnderTest> }
-
-class procedure ArrayOf_Tests<TypeUnderTest>.Exercise;
-begin
-  HasANonNullSystemDotTypeInfoValue();
-  IsInitializedToAnEmptyCollectionOfElements();
-  IsNotTypeIdenticalWithTArray();
-  IsSymmetricallyAssignmentCompatibleWithTArrayOfT();
-end;
-
-class procedure ArrayOf_Tests<TypeUnderTest>.HasANonNullSystemDotTypeInfoValue;
-begin
-  TypeEquivalenceInquiry<TypeUnderTest>.HasANonNullSystemDotTypeInfoValue();
-end;
-
-class procedure ArrayOf_Tests<TypeUnderTest>.IsInitializedToAnEmptyCollectionOfElements;
-begin
-{ TODO -oChuck -cMusing : Currently using TArray as a backing for this; not sure what else I actually could use (well, in attempting to make everything happen at compile-time).}
-  System.Assert(TArray<TypeUnderTest>.Create() = System.Default(ArrayOf<TypeUnderTest>));
-end;
-
-class procedure ArrayOf_Tests<TypeUnderTest>.IsNotTypeIdenticalWithTArray;
-begin
-  TypeEquivalenceInquiry<TypeUnderTest>.DoesNotShareTypeIdentityWith<TArray<TypeUnderTest>>();
-end;
-
-class procedure ArrayOf_Tests<TypeUnderTest>.IsSymmetricallyAssignmentCompatibleWithTArrayOfT;
-begin
-  var Expected: TArray<TypeUnderTest> := [System.Default(TypeUnderTest)];
-  var Actual: ArrayOf<TypeUnderTest>;
-  System.Assert(1 = System.Length(Expected));
-  System.Assert(0 = System.Length(Actual));
-  Actual := Expected;
-  System.Assert(1 = System.Length(Actual));
-//  System.Assert(Actual[System.Low(Actual)] = Expected[System.Low(Expected)]);
-  { TODO -oChuck -cMusings : I would love to include the above, but I currently get a F2084 Internal Error: C2252 }
-  Expected := [];
-  System.Assert(0 = System.Length(Expected));
-  Expected := Actual;
-  System.Assert(1 = System.Length(Expected));
+  {$IFDEF CPU64BITS}
+  SmartClaw_TypeTests<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
+  {$ELSE}
+    {$MESSAGE WARN 'PE.Types.SmartClaw<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
+  {$IFEND}
 end;
 
 {NaturalNumber_Tests}
@@ -325,6 +292,51 @@ end;
 class procedure SmartClaw_TypeTests<T>.TheDefaultValueIsNil;
 begin
   System.Assert(not System.Assigned(System.Default(SmartClaw<T>)));
+end;
+
+{ ArrayOfTests<T>.Initialization<TypeUnderTest> }
+
+class procedure ArrayOfTests<T>.&Initialization<TypeUnderTest>.IsInitializedToAnEmptyCollectionOfElements;
+begin
+  var Actual: ArrayOf<TypeUnderTest> := System.Default(ArrayOf<TypeUnderTest>);
+  System.Assert(0 = System.Length(Actual));
+end;
+
+{ ArrayOfTests }
+
+class procedure ArrayOfTests<T>.Exercise;
+begin
+  AssignmentOperator<T>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements();
+  &Initialization<T>.IsInitializedToAnEmptyCollectionOfElements();
+  TypeIdentity<T>.SharesTypeIdentityWithTArray();
+end;
+
+{ ArrayOfTests<T>.TypeIdentity<TypeUnderTest> }
+
+class procedure ArrayOfTests<T>.TypeIdentity<TypeUnderTest>.SharesTypeIdentityWithTArray();
+begin
+  TypeEquivalenceInquiry<ArrayOf<TypeUnderTest>>.SharesTypeIdentityWith<TArray<TypeUnderTest>>();
+end;
+
+{ ArrayOfTests<T>.AssignmentOperator<TypeUnderTest> }
+
+class procedure ArrayOfTests<T>.AssignmentOperator<TypeUnderTest>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements();
+begin
+  var Expected: ArrayOf<TypeUnderTest> := [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)];
+  System.Assert(3 = System.Length(Expected));
+  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected)]);
+  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 1]);
+  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 2]);
+  var Actual: ArrayOf<TypeUnderTest> := [];
+  System.Assert(0 = System.Length(Actual));
+  Actual := Expected;
+  Expected := [];
+  System.Assert(0 = System.Length(Expected));
+  Expected := Actual;
+  System.Assert(3 = System.Length(Expected));
+  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected)]);
+  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 1]);
+  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 2]);
 end;
 
 end.

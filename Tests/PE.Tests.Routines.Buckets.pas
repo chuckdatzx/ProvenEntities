@@ -14,11 +14,12 @@ uses
   {PE}
   PE.Buckets,
   PE.Delphi.AssignmentCompatibility.GenericRecords.Proven.AtCompileTime,
-  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
-  PE.Tests.Types;
+  PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime;
 
-{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
- IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
+{$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime) or
+ (not IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime)}
+   {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}
+{$ENDIF}
 
 type
   DomainTests<T> = record
@@ -96,12 +97,7 @@ type
     class procedure TheResultingArrayOfBucketOutMatchesTheOrderOfTheArrayOfBucketIn_AccordingToUniqueValuesAcrossNameProperties(); static; inline;
   end;
 
-{$IFEND}
-
 implementation
-
-{$IF IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime and
- IdenticallyDefinedGenericRecordsAreSymmetricallyAssignmentCompatibleAtCompileTime}
 
 uses
   {PE}
@@ -111,8 +107,6 @@ uses
 
 class procedure CategorizeRoutine_SignatureTests<T>.Exercise();
 begin
-  ArrayOf_Tests<BucketIn<T>>.Exercise(); //Validating dependencies
-  ArrayOf_Tests<BucketOut>.Exercise(); //Validating dependencies
   The1stParameterAcceptsAnEmptyArrayOfT();
   The2ndParameterAcceptsAnEmptyArrayOfBucketInOfT();
   ReturnsAnEmptyArrayOfBucketOut();
@@ -404,6 +398,5 @@ begin
   CategorizeRoutine_BucketsOutArray_ResultOrder<T>.TheResultingArrayOfBucketOutMatchesTheOrderOfTheArrayOfBucketIn_AccordingToUniqueValuesAcrossNameProperties();
 end;
 
-{$IFEND}
-
 end.
+

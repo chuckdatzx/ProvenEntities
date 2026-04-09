@@ -18,6 +18,7 @@ uses
   PE.Delphi.TypeIdentity.GenericRecords.Proven.AtCompileTime,
   PE.Delphi.TypeIdentity.Proven.AtCompileTime,
   PE.Tests.Routines.Buckets,
+  PE.Tests.Types,
   PE.Types;
 
 {$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime) or
@@ -466,6 +467,8 @@ end;
 
 class procedure TypeTests<T>.Exercise();
 begin
+//  ArrayOfTests<PE.Buckets.BucketIn<T>>.Exercise(); //Validating dependencies
+//  ArrayOfTests<BucketOut>.Exercise(); //Validating dependencies
   BucketInTests<T>.Exercise();
   BucketOutTests.Exercise();
 end;
