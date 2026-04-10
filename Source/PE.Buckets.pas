@@ -116,4 +116,11 @@ begin
         Result[J].Count := Result[J].Count + 1;
 end;
 
+begin
+  //Assignment Compatibility :: BucketIn by Foundational Types
+  System.Assert(GenericRecordsOf<BucketIn<MonoChar>>.AreSymmetricallyAssignmentCompatible());
+  System.Assert(GenericRecordsOf<BucketIn<NaturalNumber>>.AreSymmetricallyAssignmentCompatible());
+  //Assignment Compatibility :: BucketIn by Foundational Type native Counterparts
+  System.Assert(GenericRecordsOf<BucketIn<Char>>.AreSymmetricallyAssignmentCompatible());
+  System.Assert(GenericRecordsOf<BucketIn<Cardinal>>.AreSymmetricallyAssignmentCompatible());
 end.

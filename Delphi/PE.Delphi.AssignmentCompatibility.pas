@@ -2,8 +2,7 @@ unit PE.Delphi.AssignmentCompatibility;
 {
 All of the following can only be considered as valid as your compiler and my interpretation of
 https://docwiki.embarcadero.com/RADStudio/Florence/en/Type_Compatibility_and_Identity_(Delphi)
-
-If you find any problems, please let me know and I'll fix them.}
+}
 interface
 
 type

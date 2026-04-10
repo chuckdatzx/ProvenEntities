@@ -10,7 +10,7 @@ and I have researched from the compiler to my code. I'm simply recommending that
 and not just assume, without pause, that it is unbreakable.}
 
 {$APPTYPE CONSOLE}
-{$STRONGLINKTYPES ON}
+
 uses
   PE.Buckets in 'Source\PE.Buckets.pas',
   PE.Delphi.AssignmentCompatibility in 'Delphi\PE.Delphi.AssignmentCompatibility.pas',
