@@ -1,13 +1,5 @@
 unit PE.Tests.Routines.Buckets;
-{Chuck C.T.
-Full Declaration of Transparency:
-You should only consider the code under test proven insofar as you agree with everything presented
-(and by "everything presented", I mean from the scope of the compiler all the way through to
-your custom code based on entities from this unit).
 
-I'm truly not trying to scare anyone off. I'm perfectly comfortable calling the following proven;
-and I have researched from the compiler to my code. I'm simply recommending that you do the same
-and not just assume, without pause, that it is unbreakable.}
 interface
 
 uses
@@ -15,7 +7,8 @@ uses
   PE.Buckets,
   PE.Delphi.AssignmentCompatibility,
   PE.Delphi.TypeIdentity,
-  PE.Types.Composite;  //For inlining
+  PE.Types.Composite,  //For inlining
+  PE.Types.Foundational;
 
 {$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime)}
    {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}
@@ -27,107 +20,125 @@ type
     class procedure Exercise(); static; inline;
   end;
 
-  ///<summary>Locking down the signature of the Categorize<T> routine</summary>
-  CategorizeRoutine_SignatureTests<T> = record
-  strict private
-    class procedure The1stParameterAcceptsAnEmptyArrayOfT(); static; inline;
-    class procedure The2ndParameterAcceptsAnEmptyArrayOfBucketInOfT(); static; inline;
-    class procedure ReturnsAnEmptyArrayOfBucketOut(); static; inline;
+  CategorizeRoutineTests<TypeUnderTest> = record
+  public type
+    EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues = record
+    strict private {Single Bucket :: Count is zero}
+      class procedure TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn(); static; inline;
+      class procedure TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInWithFocusedGrabbyArm(); static; inline;
+      class procedure TheBucketOutCountIsZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketIn(); static; inline;
+      class procedure TheBucketOutCountIsZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketIn(); static; inline;
+    strict private {Single Bucket :: Count is 1}
+      class procedure TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketWithFocusedGrabbyArm(); static; inline;
+      { TODO -oChuck -cToDo : Increase strength of proof by adding non-default values as well (include multiple non-default buckets where each one is clearly "doing its thing")}
+    strict private {Multiple Buckets :: Count is zero}
+      class procedure AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn(); static; inline;
+      class procedure AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms(); static; inline;
+      class procedure AllCountsAreZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsIn(); static; inline;
+      class procedure AllCountsAreZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn(); static; inline;
+    strict private {Multiple Buckets :: Count is 1}
+      class procedure AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms(); static; inline;
+    strict private {Multiple Buckets :: Count is 3}
+      class procedure AllCountsAre3WhenGiven3DefaultElementOfTValuesAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    NamePropertyIsCopiedFromBucketInToBucketOut = record
+    strict private const NonDefaultMonoChar: MonoChar = 'a';
+    strict private const NonDefaultMonoChar2: MonoChar = 'b';
+    strict private const NonDefaultMonoChar3: MonoChar = 'c';
+    strict private {Empty Data Stream}
+      class procedure WhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn(); static; inline;
+      class procedure WhenGivenAnEmptyDataStreamAndASingleNonDefaultNameDefaultBucketIn(); static; inline;
+      class procedure WhenGivenAnEmptyDataStreamAndMultipleDefaultBucketInElements(); static; inline;
+      class procedure WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames(); static; inline;
+      class procedure WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames(); static; inline;
+    strict private {Multiple Default Data Stream Elements}
+      class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleDefaultBucketIn(); static; inline;
+      class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn(); static; inline;
+      class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements(); static; inline;
+      class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames(); static; inline;
+      class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames(); static; inline;
+    public
+      class constructor Create();
+      class procedure Exercise(); static; inline;
+    end;
+    NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn = record
+    strict private {Varying Data Stream; Returning 1 bucket}
+      class procedure Returns1BucketOutWhenGivenAnEmptyDataStreamAnd1DefaultBucketInOfT(); static; inline;
+      class procedure Returns1BucketOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd1DefaultBucketInOfT(); static; inline;
+      class procedure Returns1BucketOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd1DefaultBucketInOfT(); static; inline;
+      { TODO -oChuck -cToDo : Increase strength of proof by adding non-default values as well }
+    strict private {Varying Data Stream; Returning multiple buckets}
+      class procedure Returns3DefaultBucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT(); static; inline;
+      class procedure Returns3DefaultBucketsOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd3DefaultBucketInOfT(); static; inline;
+      class procedure Returns3DefaultBucketsOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd3DefaultBucketInOfT(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    OrderOfBucketsOutIsDeterminedByBucketsIn = record
+    strict private
+      class procedure TheResultingArrayOfBucketOutMatchesTheOrderOfTheArrayOfBucketIn_AccordingToUniqueValuesAcrossNameProperties(); static; inline;
+      { TODO -oChuck -cToDo : This clearly needs additional substance }
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    SignatureTests = record
+    strict private
+      class procedure The1stParameterAcceptsAnEmptyArrayOfT(); static; inline;
+      class procedure The2ndParameterAcceptsAnEmptyArrayOfBucketInOfT(); static; inline;
+      class procedure ReturnsAnEmptyArrayOfBucketOut(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
   public
     class procedure Exercise(); static; inline;
-  end;
-
-  ///<summary>Iterating circumstances which cause change regarding the number of BucketOut instances returned</summary>
-  CategorizeRoutine_ResultCount<T> = record
-  strict private {Varying Data Stream; Returning 1 bucket}
-    class procedure Returns1BucketOutWhenGivenAnEmptyDataStreamAnd1DefaultBucketInOfT(); static; inline;
-    class procedure Returns1BucketOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd1DefaultBucketInOfT(); static; inline;
-    class procedure Returns1BucketOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd1DefaultBucketInOfT(); static; inline;
-  strict private {Varying Data Stream; Returning multiple buckets}
-    class procedure Returns3DefaultBucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT(); static; inline;
-    class procedure Returns3DefaultBucketsOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd3DefaultBucketInOfT(); static; inline;
-    class procedure Returns3DefaultBucketsOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd3DefaultBucketInOfT(); static; inline;
-  public
-    class procedure Exercise(); static; inline;
-  end;
-
-  ///<summary>Iterating circumstances which cause change to the BucketOut.Count property</summary>
-  CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T> = record
-  strict private {Single Bucket :: Count is zero}
-    class procedure AllCountsAreZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn(); static; inline;
-    class procedure AllCountsAreZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInWithFocusedGrabbyArm(); static; inline;
-    class procedure AllCountsAreZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketIn(); static; inline;
-    class procedure AllCountsAreZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketIn(); static; inline;
-  strict private {Single Bucket :: Count is 1}
-    class procedure AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketWithFocusedGrabbyArm(); static; inline;
-  strict private {Multiple Buckets :: Count is zero}
-    class procedure AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn(); static; inline;
-    class procedure AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms(); static; inline;
-    class procedure AllCountsAreZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsIn(); static; inline;
-    class procedure AllCountsAreZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn(); static; inline;
-  strict private {Multiple Buckets :: Count is 1}
-    class procedure AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketInsAllWithIdenticalFocusedGrabbyArms(); static; inline;
-  strict private {Multiple Buckets :: Count is 3}
-    class procedure AllCountsAre3WhenGiven3DefaultElementOfTValuesAsADataStreamAndMultipleDefaultBucketInsAllWithIdenticalFocusedGrabbyArms(); static; inline;
-  public
-    class procedure Exercise(); static; inline;
-  end;
-
-  ///<summary>Iterating circumstances which cause the name property of a BucketIn<T> to pass to the name property of a BucketOut</summary>
-  CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T> = record
-  strict private {Empty Data Stream}
-    class procedure WhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn(); static; inline;
-    class procedure WhenGivenAnEmptyDataStreamAndASingleNonDefaultNameDefaultBucketIn(); static; inline;
-    class procedure WhenGivenAnEmptyDataStreamAndMultipleDefaultBucketInElements(); static; inline;
-    class procedure WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames(); static; inline;
-    class procedure WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames(); static; inline;
-  strict private {Multiple Default Data Stream Elements}
-    class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleDefaultBucketIn(); static; inline;
-    class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn(); static; inline;
-    class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements(); static; inline;
-    class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames(); static; inline;
-    class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames(); static; inline;
-  public
-    class procedure Exercise(); static; inline;
-  end;
-
-  ///<summary>Establishing the expected BucketIn<T> to BucketOut order</summary>
-  CategorizeRoutine_BucketsOutArray_ResultOrder<T> = record
-  private
-    class procedure TheResultingArrayOfBucketOutMatchesTheOrderOfTheArrayOfBucketIn_AccordingToUniqueValuesAcrossNameProperties(); static; inline;
   end;
 
 implementation
 
-uses
-  {PE}
-  PE.Types.Foundational;
+{DomainTests<T>}
+class procedure DomainTests<T>.Exercise();
+begin
+  CategorizeRoutineTests<T>.Exercise();
+end;
 
-{CategorizeRoutine_SignatureTests<T>}
-class procedure CategorizeRoutine_SignatureTests<T>.Exercise();
+{CategorizeRoutineTests<TypeUnderTest>}
+class procedure CategorizeRoutineTests<TypeUnderTest>.Exercise;
+begin
+  EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.Exercise();
+  NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Exercise();
+  NamePropertyIsCopiedFromBucketInToBucketOut.Exercise();
+  OrderOfBucketsOutIsDeterminedByBucketsIn.Exercise();
+  SignatureTests.Exercise();
+end;
+
+{ CategorizeRoutineTests<TypeUnderTest>.SignatureTests }
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.SignatureTests.Exercise;
 begin
   The1stParameterAcceptsAnEmptyArrayOfT();
   The2ndParameterAcceptsAnEmptyArrayOfBucketInOfT();
   ReturnsAnEmptyArrayOfBucketOut();
 end;
 
-class procedure CategorizeRoutine_SignatureTests<T>.ReturnsAnEmptyArrayOfBucketOut();
+class procedure CategorizeRoutineTests<TypeUnderTest>.SignatureTests.ReturnsAnEmptyArrayOfBucketOut;
 begin
-  System.Assert(ArrayOf<BucketOut>.Create() = Routines.Categorize<T>(ArrayOf<T>.Create(), ArrayOf<BucketIn<T>>.Create()));
+  System.Assert(ArrayOf<BucketOut>.Create() = Routines.Categorize<TypeUnderTest>(ArrayOf<TypeUnderTest>.Create(), ArrayOf<BucketIn<TypeUnderTest>>.Create()));
 end;
 
-class procedure CategorizeRoutine_SignatureTests<T>.The1stParameterAcceptsAnEmptyArrayOfT();
+class procedure CategorizeRoutineTests<TypeUnderTest>.SignatureTests.The1stParameterAcceptsAnEmptyArrayOfT;
 begin
-  Routines.Categorize<T>(ArrayOf<T>.Create(), []);
+  Routines.Categorize<TypeUnderTest>(ArrayOf<TypeUnderTest>.Create(), []);
 end;
 
-class procedure CategorizeRoutine_SignatureTests<T>.The2ndParameterAcceptsAnEmptyArrayOfBucketInOfT();
+class procedure CategorizeRoutineTests<TypeUnderTest>.SignatureTests.The2ndParameterAcceptsAnEmptyArrayOfBucketInOfT;
 begin
-  Routines.Categorize<T>([], ArrayOf<BucketIn<T>>.Create());
+  Routines.Categorize<TypeUnderTest>([], ArrayOf<BucketIn<TypeUnderTest>>.Create());
 end;
 
-{CategorizeRoutine_ResultCount<T>}
-class procedure CategorizeRoutine_ResultCount<T>.Exercise();
+{CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn}
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Exercise;
 begin
   Returns1BucketOutWhenGivenAnEmptyDataStreamAnd1DefaultBucketInOfT();
   Returns1BucketOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd1DefaultBucketInOfT();
@@ -137,154 +148,167 @@ begin
   Returns3DefaultBucketsOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd3DefaultBucketInOfT();
 end;
 
-class procedure CategorizeRoutine_ResultCount<T>.Returns1BucketOutWhenGivenAnEmptyDataStreamAnd1DefaultBucketInOfT();
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAnEmptyDataStreamAnd1DefaultBucketInOfT;
 begin
-  var Actual: ArrayOf<BucketOut>;
-  Actual := Routines.Categorize<T>([], [System.Default(BucketIn<T>)]);
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>)]);
   System.Assert(1 = System.Length(Actual));
-  System.Assert(System.Default(BucketOut) = Actual[Low(Actual)]);
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual)]);
 end;
 
-class procedure CategorizeRoutine_ResultCount<T>.Returns1BucketOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd1DefaultBucketInOfT();
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd1DefaultBucketInOfT;
 begin
-  var Actual: ArrayOf<BucketOut>;
-  Actual := Routines.Categorize<T>([Default(T)], [System.Default(BucketIn<T>)]);
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>)]);
   System.Assert(1 = System.Length(Actual));
-  System.Assert(System.Default(BucketOut) = Actual[Low(Actual)]);
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual)]);
 end;
 
-class procedure CategorizeRoutine_ResultCount<T>.Returns1BucketOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd1DefaultBucketInOfT();
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd1DefaultBucketInOfT;
 begin
-  var Actual: ArrayOf<BucketOut>;
-  Actual := Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)], [System.Default(BucketIn<T>)]);
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>)]);
   System.Assert(1 = System.Length(Actual));
-  System.Assert(System.Default(BucketOut) = Actual[Low(Actual)]);
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual)]);
 end;
 
-class procedure CategorizeRoutine_ResultCount<T>.Returns3DefaultBucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT();
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3DefaultBucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT;
 begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([], [System.Default(BucketIn<T>), System.Default(BucketIn<T>), System.Default(BucketIn<T>)]);
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
   System.Assert(3 = System.Length(Actual));
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual)]);
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 1]);
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 2]);
 end;
 
-class procedure CategorizeRoutine_ResultCount<T>.Returns3DefaultBucketsOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd3DefaultBucketInOfT();
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3DefaultBucketsOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd3DefaultBucketInOfT;
 begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([Default(T)], [System.Default(BucketIn<T>), System.Default(BucketIn<T>), System.Default(BucketIn<T>)]);
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
   System.Assert(3 = System.Length(Actual));
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual)]);
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 1]);
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 2]);
 end;
 
-class procedure CategorizeRoutine_ResultCount<T>.Returns3DefaultBucketsOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd3DefaultBucketInOfT();
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3DefaultBucketsOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd3DefaultBucketInOfT;
 begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)], [System.Default(BucketIn<T>), System.Default(BucketIn<T>), System.Default(BucketIn<T>)]);
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(
+    [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
+    [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
   System.Assert(3 = System.Length(Actual));
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual)]);
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 1]);
+  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 2]);
 end;
 
-{CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>}
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn();
+{CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues}
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketWithFocusedGrabbyArm;
 begin
-  System.Assert(0 = Routines.Categorize<T>([], [System.Default(BucketIn<T>)])[0].Count);
+  System.Assert(1 = Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (AValue = System.Default(TypeUnderTest)); end, '')])[0].Count);
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInWithFocusedGrabbyArm();
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn;
 begin
-  System.Assert(0 = Routines.Categorize<T>([], [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := False end, '')])[0].Count);
+  System.Assert(0 = Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>)])[0].Count);
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketIn();
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInWithFocusedGrabbyArm;
 begin
-  System.Assert(0 = Routines.Categorize<T>([System.Default(T)], [System.Default(BucketIn<T>)])[0].Count);
+  System.Assert(0 = Routines.Categorize<TypeUnderTest>([], [BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (System.Default(TypeUnderTest) = AValue) end, '')])[0].Count);
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketIn();
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketIn;
 begin
-  System.Assert(0 = Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)], [System.Default(BucketIn<T>)])[0].Count);
+  System.Assert(0 = Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>)])[0].Count);
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketWithFocusedGrabbyArm();
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketIn;
 begin
-  System.Assert(1 = Routines.Categorize<T>([System.Default(T)], [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, '')])[0].Count);
+  System.Assert(0 = Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>)])[0].Count);
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn();
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms;
 begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([], [System.Default(BucketIn<T>), System.Default(BucketIn<T>), System.Default(BucketIn<T>)]);
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)],
+    [BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (AValue = System.Default(TypeUnderTest)); end, ''),
+     BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (AValue = System.Default(TypeUnderTest)); end, ''),
+     BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (AValue = System.Default(TypeUnderTest)); end, '')]);
   System.Assert(3 = System.Length(Actual));
-  var Each: BucketOut;
-  for Each in Actual do
-    System.Assert(0 = Each.Count);
-end;
-
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms();
-begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([],
-    [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, '')]);
-  System.Assert(3 = System.Length(Actual));
-  var Each: BucketOut;
-  for Each in Actual do
-    System.Assert(0 = Each.Count);
-end;
-
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsIn();
-begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T)], [System.Default(BucketIn<T>), System.Default(BucketIn<T>), System.Default(BucketIn<T>)]);
-  System.Assert(3 = System.Length(Actual));
-  var Each: BucketOut;
-  for Each in Actual do
-    Assert(0 = Each.Count);
-end;
-
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn();
-begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)], [System.Default(BucketIn<T>), System.Default(BucketIn<T>), System.Default(BucketIn<T>)]);
-  System.Assert(3 = System.Length(Actual));
-  var Each: BucketOut;
-  for Each in Actual do
-    System.Assert(0 = Each.Count);
-end;
-
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketInsAllWithIdenticalFocusedGrabbyArms();
-begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T)],
-    [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, '')]);
-  System.Assert(3 = System.Length(Actual));
-  var Each: BucketOut;
-  for Each in Actual do
+  for var Each: BucketOut in Actual do
     System.Assert(1 = Each.Count);
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAre3WhenGiven3DefaultElementOfTValuesAsADataStreamAndMultipleDefaultBucketInsAllWithIdenticalFocusedGrabbyArms();
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.AllCountsAre3WhenGiven3DefaultElementOfTValuesAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms;
 begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)],
-    [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, '')]);
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
+    [BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (AValue = System.Default(TypeUnderTest)); end, ''),
+     BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (AValue = System.Default(TypeUnderTest)); end, ''),
+     BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (AValue = System.Default(TypeUnderTest)); end, '')]);
   System.Assert(3 = System.Length(Actual));
-  var Each: BucketOut;
-  for Each in Actual do
+  for var Each: BucketOut in Actual do
     System.Assert(3 = Each.Count);
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.Exercise();
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn;
 begin
-  AllCountsAreZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn();
-  AllCountsAreZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInWithFocusedGrabbyArm();
-  AllCountsAreZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketIn();
-  AllCountsAreZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketIn();
-  AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketWithFocusedGrabbyArm();
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
+  System.Assert(3 = System.Length(Actual));
+  for var Each: BucketOut in Actual do
+    System.Assert(0 = Each.Count);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms;
+begin
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([],
+    [BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (AValue = System.Default(TypeUnderTest)); end, ''),
+     BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (AValue = System.Default(TypeUnderTest)); end, ''),
+     BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (AValue = System.Default(TypeUnderTest)); end, '')]);
+  System.Assert(3 = System.Length(Actual));
+  for var Each: BucketOut in Actual do
+    System.Assert(0 = Each.Count);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.AllCountsAreZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsIn;
+begin
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
+  System.Assert(3 = System.Length(Actual));
+  for var Each: BucketOut in Actual do
+    Assert(0 = Each.Count);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.AllCountsAreZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn;
+begin
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(
+    [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
+    [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
+  System.Assert(3 = System.Length(Actual));
+  for var Each: BucketOut in Actual do
+    System.Assert(0 = Each.Count);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.Exercise;
+begin
+  TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn();
+  TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInWithFocusedGrabbyArm();
+  TheBucketOutCountIsZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketIn();
+  TheBucketOutCountIsZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketIn();
+  TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketWithFocusedGrabbyArm();
+
   AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn();
   AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms();
   AllCountsAreZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsIn();
   AllCountsAreZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn();
-  AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketInsAllWithIdenticalFocusedGrabbyArms();
-  AllCountsAre3WhenGiven3DefaultElementOfTValuesAsADataStreamAndMultipleDefaultBucketInsAllWithIdenticalFocusedGrabbyArms();
+
+  AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms();
+  AllCountsAre3WhenGiven3DefaultElementOfTValuesAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms();
 end;
 
-{CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>}
-class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.Exercise();
+{CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut}
+class constructor CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.Create;
+begin
+  System.Assert(not (NonDefaultMonoChar = NonDefaultMonoChar2));
+  System.Assert(not (NonDefaultMonoChar = NonDefaultMonoChar3));
+  System.Assert(not (NonDefaultMonoChar2 = NonDefaultMonoChar3));
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.Exercise;
 begin
   WhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn();
   WhenGivenAnEmptyDataStreamAndASingleNonDefaultNameDefaultBucketIn();
@@ -298,98 +322,99 @@ begin
   WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames();
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.WhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn();
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn;
 begin
-  System.Assert(System.Default(BucketIn<T>).Name = Routines.Categorize<T>([], [System.Default(BucketIn<T>)])[0].Name);
+  System.Assert(System.Default(BucketIn<TypeUnderTest>).Name = Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>)])[0].Name);
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.WhenGivenAnEmptyDataStreamAndASingleNonDefaultNameDefaultBucketIn();
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndASingleNonDefaultNameDefaultBucketIn;
 begin
-  System.Assert('a' = Routines.Categorize<T>([], [BucketIn<T>.Create(nil, 'a')])[0].Name);
+  System.Assert(NonDefaultMonoChar = Routines.Categorize<TypeUnderTest>([], [BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar)])[0].Name);
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.WhenGivenAnEmptyDataStreamAndMultipleDefaultBucketInElements();
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndMultipleDefaultBucketInElements;
 begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([], [System.Default(BucketIn<T>), System.Default(BucketIn<T>), System.Default(BucketIn<T>)]);
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
   System.Assert(3 = System.Length(Actual));
-  var Each: BucketOut;
-  for Each in Actual do
+  for var Each: BucketOut in Actual do
+    System.Assert(System.Default(BucketIn<TypeUnderTest>).Name = Each.Name);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames;
+begin
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [BucketIn<TypeUnderTest>.Create(nil,  NonDefaultMonoChar), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar)]);
+  System.Assert(3 = System.Length(Actual));
+  for var Each: BucketOut in Actual do
+    System.Assert(NonDefaultMonoChar = Each.Name);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames;
+begin
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar2), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar3)]);
+  System.Assert(3 = System.Length(Actual));
+  System.Assert(NonDefaultMonoChar = Actual[Low(Actual)].Name);
+  System.Assert(NonDefaultMonoChar2 = Actual[Low(Actual) + 1].Name);
+  System.Assert(NonDefaultMonoChar3 = Actual[Low(Actual) + 2].Name);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleDefaultBucketIn;
+begin
+  System.Assert(System.Default(BucketIn<TypeUnderTest>).Name = Routines.Categorize<TypeUnderTest>(
+    [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>)])[0].Name);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn;
+begin
+  System.Assert(NonDefaultMonoChar = Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar)])[0].Name);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements;
+begin
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(
+    [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
+    [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
+  System.Assert(3 = System.Length(Actual));
+  for var Each: BucketOut in Actual do
     System.Assert(System.Default(BucketIn<T>).Name = Each.Name);
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames;
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames;
 begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([], [BucketIn<T>.Create(nil, 'a'), BucketIn<T>.Create(nil, 'a'), BucketIn<T>.Create(nil, 'a')]);
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(
+    [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
+    [BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar)]);
   System.Assert(3 = System.Length(Actual));
-  var Each: BucketOut;
-  for Each in Actual do
+  for var Each: BucketOut in Actual do
     System.Assert('a' = Each.Name);
 end;
 
-class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames();
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames;
 begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([], [BucketIn<T>.Create(nil, '1'), BucketIn<T>.Create(nil, '2'), BucketIn<T>.Create(nil, '3')]);
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(
+    [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
+    [BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar2), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar3)]);
+  System.Assert(3 = System.Length(Actual));
+  System.Assert(NonDefaultMonoChar = Actual[Low(Actual)].Name);
+  System.Assert(NonDefaultMonoChar2 = Actual[Low(Actual) + 1].Name);
+  System.Assert(NonDefaultMonoChar3 = Actual[Low(Actual) + 2].Name);
+end;
+
+{ CategorizeRoutineTests<TypeUnderTest>.OrderOfBucketsOutIsDeterminedByBucketsIn }
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.OrderOfBucketsOutIsDeterminedByBucketsIn.Exercise;
+begin
+  TheResultingArrayOfBucketOutMatchesTheOrderOfTheArrayOfBucketIn_AccordingToUniqueValuesAcrossNameProperties();
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.OrderOfBucketsOutIsDeterminedByBucketsIn.TheResultingArrayOfBucketOutMatchesTheOrderOfTheArrayOfBucketIn_AccordingToUniqueValuesAcrossNameProperties;
+begin
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(
+    [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
+    [BucketIn<TypeUnderTest>.Create(nil, '1'), BucketIn<TypeUnderTest>.Create(nil, '2'), BucketIn<TypeUnderTest>.Create(nil, '3')]);
   System.Assert(3 = System.Length(Actual));
   System.Assert('1' = Actual[Low(Actual)].Name);
   System.Assert('2' = Actual[Low(Actual) + 1].Name);
   System.Assert('3' = Actual[Low(Actual) + 2].Name);
-end;
-
-class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleDefaultBucketIn();
-begin
-  System.Assert(System.Default(BucketIn<T>).Name = Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)], [System.Default(BucketIn<T>)])[0].Name);
-end;
-
-class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn();
-begin
-  System.Assert('a' = Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)], [BucketIn<T>.Create(nil, 'a')])[0].Name);
-end;
-
-class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements();
-begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)], [System.Default(BucketIn<T>), System.Default(BucketIn<T>), System.Default(BucketIn<T>)]);
-  System.Assert(3 = System.Length(Actual));
-  var Each: BucketOut;
-  for Each in Actual do
-    System.Assert(System.Default(BucketIn<T>).Name = Each.Name);
-end;
-
-class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames();
-begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)], [BucketIn<T>.Create(nil, 'a'), BucketIn<T>.Create(nil, 'a'), BucketIn<T>.Create(nil, 'a')]);
-  System.Assert(3 = System.Length(Actual));
-  var Each: BucketOut;
-  for Each in Actual do
-    System.Assert('a' = Each.Name);
-end;
-
-class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames();
-begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)], [BucketIn<T>.Create(nil, '1'), BucketIn<T>.Create(nil, '2'), BucketIn<T>.Create(nil, '3')]);
-  System.Assert(3 = System.Length(Actual));
-  System.Assert('1' = Actual[Low(Actual)].Name);
-  System.Assert('2' = Actual[Low(Actual) + 1].Name);
-  System.Assert('3' = Actual[Low(Actual) + 2].Name);
-end;
-
-{CategorizeRoutine_BucketsOutArray_ResultOrder<T>}
-class procedure CategorizeRoutine_BucketsOutArray_ResultOrder<T>.TheResultingArrayOfBucketOutMatchesTheOrderOfTheArrayOfBucketIn_AccordingToUniqueValuesAcrossNameProperties();
-begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)], [BucketIn<T>.Create(nil, '1'), BucketIn<T>.Create(nil, '2'), BucketIn<T>.Create(nil, '3')]);
-  System.Assert(3 = System.Length(Actual));
-  System.Assert('1' = Actual[Low(Actual)].Name);
-  System.Assert('2' = Actual[Low(Actual) + 1].Name);
-  System.Assert('3' = Actual[Low(Actual) + 2].Name);
-end;
-
-{DomainTests<T>}
-class procedure DomainTests<T>.Exercise();
-begin
-  CategorizeRoutine_SignatureTests<T>.Exercise();
-  CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.Exercise();
-  CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.Exercise();
-  CategorizeRoutine_ResultCount<T>.Exercise();
-  CategorizeRoutine_BucketsOutArray_ResultOrder<T>.TheResultingArrayOfBucketOutMatchesTheOrderOfTheArrayOfBucketIn_AccordingToUniqueValuesAcrossNameProperties();
 end;
 
 end.
