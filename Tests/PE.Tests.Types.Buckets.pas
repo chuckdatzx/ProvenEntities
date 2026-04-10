@@ -17,8 +17,8 @@ uses
   PE.Delphi.Rando,
   PE.Delphi.TypeIdentity,
   PE.Tests.Routines.Buckets,
-  PE.Tests.Types,
-  PE.Types;
+  PE.Tests.FoundationalTypes,
+  PE.Types.Foundational;
 
 {$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime)}
    {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}
@@ -108,6 +108,10 @@ type
   end;
 
 implementation
+
+uses
+  {PE}
+  PE.Types.Composite;
 
 { BucketInTests.AssignmentOperator<TypeUnderTest> }
 

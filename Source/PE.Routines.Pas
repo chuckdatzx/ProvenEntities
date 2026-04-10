@@ -4,7 +4,7 @@ interface
 
 uses
   {PE}
-  PE.Types;
+  PE.Types.Composite;
 
 type
   DataStream = class sealed

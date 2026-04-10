@@ -100,7 +100,8 @@ implementation
 
 uses
   {PE}
-  PE.Types;
+  PE.Types.Composite,
+  PE.Types.Foundational;
 
 { CategorizeRoutine_SignatureTests<T> }
 

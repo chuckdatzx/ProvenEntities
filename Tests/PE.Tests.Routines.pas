@@ -6,7 +6,7 @@ uses
   {PE}
   PE.Delphi.Rando,
   PE.Routines,
-  PE.Types;
+  PE.Types.Foundational;
 
 type
   AllTests = record
@@ -63,6 +63,10 @@ type
   end;
 
 implementation
+
+uses
+  {PE}
+  PE.Types.Composite;
 
 { AllTests }
 

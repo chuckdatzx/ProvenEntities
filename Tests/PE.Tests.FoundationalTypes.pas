@@ -1,8 +1,4 @@
-unit PE.Tests.Types;
-{Chuck C.T.
- The type names and what said types represent may not match what you currently think of as intuition;
- especially if you started from a Pascal/Object Pascal/Delphi background like I did.
-}
+unit PE.Tests.FoundationalTypes;
 
 interface
 
@@ -10,7 +6,7 @@ uses
   {PE}
   PE.Delphi.Rando,
   PE.Delphi.TypeIdentity,
-  PE.Types;
+  PE.Types.Foundational;
 
 type
   AllTests = record
@@ -18,32 +14,32 @@ type
     class procedure Exercise(); static; inline;
   end;
 
-{
-Sanity saver for myself:
-I could prove out many facts about the ArrayOf<T> type and others in this unit.
-However, any type that is symmetrically assignment compatible with a native Delphi type
-strongly begs the argument of "what else needs to be proven?"(at least in the context of Delphi)
-}
-
 type
-  {$REGION 'ArrayOf<T> type'}
-  ArrayOfTests<T> = record
+  {$REGION 'MonoChar'}
+  MonoCharTests = record
   public type
-    AssignmentOperator<TypeUnderTest> = record
+    AssignmentCompatibility = record
     strict private
-      class procedure IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements(); static; inline;
+      class procedure IsSymmetricallyAssignmentCompatibleWithTheNativeCharWhileRetainingNativeCharValues(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
-    Defaults<TypeUnderTest> = record
+    Boundaries = record
     strict private
-      class procedure IsInitializedToAnEmptyCollectionOfElements(); static; inline;
+      class procedure TheLowestPossibleOrdinalValueIsZero(); static; inline;
+      class procedure TheHighestPossibleOrdinalValueIs65536(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
-    TypeIdentity<TypeUnderTest> = record
+    Defaults = record
     strict private
-      class procedure SharesTypeIdentityWithTArray(); static; inline;
+      class procedure ValueIsZero(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    TypeIdentity = record
+    strict private
+      class procedure HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeChar(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -131,118 +127,16 @@ type
   end;
   {$ENDREGION}
 
-  {$REGION 'SmartClaw<T> type'}
-  SmartClawTypeTests<T> = record
-  public type
-    AssignmentCompatibility = record
-    strict private
-      class function ExpectedProceduralType<TypeUnderTest>(const AValue: TypeUnderTest): Boolean; static; inline;
-    strict private
-      class procedure IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
-      class procedure IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-    Behaviors = record
-      class procedure ReturnsFalseWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT(); static; inline;
-      class procedure ReturnsTrueWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-    Defaults = record
-      class procedure TheDefaultValueIsNil(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-  public
-    class procedure Exercise(); static; inline;
-  end;
-  {$ENDREGION}
-
 implementation
 
-{ Exercise }
+{AllTests.Exercise}
 
 class procedure AllTests.Exercise();
 begin
-  {Foundational Types by Foundational Types}
+  MonoCharTests.Exercise();
   NaturalNumberTests.Exercise();
   NaturalNumber32Tests.Exercise();
   NaturalNumber64Tests.Exercise();
-  ArrayOfTests<NaturalNumber>.Exercise();
-  ArrayOfTests<NaturalNumber32>.Exercise();
-  {$IFDEF CPU64BITS}
-  ArrayOfTests<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
-  {$ELSE}
-    {$MESSAGE WARN 'PE.Types.ArrayOf<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
-  {$IFEND}
-  SmartClawTypeTests<NaturalNumber>.Exercise();
-  SmartClawTypeTests<NaturalNumber32>.Exercise();
-  {$IFDEF CPU64BITS}
-  SmartClawTypeTests<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
-  {$ELSE}
-    {$MESSAGE WARN 'PE.Types.SmartClaw<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
-  {$IFEND}
-end;
-
-{ ArrayOfTests<T>.Defaults<TypeUnderTest> }
-
-class procedure ArrayOfTests<T>.Defaults<TypeUnderTest>.Exercise;
-begin
-  IsInitializedToAnEmptyCollectionOfElements();
-end;
-
-class procedure ArrayOfTests<T>.Defaults<TypeUnderTest>.IsInitializedToAnEmptyCollectionOfElements;
-begin
-  var Actual: ArrayOf<TypeUnderTest> := System.Default(ArrayOf<TypeUnderTest>);
-  System.Assert(0 = System.Length(Actual));
-end;
-
-{ ArrayOfTests }
-
-class procedure ArrayOfTests<T>.Exercise;
-begin
-  AssignmentOperator<T>.Exercise();
-  Defaults<T>.Exercise();
-  TypeIdentity<T>.Exercise();
-end;
-
-{ ArrayOfTests<T>.TypeIdentity<TypeUnderTest> }
-
-class procedure ArrayOfTests<T>.TypeIdentity<TypeUnderTest>.Exercise;
-begin
-  SharesTypeIdentityWithTArray();
-end;
-
-class procedure ArrayOfTests<T>.TypeIdentity<TypeUnderTest>.SharesTypeIdentityWithTArray();
-begin
-  TypeEquivalenceInquiry<ArrayOf<TypeUnderTest>>.SharesTypeIdentityWith<TArray<TypeUnderTest>>();
-end;
-
-{ ArrayOfTests<T>.AssignmentOperator<TypeUnderTest> }
-
-class procedure ArrayOfTests<T>.AssignmentOperator<TypeUnderTest>.Exercise;
-begin
-  IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements();
-end;
-
-class procedure ArrayOfTests<T>.AssignmentOperator<TypeUnderTest>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements();
-begin
-  var Expected: ArrayOf<TypeUnderTest> := [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)];
-  System.Assert(3 = System.Length(Expected));
-  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected)]);
-  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 1]);
-  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 2]);
-  var Actual: ArrayOf<TypeUnderTest> := [];
-  System.Assert(0 = System.Length(Actual));
-  Actual := Expected;
-  Expected := [];
-  System.Assert(0 = System.Length(Expected));
-  Expected := Actual;
-  System.Assert(3 = System.Length(Expected));
-  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected)]);
-  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 1]);
-  System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 2]);
 end;
 
 { NaturalNumberTests.Defaults }
@@ -415,77 +309,80 @@ begin
   TypeIdentity.Exercise();
 end;
 
-{ SmartClawTypeTests<T>.AssignmentCompatibility }
+{ MonoCharTests.AssignmentCompatibility }
 
-class procedure SmartClawTypeTests<T>.AssignmentCompatibility.Exercise;
+class procedure MonoCharTests.AssignmentCompatibility.Exercise;
 begin
-  IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType();
-  IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType();
+  IsSymmetricallyAssignmentCompatibleWithTheNativeCharWhileRetainingNativeCharValues();
 end;
 
-class function SmartClawTypeTests<T>.AssignmentCompatibility.ExpectedProceduralType<TypeUnderTest>(const AValue: TypeUnderTest): Boolean; begin Result := False; end;
-
-class procedure SmartClawTypeTests<T>.AssignmentCompatibility.IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType;
+class procedure MonoCharTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheNativeCharWhileRetainingNativeCharValues;
 begin
-  var Actual: SmartClaw<T> := System.Default(SmartClaw<T>);
-  System.Assert(not System.Assigned(Actual));
-  Actual := function (const AValue: T): Boolean begin Result := False end;
-  System.Assert(System.Assigned(Actual));
+  var Expected: Char := Rando_TheUntrustworthy.NonDefaultValue<Char>;
+  System.Assert(not (System.Default(Char) = Expected));
+  var ActualChar := Expected;
+  System.Assert(Expected = ActualChar);
+  var ActualMonoChar: MonoChar := System.Default(MonoChar);
+  System.Assert(not (ActualChar = ActualMonoChar));
+  ActualMonoChar := ActualChar;
+  System.Assert(ActualChar = ActualMonoChar);
+  ActualChar := System.Default(Char);
+  System.Assert(not (ActualMonoChar = ActualChar));
+  ActualChar := ActualMonoChar;
+  System.Assert(Expected = ActualChar);
 end;
 
-class procedure SmartClawTypeTests<T>.AssignmentCompatibility.IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType;
+{ MonoCharTests }
+
+class procedure MonoCharTests.Exercise;
 begin
-  var Actual: SmartClaw<T> := System.Default(SmartClaw<T>);
-  System.Assert(not System.Assigned(Actual));
-  Actual := ExpectedProceduralType<T>;
-  System.Assert(System.Assigned(Actual));
+  MonoCharTests.AssignmentCompatibility.Exercise();
+  MonoCharTests.Boundaries.Exercise();
+  MonoCharTests.Defaults.Exercise();
+  MonoCharTests.TypeIdentity.Exercise();
 end;
 
-{ SmartClawTypeTests<T>.Behaviors }
+{ MonoCharTests.Boundaries }
 
-class procedure SmartClawTypeTests<T>.Behaviors.Exercise;
+class procedure MonoCharTests.Boundaries.Exercise;
 begin
-  ReturnsFalseWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
-  ReturnsTrueWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
+  TheLowestPossibleOrdinalValueIsZero();
+  TheHighestPossibleOrdinalValueIs65536();
 end;
 
-class procedure SmartClawTypeTests<T>.Behaviors.ReturnsFalseWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT;
+class procedure MonoCharTests.Boundaries.TheHighestPossibleOrdinalValueIs65536;
 begin
-  var ActualValue: T := Rando_TheUntrustworthy.NonDefaultValue<T>();
-  System.Assert(not (System.Default(T) = ActualValue));
-  var Actual: SmartClaw<T> := function(const AValue: T):Boolean begin Result:=(AValue=System.Default(T))end;
-  System.Assert(System.Assigned(Actual));
-  System.Assert(not Actual(ActualValue));
+  System.Assert(System.Ord(65535) = System.Ord(System.High(MonoChar)));
 end;
 
-class procedure SmartClawTypeTests<T>.Behaviors.ReturnsTrueWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT;
+class procedure MonoCharTests.Boundaries.TheLowestPossibleOrdinalValueIsZero;
 begin
-  var ActualValue: T := System.Default(T);
-  System.Assert(System.Default(T) = ActualValue);
-  var Actual: SmartClaw<T> := function(const AValue: T):Boolean begin Result:=(AValue=System.Default(T))end;
-  System.Assert(System.Assigned(Actual));
-  System.Assert(Actual(ActualValue));
+  System.Assert(System.Ord(NativeUInt(0)) = System.Ord(System.Low(MonoChar)));
 end;
 
-{ SmartClawTypeTests<T>.Defaults }
+{ MonoCharTests.Defaults }
 
-class procedure SmartClawTypeTests<T>.Defaults.Exercise;
+class procedure MonoCharTests.Defaults.Exercise;
 begin
-  TheDefaultValueIsNil();
+  ValueIsZero();
 end;
 
-class procedure SmartClawTypeTests<T>.Defaults.TheDefaultValueIsNil;
+class procedure MonoCharTests.Defaults.ValueIsZero;
 begin
-  System.Assert(not System.Assigned(System.Default(SmartClaw<T>)));
+  System.Assert(System.Ord(NativeUInt(0)) = System.Ord(System.Default(MonoChar)));
 end;
 
-{ SmartClawTypeTests<T> }
+{ MonoCharTests.TypeIdentity }
 
-class procedure SmartClawTypeTests<T>.Exercise;
+class procedure MonoCharTests.TypeIdentity.Exercise;
 begin
-  AssignmentCompatibility.Exercise();
-  Behaviors.Exercise();
-  Defaults.Exercise();
+  HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeChar();
+end;
+
+class procedure MonoCharTests.TypeIdentity.HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeChar;
+begin
+  TypeEquivalenceInquiry<MonoChar>.HasANonNullSystemDotTypeInfoValue();
+  TypeEquivalenceInquiry<MonoChar>.DoesNotShareTypeIdentityWith<Char>();
 end;
 
 end.

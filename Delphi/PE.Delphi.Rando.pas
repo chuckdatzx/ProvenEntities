@@ -25,13 +25,11 @@ implementation
 
 class function Rando_TheUntrustworthy.NonDefaultValue<T>: T;
 begin
-  {$DEFINE RandoCanProceed := ((GetTypeKind(T) = tkInteger) or (GetTypeKind(T) = tkInt64))}
-  {$IFDEF RandoCanProceed}
   Result := System.Default(T);
   var ATypeInfo: PTypeInfo := System.TypeInfo(T);
   System.Assert(System.Assigned(ATypeInfo), 'Rando cannot continue because the provided type T does not seem to generate type info');
   case System.GetTypeKind(T) of
-    tkInteger:
+    tkInteger, tkWideChar:
       begin
         var ATypeData := GetTypeData(ATypeInfo);
         System.Assert(System.Assigned(ATypeData), 'Rando cannot continue because the provided type T does not seem to have type data');
@@ -45,12 +43,9 @@ begin
       end;
     tkInt64: Result := TValue.From<UInt64>((UInt64(Random32Proc) shl 32) or UInt64(Random32Proc)).AsType<T>();
   else
-    System.Assert(False, 'Rando is not prepared for type kinds other than tkInteger and tkInt64');
+    System.Assert(False, 'Rando is not prepared for type kinds other than [tkInteger, tkInt64, tkWideChar]');
   end;
-  {$ELSE}
-  Result := System.Default(T);
-  {$ENDIF}
-  System.Assert(Result <> System.Default(T), 'Rando cannot return a value (non-default value = default value)');
+  System.Assert(Result <> System.Default(T), 'Rando cannot tell a lie (non-default value = default value)');
 end;
 
 end.

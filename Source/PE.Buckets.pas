@@ -11,11 +11,11 @@ and not just assume, without pause, that it is unbreakable.}
 interface
 
 uses
-  {PE Assertions}
+  {PE}
   PE.Delphi.AssignmentCompatibility,
   PE.Delphi.TypeIdentity,
-  {PE System}
-  PE.Types;
+  PE.Types.Composite,
+  PE.Types.Foundational;
 
 {$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime)}
    {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}

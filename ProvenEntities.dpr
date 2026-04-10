@@ -18,16 +18,13 @@ uses
   PE.Delphi.TypeIdentity in 'Delphi\PE.Delphi.TypeIdentity.pas',
   PE.Examples.Delphi.CategorizingWithBuckets in 'Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
   PE.Routines in 'Source\PE.Routines.Pas',
+  PE.Tests.CompositeTypes in 'Tests\PE.Tests.CompositeTypes.pas',
   PE.Tests.Routines.Buckets in 'Tests\PE.Tests.Routines.Buckets.pas',
   PE.Tests.Routines in 'Tests\PE.Tests.Routines.pas',
-  PE.Tests.Types in 'Tests\PE.Tests.Types.pas',
+  PE.Tests.FoundationalTypes in 'Tests\PE.Tests.FoundationalTypes.pas',
   PE.Tests.Types.Buckets in 'Tests\PE.Tests.Types.Buckets.pas',
-  PE.Types in 'Source\PE.Types.pas';
-
-{ TODO -oChuck -cMusing :
-I've noticed that the more I lean on my own definitions, the leaner the end binary becomes.
-The problem is that the more I lean on my own definitions, the more I seemingly gain capability.
-It seems odd to me that both of those statements feel True at the same time.}
+  PE.Types.Composite in 'Source\PE.Types.Composite.pas',
+  PE.Types.Foundational in 'Source\PE.Types.Foundational.pas';
 
 type
   //Replace T with any compilable type; or add your own tests below.
@@ -45,7 +42,7 @@ begin
   //just make sure to keep it between the first and last System.Write (that way you can be sure no errors could have occurred)
   PE.Tests.Routines.AllTests.Exercise();
   PE.Tests.Routines.Buckets.DomainTests<T>.Exercise();
-  PE.Tests.Types.AllTests.Exercise();
+  PE.Tests.FoundationalTypes.AllTests.Exercise();
   PE.Tests.Types.Buckets.TypeTests<T>.Exercise();
   PE.Examples.Delphi.CategorizingWithBuckets.Exercise.AllTests();
   System.Write('Tests Completed');
