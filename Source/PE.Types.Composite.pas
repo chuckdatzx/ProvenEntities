@@ -33,12 +33,7 @@ type
 
 implementation
 
-uses
-  {Delphi}
-  System.SysUtils;
-
-{ MultiChar }
-
+{MultiChar}
 function MultiChar.AsArrayOfMonoChar: ArrayOf<MonoChar>;
 begin
   Result := FData;

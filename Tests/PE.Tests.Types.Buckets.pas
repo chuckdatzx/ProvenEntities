@@ -1,22 +1,14 @@
 unit PE.Tests.Types.Buckets;
-{Chuck C.T.
-Full Declaration of Transparency:
-You should only consider the code under test proven insofar as you agree with everything presented
-(and by "everything presented", I mean from the scope of the compiler all the way through to
-your custom code based on entities from this unit).
 
-I'm truly not trying to scare anyone off. I'm perfectly comfortable calling the following proven;
-and I have researched from the compiler to my code. I'm simply recommending that you do the same
-and not just assume, without pause, that it is unbreakable.}
 interface
 
 uses
   {PE}
   PE.Buckets,
   PE.Delphi.AssignmentCompatibility,
-  PE.Delphi.Rando,
+  PE.Delphi.Rando, //For inlining
   PE.Delphi.TypeIdentity,
-  PE.Tests.Routines.Buckets,
+  PE.Tests.CompositeTypes,
   PE.Types.Composite, //For inlining
   PE.Tests.FoundationalTypes,
   PE.Types.Foundational;
@@ -26,15 +18,10 @@ uses
 {$ENDIF}
 
 type
-  ///<summary>Exercises all type tests for this namespace</summary>
   TypeTests<T> = record
   public
     class procedure Exercise(); static; inline;
   end;
-
-{ TODO -oChuck -cMusing : Not certain yet if it is needed, but I'm not currently "locking down" BucketIn<T> and BucketOut.
- I say this because it can be argued that additions (e.g. adding a 4th property to a BucketIn<T> type) can cause undesirable side-effects.
- While the above seems true, I can also argue "stop trying to break it". I guess I'll see where I land at a later point.}
 
 type
   BucketInTests<T> = record
@@ -110,8 +97,7 @@ type
 
 implementation
 
-{ BucketInTests.AssignmentOperator<TypeUnderTest> }
-
+{BucketInTests.AssignmentOperator<TypeUnderTest>}
 class procedure BucketInTests<T>.AssignmentOperator<TypeUnderTest>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll3PropertyValues;
 begin
   var Expected: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end, 'a', Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>);
@@ -133,8 +119,7 @@ begin
   System.Assert(not (System.Default(NaturalNumber) = Expected.Prediction));
 end;
 
-{ BucketInTests.Constructor<TypeUnderTest> }
-
+{BucketInTests.Constructor<TypeUnderTest>}
 class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.Exercise;
 begin
   InitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
@@ -179,8 +164,7 @@ begin
   System.Assert(Expected = BucketIn<T>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(MultiChar), Expected).Prediction);
 end;
 
-{ BucketInTests.EqualityOperator<TypeUnderTest> }
-
+{BucketInTests.EqualityOperator<TypeUnderTest>}
 class procedure BucketInTests<T>.EqualityOperator<TypeUnderTest>.Exercise;
 begin
   ReturnsFalseWhenComparingSeparateInstancesAndAllPropertiesSaveTheGrabbyArmHaveIdenticalNonDefaultValues();
@@ -280,8 +264,7 @@ begin
   System.Assert(Left = Right);
 end;
 
-{ BucketInTests<T> }
-
+{BucketInTests<T>}
 class procedure BucketInTests<T>.Exercise;
 begin
   AssignmentOperator<T>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll3PropertyValues();
@@ -290,8 +273,7 @@ begin
   Properties<T>.Exercise();
 end;
 
-{ BucketInTests.Properties<TypeUnderTest> }
-
+{BucketInTests.Properties<TypeUnderTest>}
 class procedure BucketInTests<T>.Properties<TypeUnderTest>.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheMultiCharTypeAndInitializedToTheMultiCharDefault;
 begin
   var Expected: MultiChar := '4';
@@ -335,10 +317,15 @@ begin
   ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheSmartClawType();
 end;
 
-{ TODO -oChuck -cMental Note : You haven't yet considered what can/can't be done w/include files. Furthermore, you haven't even braoched the concept of a pre-compiler. }
+{BucketOutTests}
+class procedure BucketOutTests.Exercise;
+begin
+  AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll2PropertyValues();
+  EqualityOperator.Exercise();
+  Properties.Exercise();
+end;
 
-{ BucketOutTests.AssignmentOperator }
-
+{BucketOutTests.AssignmentOperator}
 class procedure BucketOutTests.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll2PropertyValues;
 begin
   var Expected: BucketOut;
@@ -359,40 +346,7 @@ begin
   System.Assert(not (System.Default(MultiChar) = Expected.Name));
 end;
 
-{ BucketOutTests.Properties }
-
-class procedure BucketOutTests.Properties.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheMultiCharTypeAndInitializedToTheMultiCharDefault;
-begin
-  var Expected: MultiChar := '42';
-  var Actual: BucketOut;
-  System.Assert(not (System.Default(MultiChar) = Expected));
-  System.Assert(System.Default(MultiChar) = Actual.Name);
-  Actual.Name := Expected;
-  Expected := Actual.Name;
-  System.Assert(not (System.Default(MultiChar) = Expected));
-  System.Assert(Expected = Actual.Name);
-end;
-
-class procedure BucketOutTests.Properties.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault;
-begin
-  var Expected: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>;
-  var Actual: BucketOut;
-  System.Assert(not (System.Default(NaturalNumber) = Expected));
-  System.Assert(System.Default(NaturalNumber) = Actual.Count);
-  Actual.Count := Expected;
-  Expected := Actual.Count;
-  System.Assert(not (System.Default(NaturalNumber) = Expected));
-  System.Assert(Expected = Actual.Count);
-end;
-
-class procedure BucketOutTests.Properties.Exercise;
-begin
-  ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheMultiCharTypeAndInitializedToTheMultiCharDefault();
-  ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault();
-end;
-
-{ BucketOutTests.EqualityOperator }
-
+{BucketOutTests.EqualityOperator}
 class procedure BucketOutTests.EqualityOperator.Exercise;
 begin
   ReturnsTrueWhenComparingIdenticalInstancesAndAll2PropertiesHaveDefaultValues();
@@ -475,21 +429,42 @@ begin
   System.Assert(Left = Right);
 end;
 
-{ BucketOutTests }
-
-class procedure BucketOutTests.Exercise;
+{BucketOutTests.Properties}
+class procedure BucketOutTests.Properties.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheMultiCharTypeAndInitializedToTheMultiCharDefault;
 begin
-  AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll2PropertyValues();
-  EqualityOperator.Exercise();
-  Properties.Exercise();
+  var Expected: MultiChar := '42';
+  var Actual: BucketOut;
+  System.Assert(not (System.Default(MultiChar) = Expected));
+  System.Assert(System.Default(MultiChar) = Actual.Name);
+  Actual.Name := Expected;
+  Expected := Actual.Name;
+  System.Assert(not (System.Default(MultiChar) = Expected));
+  System.Assert(Expected = Actual.Name);
+end;
+
+class procedure BucketOutTests.Properties.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault;
+begin
+  var Expected: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>;
+  var Actual: BucketOut;
+  System.Assert(not (System.Default(NaturalNumber) = Expected));
+  System.Assert(System.Default(NaturalNumber) = Actual.Count);
+  Actual.Count := Expected;
+  Expected := Actual.Count;
+  System.Assert(not (System.Default(NaturalNumber) = Expected));
+  System.Assert(Expected = Actual.Count);
+end;
+
+class procedure BucketOutTests.Properties.Exercise;
+begin
+  ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheMultiCharTypeAndInitializedToTheMultiCharDefault();
+  ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault();
 end;
 
 {TypeTests<T>}
-
 class procedure TypeTests<T>.Exercise();
 begin
-//  ArrayOfTests<PE.Buckets.BucketIn<T>>.Exercise(); //Validating dependencies
-//  ArrayOfTests<BucketOut>.Exercise(); //Validating dependencies
+//  ArrayOfTests<BucketIn<T>>.Exercise(); //I would love to include these, but every time I do,
+//  ArrayOfTests<BucketOut>.Exercise(); //I get an internal error (both Win32/Win64)
   BucketInTests<T>.Exercise();
   BucketOutTests.Exercise();
 end;

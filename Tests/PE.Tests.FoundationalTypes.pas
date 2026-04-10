@@ -129,8 +129,7 @@ type
 
 implementation
 
-{AllTests.Exercise}
-
+{AllTests}
 class procedure AllTests.Exercise();
 begin
   MonoCharTests.Exercise();
@@ -139,20 +138,7 @@ begin
   NaturalNumber64Tests.Exercise();
 end;
 
-{ NaturalNumberTests.Defaults }
-
-class procedure NaturalNumberTests.Defaults.Exercise;
-begin
-  ValueIsZero();
-end;
-
-class procedure NaturalNumberTests.Defaults.ValueIsZero;
-begin
-  System.Assert(0 = System.Default(NaturalNumber));
-end;
-
-{ NaturalNumberTests }
-
+{NaturalNumberTests}
 class procedure NaturalNumberTests.Exercise;
 begin
   AssignmentCompatibility.Exercise();
@@ -161,39 +147,7 @@ begin
   TypeIdentity.Exercise();
 end;
 
-{ NaturalNumberTests.Boundaries }
-
-class procedure NaturalNumberTests.Boundaries.Exercise;
-begin
-  Boundaries.TheLowestPossibleValueIsZero();
-  Boundaries.TheHighestPossibleNumberIs4294967295();
-end;
-
-class procedure NaturalNumberTests.Boundaries.TheHighestPossibleNumberIs4294967295;
-begin
-  System.Assert(4294967295 = System.High(NaturalNumber));
-end;
-
-class procedure NaturalNumberTests.Boundaries.TheLowestPossibleValueIsZero;
-begin
-  System.Assert(0 = System.Low(NaturalNumber));
-end;
-
-{ NaturalNumberTests.TypeIdentity }
-
-class procedure NaturalNumberTests.TypeIdentity.Exercise;
-begin
-  HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeCardinal();
-end;
-
-class procedure NaturalNumberTests.TypeIdentity.HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeCardinal;
-begin
-  TypeEquivalenceInquiry<NaturalNumber>.HasANonNullSystemDotTypeInfoValue();
-  TypeEquivalenceInquiry<NaturalNumber>.DoesNotShareTypeIdentityWith<Cardinal>();
-end;
-
-{ NaturalNumberTests.AssignmentCompatibility }
-
+{NaturalNumberTests.AssignmentCompatibility}
 class procedure NaturalNumberTests.AssignmentCompatibility.Exercise;
 begin
   IsSymmetricallyAssignmentCompatibleWithCardinalWhileRetainingCardinalValues();
@@ -215,15 +169,53 @@ begin
   System.Assert(Expected = ActualCardinal);
 end;
 
-{ NaturalNumber32Tests }
+{NaturalNumberTests.Boundaries}
+class procedure NaturalNumberTests.Boundaries.Exercise;
+begin
+  Boundaries.TheLowestPossibleValueIsZero();
+  Boundaries.TheHighestPossibleNumberIs4294967295();
+end;
 
+class procedure NaturalNumberTests.Boundaries.TheHighestPossibleNumberIs4294967295;
+begin
+  System.Assert(4294967295 = System.High(NaturalNumber));
+end;
+
+class procedure NaturalNumberTests.Boundaries.TheLowestPossibleValueIsZero;
+begin
+  System.Assert(0 = System.Low(NaturalNumber));
+end;
+
+{NaturalNumberTests.Defaults}
+class procedure NaturalNumberTests.Defaults.Exercise;
+begin
+  ValueIsZero();
+end;
+
+class procedure NaturalNumberTests.Defaults.ValueIsZero;
+begin
+  System.Assert(0 = System.Default(NaturalNumber));
+end;
+
+{NaturalNumberTests.TypeIdentity}
+class procedure NaturalNumberTests.TypeIdentity.Exercise;
+begin
+  HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeCardinal();
+end;
+
+class procedure NaturalNumberTests.TypeIdentity.HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeCardinal;
+begin
+  TypeEquivalenceInquiry<NaturalNumber>.HasANonNullSystemDotTypeInfoValue();
+  TypeEquivalenceInquiry<NaturalNumber>.DoesNotShareTypeIdentityWith<Cardinal>();
+end;
+
+{NaturalNumber32Tests}
 class procedure NaturalNumber32Tests.Exercise;
 begin
   TypeIdentity.Exercise();
 end;
 
-{ NaturalNumber32Tests.TypeIdentity }
-
+{NaturalNumber32Tests.TypeIdentity}
 class procedure NaturalNumber32Tests.TypeIdentity.Exercise;
 begin
   IsTypeIdenticalToTheNaturalNumber();
@@ -234,26 +226,16 @@ begin
   TypeEquivalenceInquiry<NaturalNumber32>.SharesTypeIdentityWith<NaturalNumber>();
 end;
 
-{ NaturalNumber64Tests.Boundaries }
-
-class procedure NaturalNumber64Tests.Boundaries.Exercise;
+{NaturalNumber64Tests}
+class procedure NaturalNumber64Tests.Exercise;
 begin
-  TheLowestPossibleValueIsZero();
-  TheHighestPossibleNumberIs18446744073709551615();
+  AssignmentCompatibility.Exercise();
+  Boundaries.Exercise();
+  Defaults.Exercise();
+  TypeIdentity.Exercise();
 end;
 
-class procedure NaturalNumber64Tests.Boundaries.TheHighestPossibleNumberIs18446744073709551615;
-begin
-  System.Assert(18446744073709551615 = System.High(NaturalNumber64));
-end;
-
-class procedure NaturalNumber64Tests.Boundaries.TheLowestPossibleValueIsZero;
-begin
-  System.Assert(0 = System.Low(NaturalNumber64));
-end;
-
-{ NaturalNumber64Tests.AssignmentCompatibility }
-
+{NaturalNumber64Tests.AssignmentCompatibility}
 class procedure NaturalNumber64Tests.AssignmentCompatibility.Exercise;
 begin
   IsSymmetricallyAssignmentCompatibleWithUInt64WhileRetainingUInt64Value();
@@ -274,8 +256,24 @@ begin
   System.Assert(Expected = ActualUInt64);
 end;
 
-{ NaturalNumber64Tests.Defaults }
+{NaturalNumber64Tests.Boundaries}
+class procedure NaturalNumber64Tests.Boundaries.Exercise;
+begin
+  TheLowestPossibleValueIsZero();
+  TheHighestPossibleNumberIs18446744073709551615();
+end;
 
+class procedure NaturalNumber64Tests.Boundaries.TheHighestPossibleNumberIs18446744073709551615;
+begin
+  System.Assert(18446744073709551615 = System.High(NaturalNumber64));
+end;
+
+class procedure NaturalNumber64Tests.Boundaries.TheLowestPossibleValueIsZero;
+begin
+  System.Assert(0 = System.Low(NaturalNumber64));
+end;
+
+{NaturalNumber64Tests.Defaults}
 class procedure NaturalNumber64Tests.Defaults.Exercise;
 begin
   ValueIsZero();
@@ -286,8 +284,7 @@ begin
   System.Assert(0 = System.Default(NaturalNumber64));
 end;
 
-{ NaturalNumber64Tests.TypeIdentity }
-
+{NaturalNumber64Tests.TypeIdentity}
 class procedure NaturalNumber64Tests.TypeIdentity.Exercise;
 begin
   HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64();
@@ -299,18 +296,16 @@ begin
   TypeEquivalenceInquiry<NaturalNumber64>.DoesNotShareTypeIdentityWith<UInt64>();
 end;
 
-{ NaturalNumber64Tests }
-
-class procedure NaturalNumber64Tests.Exercise;
+{MonoCharTests}
+class procedure MonoCharTests.Exercise;
 begin
-  AssignmentCompatibility.Exercise();
-  Boundaries.Exercise();
-  Defaults.Exercise();
-  TypeIdentity.Exercise();
+  MonoCharTests.AssignmentCompatibility.Exercise();
+  MonoCharTests.Boundaries.Exercise();
+  MonoCharTests.Defaults.Exercise();
+  MonoCharTests.TypeIdentity.Exercise();
 end;
 
-{ MonoCharTests.AssignmentCompatibility }
-
+{MonoCharTests.AssignmentCompatibility}
 class procedure MonoCharTests.AssignmentCompatibility.Exercise;
 begin
   IsSymmetricallyAssignmentCompatibleWithTheNativeCharWhileRetainingNativeCharValues();
@@ -332,18 +327,7 @@ begin
   System.Assert(Expected = ActualChar);
 end;
 
-{ MonoCharTests }
-
-class procedure MonoCharTests.Exercise;
-begin
-  MonoCharTests.AssignmentCompatibility.Exercise();
-  MonoCharTests.Boundaries.Exercise();
-  MonoCharTests.Defaults.Exercise();
-  MonoCharTests.TypeIdentity.Exercise();
-end;
-
-{ MonoCharTests.Boundaries }
-
+{MonoCharTests.Boundaries}
 class procedure MonoCharTests.Boundaries.Exercise;
 begin
   TheLowestPossibleOrdinalValueIsZero();
@@ -360,8 +344,7 @@ begin
   System.Assert(System.Ord(NativeUInt(0)) = System.Ord(System.Low(MonoChar)));
 end;
 
-{ MonoCharTests.Defaults }
-
+{MonoCharTests.Defaults}
 class procedure MonoCharTests.Defaults.Exercise;
 begin
   ValueIsZero();
@@ -372,8 +355,7 @@ begin
   System.Assert(System.Ord(NativeUInt(0)) = System.Ord(System.Default(MonoChar)));
 end;
 
-{ MonoCharTests.TypeIdentity }
-
+{MonoCharTests.TypeIdentity}
 class procedure MonoCharTests.TypeIdentity.Exercise;
 begin
   HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeChar();

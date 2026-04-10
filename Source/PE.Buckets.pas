@@ -1,13 +1,5 @@
 unit PE.Buckets;
-{Chuck C.T.
-Full Declaration of Transparency:
-You should only consider the code under test proven insofar as you agree with everything presented
-(and by "everything presented", I mean from the scope of the compiler all the way through to
-your custom code based on entities from this unit).
 
-I'm truly not trying to scare anyone off. I'm perfectly comfortable calling the following proven;
-and I have researched from the compiler to my code. I'm simply recommending that you do the same
-and not just assume, without pause, that it is unbreakable.}
 interface
 
 uses
@@ -56,14 +48,13 @@ type
 
   Routines = record
   public
-    ///<summary>Iterates each element of the provided data stream while giving each bucket a chance to determine inclusion (using whatever you put into place for the "grabby arm")</summary>
+    ///<summary>Iterates each element of the provided data stream while giving each bucket a chance to determine inclusion (using whatever code you put into place for the grabby arm)</summary>
     class function Categorize<T>(const DataStream: ArrayOf<T>; const Buckets: ArrayOf<BucketIn<T>>): ArrayOf<BucketOut>; static; inline;
   end;
 
 implementation
 
-{ BucketIn<T> }
-
+{BucketIn<T>}
 constructor BucketIn<T>.Create(const GrabbyArm: SmartClaw<T>; const Name: MultiChar; const Prediction: NaturalNumber);
 begin
   FGrabbyArm := GrabbyArm;
@@ -88,8 +79,7 @@ begin
   FName := Value;
 end;
 
-{ BucketOut }
-
+{BucketOut}
 class operator BucketOut.Equal(const A: BucketOut; const B: BucketOut): Boolean;
 begin
   Result := (@A = @B);
@@ -97,6 +87,12 @@ begin
     Result := (A.Count = B.Count) and (A.Name = B.Name);
 end;
 
+procedure BucketOut.SetName(const Value: MultiChar);
+begin
+  FName := Value;
+end;
+
+{Routines}
 class function Routines.Categorize<T>(const DataStream: ArrayOf<T>; const Buckets: ArrayOf<BucketIn<T>>): ArrayOf<BucketOut>;
 var
   SmartBuckets: ArrayOf<BucketIn<T>>;
@@ -114,11 +110,6 @@ begin
     for var J: NativeInt := Low(SmartBuckets) to High(SmartBuckets) do
       if SmartBuckets[J].GrabbyArm(DataStream[I]) then
         Result[J].Count := Result[J].Count + 1;
-end;
-
-procedure BucketOut.SetName(const Value: MultiChar);
-begin
-  FName := Value;
 end;
 
 end.

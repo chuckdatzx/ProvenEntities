@@ -103,8 +103,7 @@ uses
   {PE}
   PE.Types.Foundational;
 
-{ CategorizeRoutine_SignatureTests<T> }
-
+{CategorizeRoutine_SignatureTests<T>}
 class procedure CategorizeRoutine_SignatureTests<T>.Exercise();
 begin
   The1stParameterAcceptsAnEmptyArrayOfT();
@@ -127,8 +126,7 @@ begin
   Routines.Categorize<T>([], ArrayOf<BucketIn<T>>.Create());
 end;
 
-{ CategorizeRoutine_ResultCount<T> }
-
+{CategorizeRoutine_ResultCount<T>}
 class procedure CategorizeRoutine_ResultCount<T>.Exercise();
 begin
   Returns1BucketOutWhenGivenAnEmptyDataStreamAnd1DefaultBucketInOfT();
@@ -181,8 +179,7 @@ begin
   System.Assert(3 = System.Length(Actual));
 end;
 
-{ CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T> }
-
+{CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>}
 class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn();
 begin
   System.Assert(0 = Routines.Categorize<T>([], [System.Default(BucketIn<T>)])[0].Count);
@@ -286,8 +283,7 @@ begin
   AllCountsAre3WhenGiven3DefaultElementOfTValuesAsADataStreamAndMultipleDefaultBucketInsAllWithIdenticalFocusedGrabbyArms();
 end;
 
-{ CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T> }
-
+{CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>}
 class procedure CategorizeRoutine_BucketsOutArray_NameIsCopiedFromBucketIn<T>.Exercise();
 begin
   WhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn();
@@ -376,8 +372,7 @@ begin
   System.Assert('3' = Actual[Low(Actual) + 2].Name);
 end;
 
-{ CategorizeRoutine_BucketsOutArray_ResultOrder<T> }
-
+{CategorizeRoutine_BucketsOutArray_ResultOrder<T>}
 class procedure CategorizeRoutine_BucketsOutArray_ResultOrder<T>.TheResultingArrayOfBucketOutMatchesTheOrderOfTheArrayOfBucketIn_AccordingToUniqueValuesAcrossNameProperties();
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)], [BucketIn<T>.Create(nil, '1'), BucketIn<T>.Create(nil, '2'), BucketIn<T>.Create(nil, '3')]);
@@ -387,8 +382,7 @@ begin
   System.Assert('3' = Actual[Low(Actual) + 2].Name);
 end;
 
-{ DomainTests<T> }
-
+{DomainTests<T>}
 class procedure DomainTests<T>.Exercise();
 begin
   CategorizeRoutine_SignatureTests<T>.Exercise();

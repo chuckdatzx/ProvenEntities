@@ -4,7 +4,7 @@ interface
 
 uses
   {PE}
-  PE.Delphi.Rando,
+  PE.Delphi.Rando,  //For inlining
   PE.Routines,
   PE.Types.Foundational;
 
@@ -16,10 +16,8 @@ type
 
   DataStreamTests = record
   public type
-    ///<summary>Just a type container</summary>
     UniqueElements<TypeUnderTest1> = record
       public type
-        ///<summary>Locking down the routine's structure in domain terms</summary>
         RoutineStructure<TypeUnderTest2> = record
         strict private
           class procedure TheOnlyParameterAcceptsAnEmptyArrayOfT(); static; inline;
@@ -68,8 +66,7 @@ uses
   {PE}
   PE.Types.Composite;
 
-{ AllTests }
-
+{AllTests}
 class procedure AllTests.Exercise;
 begin
   {Helpers for helped types}
@@ -83,8 +80,14 @@ begin
   {$IFEND}
 end;
 
-{ DataStreamTests.UniqueElements<TypeUnderTest>.RoutineStructure }
+{DataStreamTests.UniqueElements<TypeUnderTest>}
+class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.Exercise;
+begin
+  RoutineStructure<TypeUnderTest1>.Exercise();
+  RepeatedElementsAreFilteredOut<TypeUnderTest1>.Exercise();
+end;
 
+{DataStreamTests.UniqueElements<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>}
 class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.Exercise;
 begin
   TheOnlyParameterAcceptsAnEmptyArrayOfT();
@@ -104,16 +107,7 @@ begin
   System.Assert(0 = System.Length(Expected));
 end;
 
-{ DataStreamTests.UniqueElements<TypeUnderTest> }
-
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.Exercise;
-begin
-  RoutineStructure<TypeUnderTest1>.Exercise();
-  RepeatedElementsAreFilteredOut<TypeUnderTest1>.Exercise();
-end;
-
-{ DataStreamTests_Closed.UniqueElements.ResultOrder }
-
+{DataStreamTests_Closed.UniqueElements.ResultOrder}
 class procedure DataStreamTests_Closed.UniqueElements.ResultOrder_UsingNaturalNumber.Exercise;
 begin
   ReturnsElementsInAscendingOrderWhenGivenElementsInAscendingOrder();
@@ -154,8 +148,7 @@ begin
   UniqueElements.ResultOrder_UsingNaturalNumber.Exercise();
 end;
 
-{ DataStreamTests.UniqueElements<TypeUnderTest>.RepeatedElementsAreFilteredOut }
-
+{DataStreamTests.UniqueElements<TypeUnderTest>.RepeatedElementsAreFilteredOut}
 class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Exercise;
 begin
   Returns1DefaultElementWhenGiven1DefaultElement();

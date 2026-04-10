@@ -106,8 +106,7 @@ uses
   {PE}
   PE.Delphi.TypeIdentity;
 
-{ AllTests }
-
+{AllTests}
 class procedure AllTests.Exercise;
 begin
   ArrayOfTests<NaturalNumber>.Exercise();
@@ -127,8 +126,7 @@ begin
   {$IFEND}
 end;
 
-{ ArrayOfTests<T>.Defaults<TypeUnderTest> }
-
+{ArrayOfTests<T>.Defaults<TypeUnderTest>}
 class procedure ArrayOfTests<T>.Defaults<TypeUnderTest>.Exercise;
 begin
   IsInitializedToAnEmptyCollectionOfElements();
@@ -140,8 +138,7 @@ begin
   System.Assert(0 = System.Length(Actual));
 end;
 
-{ ArrayOfTests }
-
+{ArrayOfTests<T>}
 class procedure ArrayOfTests<T>.Exercise;
 begin
   AssignmentOperator<T>.Exercise();
@@ -149,20 +146,7 @@ begin
   TypeIdentity<T>.Exercise();
 end;
 
-{ ArrayOfTests<T>.TypeIdentity<TypeUnderTest> }
-
-class procedure ArrayOfTests<T>.TypeIdentity<TypeUnderTest>.Exercise;
-begin
-  SharesTypeIdentityWithTArray();
-end;
-
-class procedure ArrayOfTests<T>.TypeIdentity<TypeUnderTest>.SharesTypeIdentityWithTArray();
-begin
-  TypeEquivalenceInquiry<ArrayOf<TypeUnderTest>>.SharesTypeIdentityWith<TArray<TypeUnderTest>>();
-end;
-
-{ ArrayOfTests<T>.AssignmentOperator<TypeUnderTest> }
-
+{ArrayOfTests<T>.AssignmentOperator<TypeUnderTest>}
 class procedure ArrayOfTests<T>.AssignmentOperator<TypeUnderTest>.Exercise;
 begin
   IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements();
@@ -187,8 +171,18 @@ begin
   System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 2]);
 end;
 
-{ SmartClawTypeTests<T>.AssignmentCompatibility }
+{ArrayOfTests<T>.TypeIdentity<TypeUnderTest>}
+class procedure ArrayOfTests<T>.TypeIdentity<TypeUnderTest>.Exercise;
+begin
+  SharesTypeIdentityWithTArray();
+end;
 
+class procedure ArrayOfTests<T>.TypeIdentity<TypeUnderTest>.SharesTypeIdentityWithTArray();
+begin
+  TypeEquivalenceInquiry<ArrayOf<TypeUnderTest>>.SharesTypeIdentityWith<TArray<TypeUnderTest>>();
+end;
+
+{SmartClawTypeTests<T>.AssignmentCompatibility}
 class procedure SmartClawTypeTests<T>.AssignmentCompatibility.Exercise;
 begin
   IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType();
@@ -213,8 +207,7 @@ begin
   System.Assert(System.Assigned(Actual));
 end;
 
-{ SmartClawTypeTests<T>.Behaviors }
-
+{SmartClawTypeTests<T>.Behaviors}
 class procedure SmartClawTypeTests<T>.Behaviors.Exercise;
 begin
   ReturnsFalseWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
@@ -239,8 +232,7 @@ begin
   System.Assert(Actual(ActualValue));
 end;
 
-{ SmartClawTypeTests<T>.Defaults }
-
+{SmartClawTypeTests<T>.Defaults}
 class procedure SmartClawTypeTests<T>.Defaults.Exercise;
 begin
   TheDefaultValueIsNil();
@@ -251,8 +243,7 @@ begin
   System.Assert(not System.Assigned(System.Default(SmartClaw<T>)));
 end;
 
-{ SmartClawTypeTests<T> }
-
+{SmartClawTypeTests<T>}
 class procedure SmartClawTypeTests<T>.Exercise;
 begin
   AssignmentCompatibility.Exercise();
@@ -260,8 +251,15 @@ begin
   Defaults.Exercise();
 end;
 
-{ MultiCharTests.AssignmentOperator }
+{MultiCharTests}
+class procedure MultiCharTests.Exercise;
+begin
+  AssignmentOperator.Exercise();
+  &Constructor.Exercise();
+  EqualityOperator.Exercise();
+end;
 
+{MultiCharTests.AssignmentOperator}
 class procedure MultiCharTests.AssignmentOperator.Exercise;
 begin
   IsSymmetricallyAssignmentCompatibleWithItselfAndPreservesMonoCharContent();
@@ -299,17 +297,7 @@ begin
   System.Assert(Expected = Actual);
 end;
 
-{ MultiCharTests }
-
-class procedure MultiCharTests.Exercise;
-begin
-  AssignmentOperator.Exercise();
-  &Constructor.Exercise();
-  EqualityOperator.Exercise();
-end;
-
-{ MultiCharTests.Constructor }
-
+{MultiCharTests.Constructor}
 class procedure MultiCharTests.&Constructor.CanBeInitializedWithANativeStringLiteral;
 const
   Expected = 'This seems unique enough.';
@@ -319,7 +307,7 @@ begin
   System.Assert(System.Default(MultiChar) = ActualEmpty);
   var Actual: MultiChar := MultiChar.Create(Expected);
   System.Assert(not (System.Default(MultiChar) = Actual));
-//  System.Assert(Expected = Actual);
+  System.Assert(Expected = Actual);
 end;
 
 class procedure MultiCharTests.&Constructor.Exercise;
@@ -327,8 +315,7 @@ begin
   CanBeInitializedWithANativeStringLiteral();
 end;
 
-{ MultiCharTests.EqualityOperator }
-
+{MultiCharTests.EqualityOperator}
 class procedure MultiCharTests.EqualityOperator.Exercise;
 begin
   ReturnsFalseWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefaultAndNotIdentical();
