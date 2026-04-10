@@ -14,7 +14,8 @@ uses
   {PE}
   PE.Buckets,
   PE.Delphi.AssignmentCompatibility,
-  PE.Delphi.TypeIdentity;
+  PE.Delphi.TypeIdentity,
+  PE.Types.Composite;  //For inlining
 
 {$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime)}
    {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}
@@ -100,7 +101,6 @@ implementation
 
 uses
   {PE}
-  PE.Types.Composite,
   PE.Types.Foundational;
 
 { CategorizeRoutine_SignatureTests<T> }
@@ -190,7 +190,7 @@ end;
 
 class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInWithFocusedGrabbyArm();
 begin
-  System.Assert(0 = Routines.Categorize<T>([], [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := False end)])[0].Count);
+  System.Assert(0 = Routines.Categorize<T>([], [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := False end, '')])[0].Count);
 end;
 
 class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketIn();
@@ -205,7 +205,7 @@ end;
 
 class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketWithFocusedGrabbyArm();
 begin
-  System.Assert(1 = Routines.Categorize<T>([System.Default(T)], [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end)])[0].Count);
+  System.Assert(1 = Routines.Categorize<T>([System.Default(T)], [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, '')])[0].Count);
 end;
 
 class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn();
@@ -220,9 +220,9 @@ end;
 class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAreZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms();
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([],
-    [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end)]);
+    [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
+     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
+     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, '')]);
   System.Assert(3 = System.Length(Actual));
   var Each: BucketOut;
   for Each in Actual do
@@ -250,9 +250,9 @@ end;
 class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketInsAllWithIdenticalFocusedGrabbyArms();
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T)],
-    [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end)]);
+    [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
+     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
+     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, '')]);
   System.Assert(3 = System.Length(Actual));
   var Each: BucketOut;
   for Each in Actual do
@@ -262,9 +262,9 @@ end;
 class procedure CategorizeRoutine_BucketsOutArray_CountIsDeterminedByTheGrabbyArmAndTheDataStreamValues<T>.AllCountsAre3WhenGiven3DefaultElementOfTValuesAsADataStreamAndMultipleDefaultBucketInsAllWithIdenticalFocusedGrabbyArms();
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<T>([System.Default(T), System.Default(T), System.Default(T)],
-    [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end),
-     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end)]);
+    [BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
+     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, ''),
+     BucketIn<T>.Create(function (const AValue: T): Boolean begin Result := (AValue = System.Default(T)); end, '')]);
   System.Assert(3 = System.Length(Actual));
   var Each: BucketOut;
   for Each in Actual do

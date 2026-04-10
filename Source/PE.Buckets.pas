@@ -26,30 +26,32 @@ type
   BucketIn<T> = record
   strict private
     FGrabbyArm: SmartClaw<T>;
-    FName: string;
+    FName: MultiChar;
     FPrediction: NaturalNumber;
+    procedure SetName(const Value: MultiChar);
   public
     class constructor Create();
   public
     class operator Equal(const Left, Right: BucketIn<T>): Boolean; static; inline;
   public
     property GrabbyArm: SmartClaw<T> read FGrabbyArm write FGrabbyArm;
-    property Name: string read FName write FName;
+    property Name: MultiChar read FName write SetName;
     property Prediction: NaturalNumber read FPrediction write FPrediction;
   public
-    constructor Create(const GrabbyArm: SmartClaw<T>; const Name: string = System.Default(string); const Prediction: NaturalNumber = System.Default(NaturalNumber));
+    constructor Create(const GrabbyArm: SmartClaw<T>; const Name: MultiChar; const Prediction: NaturalNumber = System.Default(NaturalNumber));
   end;
 
   ///<summary>Contains results of operations performed on a BucketIn{T} instance</summary>
   BucketOut = record
   strict private
     FCount: NaturalNumber;
-    FName: string;
+    FName: MultiChar;
+    procedure SetName(const Value: MultiChar);
   public
     class operator Equal(const A: BucketOut; const B: BucketOut): Boolean; static; inline;
   public
     property Count: NaturalNumber read FCount write FCount;
-    property Name: string read FName write FName;
+    property Name: MultiChar read FName write SetName;
   end;
 
   Routines = record
@@ -62,7 +64,7 @@ implementation
 
 { BucketIn<T> }
 
-constructor BucketIn<T>.Create(const GrabbyArm: SmartClaw<T>; const Name: string; const Prediction: NaturalNumber);
+constructor BucketIn<T>.Create(const GrabbyArm: SmartClaw<T>; const Name: MultiChar; const Prediction: NaturalNumber);
 begin
   FGrabbyArm := GrabbyArm;
   FName := Name;
@@ -79,6 +81,11 @@ begin
   Result := (@Left = @Right);
   if (not Result) then
     Result := (Left.GrabbyArm = Right.GrabbyArm) and (Left.Name = Right.Name) and (Left.Prediction = Right.Prediction);
+end;
+
+procedure BucketIn<T>.SetName(const Value: MultiChar);
+begin
+  FName := Value;
 end;
 
 { BucketOut }
@@ -107,6 +114,11 @@ begin
     for var J: NativeInt := Low(SmartBuckets) to High(SmartBuckets) do
       if SmartBuckets[J].GrabbyArm(DataStream[I]) then
         Result[J].Count := Result[J].Count + 1;
+end;
+
+procedure BucketOut.SetName(const Value: MultiChar);
+begin
+  FName := Value;
 end;
 
 end.

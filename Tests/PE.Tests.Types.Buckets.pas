@@ -17,6 +17,7 @@ uses
   PE.Delphi.Rando,
   PE.Delphi.TypeIdentity,
   PE.Tests.Routines.Buckets,
+  PE.Types.Composite, //For inlining
   PE.Tests.FoundationalTypes,
   PE.Types.Foundational;
 
@@ -68,7 +69,7 @@ type
     end;
     Properties<TypeUnderTest> = record
     strict private
-      class procedure ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNativeStringTypeAndInitializedToTheNativeStringDefault(); static; inline;
+      class procedure ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheMultiCharTypeAndInitializedToTheMultiCharDefault(); static; inline;
       class procedure ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault(); static; inline;
       class procedure ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheSmartClawType(); static; inline;
     public
@@ -98,7 +99,7 @@ type
     end;
     Properties = record
     strict private
-      class procedure ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNativeStringTypeAndInitializedToTheNativeStringDefault(); static; inline;
+      class procedure ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheMultiCharTypeAndInitializedToTheMultiCharDefault(); static; inline;
       class procedure ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault(); static; inline;
     public
       class procedure Exercise(); static; inline;
@@ -109,30 +110,26 @@ type
 
 implementation
 
-uses
-  {PE}
-  PE.Types.Composite;
-
 { BucketInTests.AssignmentOperator<TypeUnderTest> }
 
 class procedure BucketInTests<T>.AssignmentOperator<TypeUnderTest>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll3PropertyValues;
 begin
   var Expected: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end, 'a', Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>);
   System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = Expected.GrabbyArm));
-  System.Assert(not (System.Default(string) = Expected.Name));
+  System.Assert(not (System.Default(MultiChar) = Expected.Name));
   System.Assert(not (System.Default(NaturalNumber) = Expected.Prediction));
   var Actual: BucketIn<TypeUnderTest>;
   System.Assert(System.Default(SmartClaw<TypeUnderTest>) = Actual.GrabbyArm);
-  System.Assert(System.Default(string) = Actual.Name);
+  System.Assert(System.Default(MultiChar) = Actual.Name);
   System.Assert(System.Default(NaturalNumber) = Actual.Prediction);
   Actual := Expected;
-  Expected := BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>));
+  Expected := BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), '');
   System.Assert(System.Default(SmartClaw<TypeUnderTest>) = Expected.GrabbyArm);
-  System.Assert(System.Default(string) = Expected.Name);
+  System.Assert(System.Default(MultiChar) = Expected.Name);
   System.Assert(System.Default(NaturalNumber) = Expected.Prediction);
   Expected := Actual;
   System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = Expected.GrabbyArm));
-  System.Assert(not (System.Default(string) = Expected.Name));
+  System.Assert(not (System.Default(MultiChar) = Expected.Name));
   System.Assert(not (System.Default(NaturalNumber) = Expected.Prediction));
 end;
 
@@ -150,36 +147,36 @@ end;
 
 class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesTheGrabbyArmPropertyWhenGivenADefaultValue;
 begin
-  System.Assert(System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>)).GrabbyArm);
+  System.Assert(System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), '').GrabbyArm);
 end;
 
 class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue;
 begin
-  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end).GrabbyArm));
+  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end, '').GrabbyArm));
 end;
 
 class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesTheNamePropertyWhenGivenADefaultValue;
 begin
-  System.Assert(System.Default(string) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(string)).Name);
+  System.Assert(System.Default(MultiChar) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(MultiChar)).Name);
 end;
 
 class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesTheNamePropertyWhenGivenANonDefaultValue;
-const Expected: Char = 'a';
+const Expected: MonoChar = 'a';
 begin
-  System.Assert(not (System.Default(string) = Expected));
+  System.Assert(not (System.Default(MultiChar) = Expected));
   System.Assert(Expected = BucketIn<T>.Create(nil, Expected).Name);
 end;
 
 class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesThePredictionPropertyWhenGivenADefaultValue;
 begin
-  System.Assert(System.Default(NaturalNumber) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(string), System.Default(NaturalNumber)).Prediction);
+  System.Assert(System.Default(NaturalNumber) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(MultiChar), System.Default(NaturalNumber)).Prediction);
 end;
 
 class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesThePredictionPropertyWhenGivenANonDefaultValue;
 begin
   var Expected: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
   System.Assert(not (System.Default(NaturalNumber) = Expected));
-  System.Assert(Expected = BucketIn<T>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(string), Expected).Prediction);
+  System.Assert(Expected = BucketIn<T>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(MultiChar), Expected).Prediction);
 end;
 
 { BucketInTests.EqualityOperator<TypeUnderTest> }
@@ -201,7 +198,7 @@ begin
   var Right: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), Left.Name, Left.Prediction);
   System.Assert(not (@Left = @Right));
   System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = Left.GrabbyArm));
-  System.Assert(not (System.Default(string) = Left.Name));
+  System.Assert(not (System.Default(MultiChar) = Left.Name));
   System.Assert(not (System.Default(NaturalNumber) = Left.Prediction));
   System.Assert(not (Left.GrabbyArm = Right.GrabbyArm));
   System.Assert(Left.Name = Right.Name);
@@ -215,7 +212,7 @@ begin
   var Right: BucketIn<TypeUnderTest>;
   System.Assert(not (@Left = @Right));
   System.Assert((System.Default(SmartClaw<TypeUnderTest>) = Left.GrabbyArm));
-  System.Assert(not (System.Default(string) = Left.Name));
+  System.Assert(not (System.Default(MultiChar) = Left.Name));
   System.Assert(System.Default(NaturalNumber) = Left.Prediction);
   System.Assert(Left.GrabbyArm = Right.GrabbyArm);
   System.Assert(not (Left.Name = Right.Name));
@@ -225,11 +222,11 @@ end;
 
 class procedure BucketInTests<T>.EqualityOperator<TypeUnderTest>.ReturnsFalseWhenComparingSeparateInstancesAndAllPropertiesSaveThePredictionHaveIdenticalDefaultValues;
 begin
-  var Left: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<T>), System.Default(string), Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>);
+  var Left: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<T>), System.Default(MultiChar), Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>);
   var Right: BucketIn<TypeUnderTest>;
   System.Assert(not (@Left = @Right));
   System.Assert((System.Default(SmartClaw<TypeUnderTest>) = Left.GrabbyArm));
-  System.Assert(System.Default(string) = Left.Name);
+  System.Assert(System.Default(MultiChar) = Left.Name);
   System.Assert(not (System.Default(NaturalNumber) = Left.Prediction));
   System.Assert(Left.GrabbyArm = Right.GrabbyArm);
   System.Assert(Left.Name = Right.Name);
@@ -241,7 +238,7 @@ class procedure BucketInTests<T>.EqualityOperator<TypeUnderTest>.ReturnsTrueWhen
 begin
   var ADefault: BucketIn<TypeUnderTest> := System.Default(BucketIn<TypeUnderTest>);
   System.Assert(System.Default(SmartClaw<TypeUnderTest>) = ADefault.GrabbyArm);
-  System.Assert(System.Default(string) = ADefault.Name);
+  System.Assert(System.Default(MultiChar) = ADefault.Name);
   System.Assert(System.Default(NaturalNumber) = ADefault.Prediction);
   System.Assert(ADefault = ADefault);
 end;
@@ -250,7 +247,7 @@ class procedure BucketInTests<T>.EqualityOperator<TypeUnderTest>.ReturnsTrueWhen
 begin
   var ADefault: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end, 'a', Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>);
   System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = ADefault.GrabbyArm));
-  System.Assert(not (System.Default(string) = ADefault.Name));
+  System.Assert(not (System.Default(MultiChar) = ADefault.Name));
   System.Assert(not (System.Default(NaturalNumber) = ADefault.Prediction));
   System.Assert(ADefault = ADefault);
 end;
@@ -261,7 +258,7 @@ begin
   var Right: BucketIn<TypeUnderTest> := System.Default(BucketIn<TypeUnderTest>);
   System.Assert(not (@Left = @Right));
   System.Assert(System.Default(SmartClaw<TypeUnderTest>) = Left.GrabbyArm);
-  System.Assert(System.Default(string) = Left.Name);
+  System.Assert(System.Default(MultiChar) = Left.Name);
   System.Assert(System.Default(NaturalNumber) = Left.Prediction);
   System.Assert(Left.GrabbyArm = Right.GrabbyArm);
   System.Assert(Left.Name = Right.Name);
@@ -275,7 +272,7 @@ begin
   var Right: BucketIn<TypeUnderTest> := BucketIn<TypeUnderTest>.Create(Left.GrabbyArm, Left.Name, Left.Prediction);
   System.Assert(not (@Left = @Right));
   System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = Left.GrabbyArm));
-  System.Assert(not (System.Default(string) = Left.Name));
+  System.Assert(not (System.Default(MultiChar) = Left.Name));
   System.Assert(not (System.Default(NaturalNumber) = Left.Prediction));
   System.Assert(Left.GrabbyArm = Right.GrabbyArm);
   System.Assert(Left.Name = Right.Name);
@@ -295,15 +292,15 @@ end;
 
 { BucketInTests.Properties<TypeUnderTest> }
 
-class procedure BucketInTests<T>.Properties<TypeUnderTest>.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNativeStringTypeAndInitializedToTheNativeStringDefault;
+class procedure BucketInTests<T>.Properties<TypeUnderTest>.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheMultiCharTypeAndInitializedToTheMultiCharDefault;
 begin
-  var Expected: string := '4';
+  var Expected: MultiChar := '4';
   var Actual: BucketIn<TypeUnderTest>;
-  System.Assert(not (System.Default(string) = Expected));
-  System.Assert(System.Default(string) = Actual.Name);
+  System.Assert(not (System.Default(MultiChar) = Expected));
+  System.Assert(System.Default(MultiChar) = Actual.Name);
   Actual.Name := Expected;
   Expected := Actual.Name;
-  System.Assert(not (System.Default(string) = Expected));
+  System.Assert(not (System.Default(MultiChar) = Expected));
   System.Assert(Expected = Actual.Name);
 end;
 
@@ -333,24 +330,46 @@ end;
 
 class procedure BucketInTests<T>.Properties<TypeUnderTest>.Exercise;
 begin
-  ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNativeStringTypeAndInitializedToTheNativeStringDefault();
+  ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheMultiCharTypeAndInitializedToTheMultiCharDefault();
   ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault();
   ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheSmartClawType();
 end;
 
 { TODO -oChuck -cMental Note : You haven't yet considered what can/can't be done w/include files. Furthermore, you haven't even braoched the concept of a pre-compiler. }
 
+{ BucketOutTests.AssignmentOperator }
+
+class procedure BucketOutTests.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll2PropertyValues;
+begin
+  var Expected: BucketOut;
+  Expected.Count := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>;
+  Expected.Name := 'Doggy';
+  System.Assert(not (System.Default(NaturalNumber) = Expected.Count));
+  System.Assert(not (System.Default(MultiChar) = Expected.Name));
+  var Actual: BucketOut := System.Default(BucketOut);
+  System.Assert(System.Default(NaturalNumber) = Actual.Count);
+  System.Assert(System.Default(MultiChar) = Actual.Name);
+  Actual := Expected;
+  Expected.Count := System.Default(NaturalNumber);
+  Expected.Name := System.Default(MultiChar);
+  System.Assert(System.Default(NaturalNumber) = Expected.Count);
+  System.Assert(System.Default(MultiChar) = Expected.Name);
+  Expected := Actual;
+  System.Assert(not (System.Default(NaturalNumber) = Expected.Count));
+  System.Assert(not (System.Default(MultiChar) = Expected.Name));
+end;
+
 { BucketOutTests.Properties }
 
-class procedure BucketOutTests.Properties.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNativeStringTypeAndInitializedToTheNativeStringDefault;
+class procedure BucketOutTests.Properties.ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheMultiCharTypeAndInitializedToTheMultiCharDefault;
 begin
-  var Expected: string := '42';
+  var Expected: MultiChar := '42';
   var Actual: BucketOut;
-  System.Assert(not (System.Default(string) = Expected));
-  System.Assert(System.Default(string) = Actual.Name);
+  System.Assert(not (System.Default(MultiChar) = Expected));
+  System.Assert(System.Default(MultiChar) = Actual.Name);
   Actual.Name := Expected;
   Expected := Actual.Name;
-  System.Assert(not (System.Default(string) = Expected));
+  System.Assert(not (System.Default(MultiChar) = Expected));
   System.Assert(Expected = Actual.Name);
 end;
 
@@ -368,7 +387,7 @@ end;
 
 class procedure BucketOutTests.Properties.Exercise;
 begin
-  ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNativeStringTypeAndInitializedToTheNativeStringDefault();
+  ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheMultiCharTypeAndInitializedToTheMultiCharDefault();
   ContainsOneWhichIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault();
 end;
 
@@ -391,7 +410,7 @@ begin
   var Right: BucketOut := System.Default(BucketOut);
   System.Assert(not (@Left = @Right));
   System.Assert(not (System.Default(NaturalNumber) = Left.Count));
-  System.Assert(System.Default(string) = Left.Name);
+  System.Assert(System.Default(MultiChar) = Left.Name);
   System.Assert(not (Left.Count = Right.Count));
   System.Assert(Left.Name = Right.Name);
   System.Assert(not (Left = Right));
@@ -404,7 +423,7 @@ begin
   var Right: BucketOut := System.Default(BucketOut);
   System.Assert(not (@Left = @Right));
   System.Assert(System.Default(NaturalNumber) = Left.Count);
-  System.Assert(not (System.Default(string) = Left.Name));
+  System.Assert(not (System.Default(MultiChar) = Left.Name));
   System.Assert(Left.Count = Right.Count);
   System.Assert(not (Left.Name = Right.Name));
   System.Assert(not (Left = Right));
@@ -414,7 +433,7 @@ class procedure BucketOutTests.EqualityOperator.ReturnsTrueWhenComparingIdentica
 begin
   var ADefault: BucketOut := System.Default(BucketOut);
   System.Assert(System.Default(NaturalNumber) = ADefault.Count);
-  System.Assert(System.Default(string) = ADefault.Name);
+  System.Assert(System.Default(MultiChar) = ADefault.Name);
   System.Assert(ADefault = ADefault);
 end;
 
@@ -424,7 +443,7 @@ begin
   ADefault.Count := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>;
   ADefault.Name := 'a';
   System.Assert(not (System.Default(NaturalNumber) = ADefault.Count));
-  System.Assert(not (System.Default(string) = ADefault.Name));
+  System.Assert(not (System.Default(MultiChar) = ADefault.Name));
   System.Assert(ADefault = ADefault);
 end;
 
@@ -434,7 +453,7 @@ begin
   var Right: BucketOut := System.Default(BucketOut);
   System.Assert(not (@Left = @Right));
   System.Assert(System.Default(NaturalNumber) = Left.Count);
-  System.Assert(System.Default(string) = Left.Name);
+  System.Assert(System.Default(MultiChar) = Left.Name);
   System.Assert(Left.Count = Right.Count);
   System.Assert(Left.Name = Right.Name);
   System.Assert(Left = Right);
@@ -450,7 +469,7 @@ begin
   Right.Name := Left.Name;
   System.Assert(not (@Left = @Right));
   System.Assert(not (System.Default(NaturalNumber) = Left.Count));
-  System.Assert(not (System.Default(string) = Left.Name));
+  System.Assert(not (System.Default(MultiChar) = Left.Name));
   System.Assert(Left.Count = Right.Count);
   System.Assert(Left.Name = Right.Name);
   System.Assert(Left = Right);
@@ -473,28 +492,6 @@ begin
 //  ArrayOfTests<BucketOut>.Exercise(); //Validating dependencies
   BucketInTests<T>.Exercise();
   BucketOutTests.Exercise();
-end;
-
-{ BucketOutTests.AssignmentOperator }
-
-class procedure BucketOutTests.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll2PropertyValues;
-begin
-  var Expected: BucketOut;
-  Expected.Count := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>;
-  Expected.Name := 'Doggy';
-  System.Assert(not (System.Default(NaturalNumber) = Expected.Count));
-  System.Assert(not (System.Default(string) = Expected.Name));
-  var Actual: BucketOut := System.Default(BucketOut);
-  System.Assert(System.Default(NaturalNumber) = Actual.Count);
-  System.Assert(System.Default(string) = Actual.Name);
-  Actual := Expected;
-  Expected.Count := System.Default(NaturalNumber);
-  Expected.Name := System.Default(string);
-  System.Assert(System.Default(NaturalNumber) = Expected.Count);
-  System.Assert(System.Default(string) = Expected.Name);
-  Expected := Actual;
-  System.Assert(not (System.Default(NaturalNumber) = Expected.Count));
-  System.Assert(not (System.Default(string) = Expected.Name));
 end;
 
 end.
