@@ -5,6 +5,7 @@ interface
 uses
   {PE}
   PE.Delphi.Rando,  //For inlining
+  PE.Types.Composite,
   PE.Types.Foundational;
 
 type
@@ -31,6 +32,38 @@ type
     TypeIdentity<TypeUnderTest> = record
     strict private
       class procedure SharesTypeIdentityWithTArray(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+  public
+    class procedure Exercise(); static; inline;
+  end;
+  {$ENDREGION}
+
+  {$REGION 'MultiChar type'}
+  MultiCharTests = record
+  public type
+    AssignmentOperator = record
+    strict private
+      class procedure IsSymmetricallyAssignmentCompatibleWithItselfAndPreservesMonoCharContent(); static; inline;
+      class procedure IsSymmetricallyAssignmentCompatibleWithTheNativeStringAndPreservesStringContent(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    &Constructor = record
+    strict private
+      class procedure CanBeInitializedWithANativeStringLiteral(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    EqualityOperator = record
+    strict private
+      class procedure ReturnsTrueWhenComparingIdenticalInstancesAndTheMonoCharContentIsDefault(); static; inline;
+      class procedure ReturnsTrueWhenComparingIdenticalInstancesAndTheMonoCharContentIsNonDefault(); static; inline;
+      class procedure ReturnsTrueWhenComparingSeparateInstancesAndAllMonoCharContentIsDefault(); static; inline;
+      class procedure ReturnsTrueWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefault(); static; inline;
+    strict private
+      class procedure ReturnsFalseWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefaultAndNotIdentical(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -71,8 +104,7 @@ implementation
 
 uses
   {PE}
-  PE.Delphi.TypeIdentity,
-  PE.Types.Composite;
+  PE.Delphi.TypeIdentity;
 
 { AllTests }
 
@@ -85,6 +117,7 @@ begin
   {$ELSE}
     {$MESSAGE WARN 'PE.Types.ArrayOf<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
   {$IFEND}
+  MultiCharTests.Exercise();
   SmartClawTypeTests<NaturalNumber>.Exercise();
   SmartClawTypeTests<NaturalNumber32>.Exercise();
   {$IFDEF CPU64BITS}
@@ -225,6 +258,139 @@ begin
   AssignmentCompatibility.Exercise();
   Behaviors.Exercise();
   Defaults.Exercise();
+end;
+
+{ MultiCharTests.AssignmentOperator }
+
+class procedure MultiCharTests.AssignmentOperator.Exercise;
+begin
+  IsSymmetricallyAssignmentCompatibleWithItselfAndPreservesMonoCharContent();
+  IsSymmetricallyAssignmentCompatibleWithTheNativeStringAndPreservesStringContent();
+end;
+
+class procedure MultiCharTests.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfAndPreservesMonoCharContent;
+begin
+  var ExpectedString: string := Rando_TheUntrustworthy.NonDefaultValue<string>();
+  System.Assert(not (System.Default(string) = ExpectedString));
+  var ActualMultiChar: MultiChar := System.Default(MultiChar);
+  System.Assert(System.Default(MultiChar) = ActualMultiChar);
+  System.Assert(not (ExpectedString = ActualMultiChar));
+  ActualMultiChar := ExpectedString;
+  System.Assert(ExpectedString = ActualMultiChar);
+  var Actual: MultiChar := System.Default(MultiChar);
+  System.Assert(not (Actual = ActualMultiChar));
+  Actual := ActualMultiChar;
+  System.Assert(ActualMultiChar = Actual);
+  System.Assert(Expectedstring = Actual);
+end;
+
+class procedure MultiCharTests.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithTheNativeStringAndPreservesStringContent;
+begin
+  var Expected: string := Rando_TheUntrustworthy.NonDefaultValue<string>();
+  System.Assert(not (System.Default(string) = Expected));
+  var Actual: MultiChar := System.Default(MultiChar);
+  System.Assert(System.Default(MultiChar) = Actual);
+  var ActualString: string := System.Default(string);
+  System.Assert(not (Expected = ActualString));
+  ActualString := Expected;
+  System.Assert(Expected = ActualString);
+  System.Assert(not (Expected = Actual));
+  Actual := Expected;
+  System.Assert(Expected = Actual);
+end;
+
+{ MultiCharTests }
+
+class procedure MultiCharTests.Exercise;
+begin
+  AssignmentOperator.Exercise();
+  &Constructor.Exercise();
+  EqualityOperator.Exercise();
+end;
+
+{ MultiCharTests.Constructor }
+
+class procedure MultiCharTests.&Constructor.CanBeInitializedWithANativeStringLiteral;
+const
+  Expected = 'This seems unique enough.';
+begin
+  System.Assert(not (System.Default(string) = Expected));
+  var ActualEmpty: MultiChar := System.Default(MultiChar);
+  System.Assert(System.Default(MultiChar) = ActualEmpty);
+  var Actual: MultiChar := MultiChar.Create(Expected);
+  System.Assert(not (System.Default(MultiChar) = Actual));
+//  System.Assert(Expected = Actual);
+end;
+
+class procedure MultiCharTests.&Constructor.Exercise;
+begin
+  CanBeInitializedWithANativeStringLiteral();
+end;
+
+{ MultiCharTests.EqualityOperator }
+
+class procedure MultiCharTests.EqualityOperator.Exercise;
+begin
+  ReturnsFalseWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefaultAndNotIdentical();
+  ReturnsTrueWhenComparingIdenticalInstancesAndTheMonoCharContentIsDefault();
+  ReturnsTrueWhenComparingIdenticalInstancesAndTheMonoCharContentIsNonDefault();
+  ReturnsTrueWhenComparingSeparateInstancesAndAllMonoCharContentIsDefault();
+  ReturnsTrueWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefault();
+end;
+
+class procedure MultiCharTests.EqualityOperator.ReturnsFalseWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefaultAndNotIdentical;
+begin
+  var Left: MultiChar := MultiChar.Create('i');
+  var Right: MultiChar := MultiChar.Create('I');
+  System.Assert(not (@Left = @Right));
+  System.Assert(not (System.Default(ArrayOf<MonoChar>) = Left.ArrayOfMonoChar));
+  System.Assert(not (System.Default(ArrayOf<MonoChar>) = Right.ArrayOfMonoChar));
+  var LeftData: ArrayOf<MonoChar> := Left.ArrayOfMonoChar;
+  var RightData: ArrayOf<MonoChar> := Right.ArrayOfMonoChar;
+  System.Assert(1 = System.Length(LeftData));
+  System.Assert(not (LeftData[System.Low(LeftData)] = RightData[System.Low(RightData)]));
+  System.Assert(not (Left = Right));
+end;
+
+class procedure MultiCharTests.EqualityOperator.ReturnsTrueWhenComparingIdenticalInstancesAndTheMonoCharContentIsDefault;
+begin
+  var ADefault: MultiChar := System.Default(MultiChar);
+  System.Assert(System.Default(MultiChar) = ADefault);
+  System.Assert(System.Default(ArrayOf<MonoChar>) = ADefault.ArrayOfMonoChar);
+  System.Assert(ADefault = ADefault);
+end;
+
+class procedure MultiCharTests.EqualityOperator.ReturnsTrueWhenComparingIdenticalInstancesAndTheMonoCharContentIsNonDefault;
+begin
+  var AValue: MultiChar := MultiChar.Create('111');
+  System.Assert(not (System.Default(MultiChar) = AValue));
+  System.Assert(not (System.Default(ArrayOf<MonoChar>) = AValue.ArrayOfMonoChar));
+  System.Assert(AValue = AValue);
+end;
+
+class procedure MultiCharTests.EqualityOperator.ReturnsTrueWhenComparingSeparateInstancesAndAllMonoCharContentIsDefault;
+begin
+  var Left: MultiChar := System.Default(MultiChar);
+  var Right: MultiChar := System.Default(MultiChar);
+  System.Assert(not (@Left = @Right));
+  System.Assert(System.Default(ArrayOf<MonoChar>) = Left.ArrayOfMonoChar);
+  System.Assert(System.Default(ArrayOf<MonoChar>) = Right.ArrayOfMonoChar);
+  System.Assert(Left = Right);
+end;
+
+class procedure MultiCharTests.EqualityOperator.ReturnsTrueWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefault;
+begin
+  var Left: MultiChar := MultiChar.Create('Instance');
+  var Right: MultiChar := MultiChar.Create('Instance');
+  System.Assert(not (@Left = @Right));
+  System.Assert(not (System.Default(ArrayOf<MonoChar>) = Left.ArrayOfMonoChar));
+  System.Assert(not (System.Default(ArrayOf<MonoChar>) = Right.ArrayOfMonoChar));
+  var LeftData: ArrayOf<MonoChar> := Left.ArrayOfMonoChar;
+  var RightData: ArrayOf<MonoChar> := Right.ArrayOfMonoChar;
+  System.Assert(System.Length(LeftData) = System.Length(RightData));
+  for var I: NativeInt := System.Low(LeftData) to System.high(LeftData) do
+    System.Assert(Left[I] = Right[I]);
+  System.Assert(Left = Right);
 end;
 
 end.

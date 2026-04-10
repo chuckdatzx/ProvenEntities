@@ -21,6 +21,12 @@ type
 
 implementation
 
+uses
+  {PE}
+  PE.Types.Composite,
+  {Delphi}
+  System.SysUtils;
+
 { Rando }
 
 class function Rando_TheUntrustworthy.NonDefaultValue<T>: T;
@@ -28,6 +34,7 @@ begin
   Result := System.Default(T);
   var ATypeInfo: PTypeInfo := System.TypeInfo(T);
   System.Assert(System.Assigned(ATypeInfo), 'Rando cannot continue because the provided type T does not seem to generate type info');
+
   case System.GetTypeKind(T) of
     tkInteger, tkWideChar:
       begin
@@ -42,8 +49,14 @@ begin
         end;
       end;
     tkInt64: Result := TValue.From<UInt64>((UInt64(Random32Proc) shl 32) or UInt64(Random32Proc)).AsType<T>();
+    tkRecord:
+      if (System.TypeInfo(MultiChar) = System.TypeInfo(T)) then
+        Result := TValue.From<MultiChar>(MultiChar.Create(TGUID.NewGuid().ToString)).AsType<T>()
+      else
+        System.Assert(False, 'Rando only understands how to handle MultiChar record types');
+    tkUnicodeString: Result := TValue.From<string>(TGUID.NewGuid().ToString).AsType<T>();
   else
-    System.Assert(False, 'Rando is not prepared for type kinds other than [tkInteger, tkInt64, tkWideChar]');
+    System.Assert(False, 'Rando is not prepared for type kinds other than [tkInteger, tkInt64, rkRecord, tkWideChar, tkUnicodeString]');
   end;
   System.Assert(Result <> System.Default(T), 'Rando cannot tell a lie (non-default value = default value)');
 end;

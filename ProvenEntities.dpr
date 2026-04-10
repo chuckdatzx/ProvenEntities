@@ -42,6 +42,7 @@ begin
   //just make sure to keep it between the first and last System.Write (that way you can be sure no errors could have occurred)
   PE.Tests.Routines.AllTests.Exercise();
   PE.Tests.Routines.Buckets.DomainTests<T>.Exercise();
+  PE.Tests.CompositeTypes.AllTests.Exercise();
   PE.Tests.FoundationalTypes.AllTests.Exercise();
   PE.Tests.Types.Buckets.TypeTests<T>.Exercise();
   PE.Examples.Delphi.CategorizingWithBuckets.Exercise.AllTests();
