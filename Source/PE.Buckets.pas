@@ -9,8 +9,12 @@ uses
   PE.Types.Composite,
   PE.Types.Foundational;
 
+{$IF (not DelphiTypeIdentityEstablishedAtCompileTime)}
+   {$MESSAGE FATAL 'Unable to continue without compile-time proof established.'}
+{$ENDIF}
+
 {$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime)}
-   {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}
+   {$MESSAGE FATAL 'Unable to continue without compile-time proof established.'}
 {$ENDIF}
 
 type

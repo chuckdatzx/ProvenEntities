@@ -3,7 +3,7 @@ program ProvenEntities;
 Full Declaration of Transparency:
 You should only consider the code under test proven insofar as you agree with everything presented
 (and by "everything presented", I mean from the scope of the compiler all the way through to
-your custom code based on entities from this unit).
+your custom code based on entities from this project).
 
 I'm truly not trying to scare anyone off. I'm perfectly comfortable calling the following proven;
 and I have researched from the compiler to my code. I'm simply recommending that you do the same

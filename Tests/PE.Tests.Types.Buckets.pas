@@ -9,8 +9,8 @@ uses
   PE.Delphi.Rando, //For inlining
   PE.Delphi.TypeIdentity,
   PE.Tests.CompositeTypes,
-  PE.Types.Composite, //For inlining
   PE.Tests.FoundationalTypes,
+  PE.Types.Composite, //For inlining
   PE.Types.Foundational;
 
 {$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime)}

@@ -27,14 +27,12 @@ uses
   {Delphi}
   System.SysUtils;
 
-{ Rando }
-
+{Rando_TheUntrustworthy}
 class function Rando_TheUntrustworthy.NonDefaultValue<T>: T;
 begin
   Result := System.Default(T);
   var ATypeInfo: PTypeInfo := System.TypeInfo(T);
   System.Assert(System.Assigned(ATypeInfo), 'Rando cannot continue because the provided type T does not seem to generate type info');
-
   case System.GetTypeKind(T) of
     tkInteger, tkWideChar:
       begin
