@@ -9,22 +9,29 @@ uses
 type
   DataStream = class sealed
   public
-    class function UniqueElements<T>(const ADataStream: ArrayOf<T>): ArrayOf<T>; inline;
+    ///<summary>Returns true if any single occurrence of Value T is present in ADataStream</summary>
+    class function Contains<T>(const ADataStream: ArrayOf<T>; const Value: T): Boolean; inline; static;
+    ///<summary>Returns an array of T where duplicate values in ADataStream are removed</summary>
+    class function UniqueElements<T>(const ADataStream: ArrayOf<T>): ArrayOf<T>; inline; static;
   end;
 
 implementation
 
-uses
-  {Delphi}
-  System.Generics.Collections;
-
 { DataStream }
+
+class function DataStream.Contains<T>(const ADataStream: ArrayOf<T>; const Value: T): Boolean;
+begin
+  Result := False;
+  for var Each: T in ADataStream do
+    if (Each = Value) then
+      Exit(True);
+end;
 
 class function DataStream.UniqueElements<T>(const ADataStream: ArrayOf<T>): ArrayOf<T>;
 begin
   Result := [];
   for var Each: T in ADataStream do
-    if (not TArray.Contains<T>(Result, Each)) then
+    if (not Contains<T>(Result, Each)) then
       Result := Result + [Each];
 end;
 
