@@ -67,6 +67,15 @@ type
     public
       class procedure Exercise(); static; inline;
     end;
+    Properties = record
+    strict private
+      class procedure TheArrayOfMonoCharReturnsNoMonoCharsWhenAMultiCharIsInitializedToADefaultNativeStringLiteral(); static; inline;
+      class procedure TheArrayOfMonoCharReturnsTheProvidedMonoCharsWhenAMultiCharIsInitializedToNonDefaultStringLiteral(); static; inline;
+    strict private
+      class procedure TheMonoCharsProvidesIndexBasedAccessToEachMonoCharWhenInitializedToANonDefaultStringValue(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
   public
     class procedure Exercise(); static; inline;
   end;
@@ -257,6 +266,7 @@ begin
   AssignmentOperator.Exercise();
   &Constructor.Exercise();
   EqualityOperator.Exercise();
+  Properties.Exercise();
 end;
 
 {MultiCharTests.AssignmentOperator}
@@ -375,9 +385,46 @@ begin
   var LeftData: ArrayOf<MonoChar> := Left.ArrayOfMonoChar;
   var RightData: ArrayOf<MonoChar> := Right.ArrayOfMonoChar;
   System.Assert(System.Length(LeftData) = System.Length(RightData));
-  for var I: NativeInt := System.Low(LeftData) to System.high(LeftData) do
+  for var I: NativeInt := System.Low(LeftData) to System.High(LeftData) do
     System.Assert(Left[I] = Right[I]);
   System.Assert(Left = Right);
+end;
+
+{ MultiCharTests.Properties }
+
+class procedure MultiCharTests.Properties.Exercise;
+begin
+  TheArrayOfMonoCharReturnsNoMonoCharsWhenAMultiCharIsInitializedToADefaultNativeStringLiteral();
+  TheArrayOfMonoCharReturnsTheProvidedMonoCharsWhenAMultiCharIsInitializedToNonDefaultStringLiteral();
+  TheMonoCharsProvidesIndexBasedAccessToEachMonoCharWhenInitializedToANonDefaultStringValue();
+end;
+
+class procedure MultiCharTests.Properties.TheArrayOfMonoCharReturnsNoMonoCharsWhenAMultiCharIsInitializedToADefaultNativeStringLiteral;
+begin
+  var Value: MultiChar := MultiChar(System.Default(string));
+  System.Assert(System.Default(ArrayOf<MonoChar>) = Value.ArrayOfMonoChar);
+end;
+
+class procedure MultiCharTests.Properties.TheArrayOfMonoCharReturnsTheProvidedMonoCharsWhenAMultiCharIsInitializedToNonDefaultStringLiteral;
+begin
+  var Expected: string := Rando_TheUntrustworthy.NonDefaultValue<string>();
+  var AcualString: string;
+  System.Assert(not (System.Default(string) = Expected));
+  var Actual: ArrayOf<MonoChar> := MultiChar.Create(Expected).ArrayOfMonoChar;
+  System.Assert(System.Length(Expected) = System.Length(Actual));
+  for var I: NativeInt := System.Low(Expected) to System.High(Expected) do
+    System.Assert(Expected[I] = Actual[I - 1]);
+end;
+
+class procedure MultiCharTests.Properties.TheMonoCharsProvidesIndexBasedAccessToEachMonoCharWhenInitializedToANonDefaultStringValue;
+begin
+  var Expected: string := Rando_TheUntrustworthy.NonDefaultValue<string>();
+  System.Assert(not (System.Default(string) = Expected));
+  var Actual: MultiChar := MultiChar.Create(Expected);
+  var ActualMonoChars: ArrayOf<MonoChar> := Actual.ArrayOfMonoChar;
+  System.Assert(not (0 = System.Length(ActualMonoChars)));
+  for var I: NaturalNumber := System.Low(ActualMonoChars) to System.High(ActualMonoChars) do
+    System.Assert(ActualMonoChars[I] = Actual[I]);
 end;
 
 end.

@@ -24,8 +24,8 @@ type
     function GetMonoChar(const Index: NativeInt): MonoChar;
   public
     constructor Create(const Content: string);
-    property ArrayOfMonoChar: ArrayOf<MonoChar> read AsArrayOfMonoChar;  //Required by others; still needs testing
-    property MonoChars[const &Index: NativeInt]: MonoChar read GetMonoChar; default;  //Required by others; still needs testing
+    property ArrayOfMonoChar: ArrayOf<MonoChar> read AsArrayOfMonoChar;
+    property MonoChars[const &Index: NativeInt]: MonoChar read GetMonoChar; default;
   end;
 
 type
@@ -56,6 +56,11 @@ begin
   Result := FData[Index];
 end;
 
+class operator MultiChar.Implicit(const Source: string): MultiChar;
+begin
+  Result.FData := ToMonoCharArray(Source);
+end;
+
 class function MultiChar.SameContent(const Left, Right: ArrayOf<MonoChar>): Boolean;
 begin
   Result := (System.Length(Left) = System.Length(Right));
@@ -63,11 +68,6 @@ begin
     for var I: NativeInt := System.Low(Left) to System.High(Left) do
       if (Left[I] <> Right[I]) then
         Exit(False);
-end;
-
-class operator MultiChar.Implicit(const Source: string): MultiChar;
-begin
-  Result.FData := ToMonoCharArray(Source);
 end;
 
 class function MultiChar.ToMonoCharArray(const AString: string): ArrayOf<MonoChar>;
