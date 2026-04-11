@@ -7,7 +7,6 @@ uses
   PE.Buckets,
   PE.Delphi.AssignmentCompatibility,
   PE.Delphi.Rando, //For inlining
-  PE.Delphi.TypeIdentity,
   PE.Types.Composite, //For inlining
   PE.Types.Foundational;
 
@@ -55,13 +54,17 @@ type
     strict private const NonDefaultMonoChar: MonoChar = 'a';
     strict private const NonDefaultMonoChar2: MonoChar = 'b';
     strict private const NonDefaultMonoChar3: MonoChar = 'c';
-    strict private {Empty Data Stream}
+    strict private {Name property is always copied = DataStream(Size: Varied[Empty/Multiple]; Content: default/non-default) by BucketsIn(Length: Varied[Single/Multiple]; Content: default save Name[default/non-default]) by BucketOut(Length: Varied[Matching BucketsIn]; Content: presumably default save Name)}
       class procedure WhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn(); static; inline;
       class procedure WhenGivenAnEmptyDataStreamAndASingleNonDefaultNameDefaultBucketIn(); static; inline;
       class procedure WhenGivenAnEmptyDataStreamAndMultipleDefaultBucketInElements(); static; inline;
       class procedure WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames(); static; inline;
       class procedure WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames(); static; inline;
-    strict private {Multiple Default Data Stream Elements}
+      class procedure WhenGivenMultipleNonDefaultTElementsAsADataStreamAndASingleDefaultBucketIn(); static; inline;
+      class procedure WhenGivenMultipleNonDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn(); static; inline;
+      class procedure WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements(); static; inline;
+      class procedure WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames(); static; inline;
+      class procedure WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames(); static; inline;
       class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleDefaultBucketIn(); static; inline;
       class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn(); static; inline;
       class procedure WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements(); static; inline;
@@ -104,6 +107,9 @@ type
   end;
 
 implementation
+
+uses
+  PE.Delphi.TypeIdentity;
 
 {CategorizeRoutineTests<TypeUnderTest>}
 class procedure CategorizeRoutineTests<TypeUnderTest>.Exercise;
@@ -474,6 +480,11 @@ begin
   WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements();
   WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames();
   WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames();
+  WhenGivenMultipleNonDefaultTElementsAsADataStreamAndASingleDefaultBucketIn();
+  WhenGivenMultipleNonDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn();
+  WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements();
+  WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames();
+  WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames();
 end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn;
@@ -551,6 +562,88 @@ begin
   System.Assert(NonDefaultMonoChar = Actual[Low(Actual)].Name);
   System.Assert(NonDefaultMonoChar2 = Actual[Low(Actual) + 1].Name);
   System.Assert(NonDefaultMonoChar3 = Actual[Low(Actual) + 2].Name);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndASingleDefaultBucketIn;
+begin
+  var NonDefaultElements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
+  System.Assert(3 = System.Length(NonDefaultElements));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements)]));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements) + 1]));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements) + 2]));
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(NonDefaultElements, [System.Default(BucketIn<TypeUnderTest>)]);
+  System.Assert(1 = System.Length(Actual));
+  System.Assert(System.Default(MultiChar) = Actual[System.Low(Actual)].Name);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn;
+begin
+  var Expected: MultiChar := Rando_TheUntrustworthy.NonDefaultValue<MultiChar>();
+  System.Assert(not (System.Default(MultiChar) = Expected));
+  var NonDefaultElements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
+  System.Assert(3 = System.Length(NonDefaultElements));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements)]));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements) + 1]));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements) + 2]));
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(NonDefaultElements, [BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), Expected)]);
+  System.Assert(1 = System.Length(Actual));
+  System.Assert(Expected = Actual[System.Low(Actual)].Name);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements;
+begin
+  var NonDefaultElements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
+  System.Assert(3 = System.Length(NonDefaultElements));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements)]));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements) + 1]));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements) + 2]));
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(NonDefaultElements, [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
+  System.Assert(3 = System.Length(Actual));
+  System.Assert(System.Default(MultiChar) = Actual[System.Low(Actual)].Name);
+  System.Assert(System.Default(MultiChar) = Actual[System.Low(Actual) + 1].Name);
+  System.Assert(System.Default(MultiChar) = Actual[System.Low(Actual) + 2].Name);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames;
+begin
+  var Expected: MultiChar := Rando_TheUntrustworthy.NonDefaultValue<MultiChar>();
+  System.Assert(not (System.Default(MultiChar) = Expected));
+  var NonDefaultElements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
+  System.Assert(3 = System.Length(NonDefaultElements));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements)]));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements) + 1]));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements) + 2]));
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(NonDefaultElements,
+    [BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), Expected), BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), Expected), BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), Expected)]);
+  System.Assert(3 = System.Length(Actual));
+  System.Assert(Expected = Actual[System.Low(Actual)].Name);
+  System.Assert(Expected = Actual[System.Low(Actual) + 1].Name);
+  System.Assert(Expected = Actual[System.Low(Actual) + 2].Name);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames;
+begin
+  var Expected: ArrayOf<MultiChar> := [NonDefaultMonoChar, NonDefaultMonoChar2, NonDefaultMonoChar3];
+  System.Assert(3 = System.Length(Expected));
+  System.Assert(not (System.Default(MultiChar) = Expected[System.Low(Expected)]));
+  System.Assert(not (System.Default(MultiChar) = Expected[System.Low(Expected) + 1]));
+  System.Assert(not (System.Default(MultiChar) = Expected[System.Low(Expected) + 2]));
+  System.Assert(not (Expected[System.Low(Expected)] = Expected[System.Low(Expected) + 1]));
+  System.Assert(not (Expected[System.Low(Expected)] = Expected[System.Low(Expected) + 2]));
+  System.Assert(not (Expected[System.Low(Expected) + 1] = Expected[System.Low(Expected) + 2]));
+  var NonDefaultElements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
+  System.Assert(3 = System.Length(NonDefaultElements));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements)]));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements) + 1]));
+  System.Assert(not (System.Default(TypeUnderTest) = NonDefaultElements[System.Low(NonDefaultElements) + 2]));
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(NonDefaultElements,
+    [BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), Expected[System.Low(Expected)]),
+     BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), Expected[System.Low(Expected) + 1]),
+     BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), Expected[System.Low(Expected) + 2])]);
+  System.Assert(3 = System.Length(Actual));
+  System.Assert(Expected[System.Low(Expected)] = Actual[System.Low(Actual)].Name);
+  System.Assert(Expected[System.Low(Expected) + 1] = Actual[System.Low(Actual) + 1].Name);
+  System.Assert(Expected[System.Low(Expected) + 2] = Actual[System.Low(Actual) + 2].Name);
 end;
 
 { CategorizeRoutineTests<TypeUnderTest>.OrderOfBucketsOutIsDeterminedByBucketsIn }
