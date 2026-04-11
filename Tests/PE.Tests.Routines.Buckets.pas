@@ -20,7 +20,7 @@ type
   public type
     EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues = record
     strict private class function DefaultFocusedGrabbyArm(const Value: TypeUnderTest): Boolean; static; inline;
-    strict private {All Bucket Out Counts Are Zero = DataStream(Size: varied; Content: default/non-default) by BucketsIn(Length: varied; Content: default save GrabbyArm) by BucketOut(Length: varied; Content: presumably default save Count)}
+    strict private {All Bucket Out Counts Are Zero = DataStream(Size: varied; Content: default/non-default) by BucketsIn(Length: varied; Content: default save GrabbyArm[varies by "focus"]) by BucketOut(Length: varied; Content: presumably default save Count)}
       class procedure TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn(); static; inline;
       class procedure TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm(); static; inline;
       class procedure TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn(); static; inline;
@@ -37,13 +37,16 @@ type
       class procedure TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm(); static; inline;
       class procedure TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn(); static; inline;
       class procedure TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm(); static; inline;
-    strict private {Single Bucket :: Count is 1}
-      class procedure TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketWithFocusedGrabbyArm(); static; inline;
-      { TODO -oChuck -cToDo : Increase strength of proof by adding non-default values as well (include multiple non-default buckets where each one is clearly "doing its thing")}
-    strict private {Multiple Buckets :: Count is 1}
-      class procedure AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms(); static; inline;
-    strict private {Multiple Buckets :: Count is 3}
-      class procedure AllCountsAre3WhenGiven3DefaultElementOfTValuesAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms(); static; inline;
+    strict private {All Bucket Out Counts Are 1 = DataStream(Size: varied; Content: default/non-default) by BucketsIn(Length: varied; Content: default save GrabbyArm[varies by "focus"]) by BucketOut(Length: varied; Content: presumably default save Count)}
+      class procedure TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm(); static; inline;
+      class procedure TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndAMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm(); static; inline;
+      class procedure TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveANonDefaultFocusedGrabbyArm(); static; inline;
+      class procedure TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm(); static; inline;
+    strict private {All Bucket Out Counts Are 3 = DataStream(Size: varied; Content: default/non-default) by BucketsIn(Length: varied; Content: default save GrabbyArm[varies by "focus"]) by BucketOut(Length: varied; Content: presumably default save Count)}
+      class procedure TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm(); static; inline;
+      class procedure TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm(); static; inline;
+      class procedure TheBucketOutCountIs3WhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketSaveANonDefaultFocusedGrabbyArm(); static; inline;
+      class procedure TheBucketOutCountIs3WhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm(); static; inline;
     public
       class constructor Create();
       class procedure Exercise(); static; inline;
@@ -198,9 +201,76 @@ begin
 end;
 
 {CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues}
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketWithFocusedGrabbyArm;
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndAMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
+begin
+  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)],
+    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')]);
+  System.Assert(3 = System.Length(Actual));
+  System.Assert(1 = Actual[System.Low(Actual)].Count);
+  System.Assert(1 = Actual[System.Low(Actual) + 1].Count);
+  System.Assert(1 = Actual[System.Low(Actual) + 2].Count);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm();
 begin
   System.Assert(1 = Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')])[0].Count);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveANonDefaultFocusedGrabbyArm;
+begin
+  var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
+  System.Assert(not (Element = System.Default(TypeUnderTest)));
+  System.Assert(1 = Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(function (const Value: TypeUnderTest): Boolean begin Result := (Value = Element) end, '')])[0].Count);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm;
+begin
+  var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
+  var FocusedArm: SmartClaw<TypeUnderTest> := function (const Value: TypeUnderTest): Boolean begin Result := (Value = Element) end;
+  System.Assert(not (Element = System.Default(TypeUnderTest)));
+  var Actual := Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(FocusedArm, ''), BucketIn<TypeUnderTest>.Create(FocusedArm, ''), BucketIn<TypeUnderTest>.Create(FocusedArm, '')]);
+  System.Assert(3 = System.Length(Actual));
+  System.Assert(1 = Actual[System.Low(Actual)].Count);
+  System.Assert(1 = Actual[System.Low(Actual) + 1].Count);
+  System.Assert(1 = Actual[System.Low(Actual) + 2].Count);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm;
+begin
+  var Actual := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')]);
+  System.Assert(1 = System.Length(Actual));
+  System.Assert(3 = Actual[System.Low(Actual)].Count);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
+begin
+  var Actual := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
+    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')]);
+  System.Assert(3 = System.Length(Actual));
+  System.Assert(3 = Actual[System.Low(Actual)].Count);
+  System.Assert(3 = Actual[System.Low(Actual) + 1].Count);
+  System.Assert(3 = Actual[System.Low(Actual) + 2].Count);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm();
+begin
+  var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
+  var FocusedArm: SmartClaw<TypeUnderTest> := function (const Value: TypeUnderTest): Boolean begin Result := (Value = Element) end;
+  System.Assert(not (Element = System.Default(TypeUnderTest)));
+  var Actual := Routines.Categorize<TypeUnderTest>([Element, Element, Element], [BucketIn<TypeUnderTest>.Create(FocusedArm, ''), BucketIn<TypeUnderTest>.Create(FocusedArm, ''), BucketIn<TypeUnderTest>.Create(FocusedArm, '')]);
+  System.Assert(3 = System.Length(Actual));
+  System.Assert(3 = Actual[System.Low(Actual)].Count);
+  System.Assert(3 = Actual[System.Low(Actual) + 1].Count);
+  System.Assert(3 = Actual[System.Low(Actual) + 2].Count);
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketSaveANonDefaultFocusedGrabbyArm;
+begin
+  var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
+  System.Assert(not (Element = System.Default(TypeUnderTest)));
+  var Actual := Routines.Categorize<TypeUnderTest>([Element, Element, Element], [BucketIn<TypeUnderTest>.Create(function (const Value: TypeUnderTest): Boolean begin Result := Value = Element; end, '')]);
+  System.Assert(1 = System.Length(Actual));
+  System.Assert(3 = Actual[System.Low(Actual)].Count);
 end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn;
@@ -348,24 +418,6 @@ begin
   System.Assert(0 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms;
-begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)],
-    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')]);
-  System.Assert(3 = System.Length(Actual));
-  for var Each: BucketOut in Actual do
-    System.Assert(1 = Each.Count);
-end;
-
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.AllCountsAre3WhenGiven3DefaultElementOfTValuesAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms;
-begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
-    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')]);
-  System.Assert(3 = System.Length(Actual));
-  for var Each: BucketOut in Actual do
-    System.Assert(3 = Each.Count);
-end;
-
 class constructor CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.Create;
 begin
   System.Assert(DefaultFocusedGrabbyArm(System.Default(TypeUnderTest)));
@@ -387,14 +439,16 @@ begin
   TheBucketOutCountIsZeroWhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm();
   TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn();
   TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm();
-
   TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketIn();
   TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm();
-
-  TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketWithFocusedGrabbyArm();
-
-  AllCountsAre1WhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms();
-  AllCountsAre3WhenGiven3DefaultElementOfTValuesAsADataStreamAndMultipleDefaultBucketsInAllWithIdenticalFocusedGrabbyArms();
+  TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm();
+  TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndAMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm();
+  TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveANonDefaultFocusedGrabbyArm();
+  TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm();
+  TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm();
+  TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm();
+  TheBucketOutCountIs3WhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketSaveANonDefaultFocusedGrabbyArm();
+  TheBucketOutCountIs3WhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm();
 end;
 
 class function CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.DefaultFocusedGrabbyArm(const Value: TypeUnderTest): Boolean;
