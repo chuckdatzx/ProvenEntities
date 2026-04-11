@@ -204,7 +204,7 @@ end;
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndAMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)],
-    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')]);
+    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)]);
   System.Assert(3 = System.Length(Actual));
   System.Assert(1 = Actual[System.Low(Actual)].Count);
   System.Assert(1 = Actual[System.Low(Actual) + 1].Count);
@@ -213,14 +213,14 @@ end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm();
 begin
-  System.Assert(1 = Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')])[0].Count);
+  System.Assert(1 = Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)])[0].Count);
 end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveANonDefaultFocusedGrabbyArm;
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
-  System.Assert(1 = Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(function (const Value: TypeUnderTest): Boolean begin Result := (Value = Element) end, '')])[0].Count);
+  System.Assert(1 = Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(function (const Value: TypeUnderTest): Boolean begin Result := (Value = Element) end)])[0].Count);
 end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm;
@@ -228,7 +228,7 @@ begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   var FocusedArm: SmartClaw<TypeUnderTest> := function (const Value: TypeUnderTest): Boolean begin Result := (Value = Element) end;
   System.Assert(not (Element = System.Default(TypeUnderTest)));
-  var Actual := Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(FocusedArm, ''), BucketIn<TypeUnderTest>.Create(FocusedArm, ''), BucketIn<TypeUnderTest>.Create(FocusedArm, '')]);
+  var Actual := Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(FocusedArm), BucketIn<TypeUnderTest>.Create(FocusedArm), BucketIn<TypeUnderTest>.Create(FocusedArm)]);
   System.Assert(3 = System.Length(Actual));
   System.Assert(1 = Actual[System.Low(Actual)].Count);
   System.Assert(1 = Actual[System.Low(Actual) + 1].Count);
@@ -237,7 +237,7 @@ end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm;
 begin
-  var Actual := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')]);
+  var Actual := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)]);
   System.Assert(1 = System.Length(Actual));
   System.Assert(3 = Actual[System.Low(Actual)].Count);
 end;
@@ -245,7 +245,7 @@ end;
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
 begin
   var Actual := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
-    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')]);
+    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)]);
   System.Assert(3 = System.Length(Actual));
   System.Assert(3 = Actual[System.Low(Actual)].Count);
   System.Assert(3 = Actual[System.Low(Actual) + 1].Count);
@@ -257,7 +257,7 @@ begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   var FocusedArm: SmartClaw<TypeUnderTest> := function (const Value: TypeUnderTest): Boolean begin Result := (Value = Element) end;
   System.Assert(not (Element = System.Default(TypeUnderTest)));
-  var Actual := Routines.Categorize<TypeUnderTest>([Element, Element, Element], [BucketIn<TypeUnderTest>.Create(FocusedArm, ''), BucketIn<TypeUnderTest>.Create(FocusedArm, ''), BucketIn<TypeUnderTest>.Create(FocusedArm, '')]);
+  var Actual := Routines.Categorize<TypeUnderTest>([Element, Element, Element], [BucketIn<TypeUnderTest>.Create(FocusedArm), BucketIn<TypeUnderTest>.Create(FocusedArm), BucketIn<TypeUnderTest>.Create(FocusedArm)]);
   System.Assert(3 = System.Length(Actual));
   System.Assert(3 = Actual[System.Low(Actual)].Count);
   System.Assert(3 = Actual[System.Low(Actual) + 1].Count);
@@ -268,7 +268,7 @@ class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterm
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
-  var Actual := Routines.Categorize<TypeUnderTest>([Element, Element, Element], [BucketIn<TypeUnderTest>.Create(function (const Value: TypeUnderTest): Boolean begin Result := Value = Element; end, '')]);
+  var Actual := Routines.Categorize<TypeUnderTest>([Element, Element, Element], [BucketIn<TypeUnderTest>.Create(function (const Value: TypeUnderTest): Boolean begin Result := Value = Element; end)]);
   System.Assert(1 = System.Length(Actual));
   System.Assert(3 = Actual[System.Low(Actual)].Count);
 end;
@@ -280,7 +280,7 @@ end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm;
 begin
-  System.Assert(0 = Routines.Categorize<TypeUnderTest>([], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')])[0].Count);
+  System.Assert(0 = Routines.Categorize<TypeUnderTest>([], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)])[0].Count);
 end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn;
@@ -295,7 +295,7 @@ end;
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([],
-    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')]);
+    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)]);
   System.Assert(3 = System.Length(Actual));
   System.Assert(0 = Actual[System.Low(Actual)].Count);
   System.Assert(0 = Actual[System.Low(Actual) + 1].Count);
@@ -320,14 +320,14 @@ class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterm
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
-  System.Assert(0 = Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), '')])[0].Count);
+  System.Assert(0 = Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>))])[0].Count);
 end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleNonDefaultElementOfTAsADataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm;
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
-  System.Assert(0 = Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')])[0].Count);
+  System.Assert(0 = Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)])[0].Count);
 end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsIn;
@@ -335,9 +335,9 @@ begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([Element],
-    [BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), ''),
-    BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), ''),
-    BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), '')]);
+    [BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>)),
+    BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>)),
+    BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>))]);
   System.Assert(3 = System.Length(Actual));
   System.Assert(0 = Actual[System.Low(Actual)].Count);
   System.Assert(0 = Actual[System.Low(Actual) + 1].Count);
@@ -349,9 +349,9 @@ begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([Element],
-    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''),
-    BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''),
-    BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')]);
+    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm),
+    BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm),
+    BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)]);
   System.Assert(3 = System.Length(Actual));
   System.Assert(0 = Actual[System.Low(Actual)].Count);
   System.Assert(0 = Actual[System.Low(Actual) + 1].Count);
@@ -379,7 +379,7 @@ begin
   System.Assert(3 = System.Length(Elements));
   for var Each: TypeUnderTest in Elements do
     System.Assert(not (Each = System.Default(TypeUnderTest)));
-  System.Assert(0 = Routines.Categorize<TypeUnderTest>(Elements, [BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), '')])[0].Count);
+  System.Assert(0 = Routines.Categorize<TypeUnderTest>(Elements, [BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>))])[0].Count);
 end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm;
@@ -388,7 +388,7 @@ begin
   System.Assert(3 = System.Length(Elements));
   for var Each: TypeUnderTest in Elements do
     System.Assert(not (Each = System.Default(TypeUnderTest)));
-  System.Assert(0 = Routines.Categorize<TypeUnderTest>(Elements, [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')])[0].Count);
+  System.Assert(0 = Routines.Categorize<TypeUnderTest>(Elements, [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)])[0].Count);
 end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn;
@@ -411,7 +411,7 @@ begin
   for var Each: TypeUnderTest in Elements do
     System.Assert(not (Each = System.Default(TypeUnderTest)));
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(Elements,
-    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, ''), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm, '')]);
+    [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)]);
   System.Assert(3 = System.Length(Actual));
   System.Assert(0 = Actual[System.Low(Actual)].Count);
   System.Assert(0 = Actual[System.Low(Actual) + 1].Count);

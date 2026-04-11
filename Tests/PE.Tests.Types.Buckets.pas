@@ -31,13 +31,34 @@ type
       class procedure IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesAll3PropertyValues(); static; inline;
     end;
     &Constructor<TypeUnderTest> = record
-    public
-      class procedure InitializesTheGrabbyArmPropertyWhenGivenADefaultValue(); static; inline;
-      class procedure InitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue(); static; inline;
-      class procedure InitializesTheNamePropertyWhenGivenADefaultValue(); static; inline;
-      class procedure InitializesTheNamePropertyWhenGivenANonDefaultValue(); static; inline;
-      class procedure InitializesThePredictionPropertyWhenGivenADefaultValue(); static; inline;
-      class procedure InitializesThePredictionPropertyWhenGivenANonDefaultValue(); static; inline;
+    public type
+      FoundationalTypes = record
+      public type
+        Signature1 = record
+        strict private
+          class procedure InitializesTheGrabbyArmPropertyWhenGivenADefaultSmartClawOfTValue(); static; inline;
+          class procedure InitializesTheGrabbyArmPropertyWhenGivenANonDefaultSmartClawOfTValue(); static; inline;
+          class procedure InitializesTheNamePropertyWhenGivenADefaultMultiCharValue(); static; inline;
+          class procedure InitializesTheNamePropertyWhenGivenANonDefaultMultiCharValue(); static; inline;
+          class procedure InitializesThePredictionPropertyWhenGivenADefaultNaturalNumberValue(); static; inline;
+          class procedure InitializesThePredictionPropertyWhenGivenANonDefaultNaturalNumberValue(); static; inline;
+        public
+          class procedure Exercise(); static; inline;
+        end;
+        Signature2 = record
+        strict private
+          class procedure InitializesTheGrabbyArmPropertyWhenGivenADefaultSmartClawOfTValue(); static; inline;
+          class procedure InitializesTheGrabbyArmPropertyWhenGivenANonDefaultSmartClawOfTValue(); static; inline;
+          class procedure InitializesTheNamePropertyWhenGivenADefaultArrayOfMonoCharValue(); static; inline;
+          class procedure InitializesTheNamePropertyWhenGivenANonDefaultArrayOfMonoCharValue(); static; inline;
+          class procedure InitializesThePredictionPropertyWhenGivenADefaultNaturalNumberValue(); static; inline;
+          class procedure InitializesThePredictionPropertyWhenGivenANonDefaultNaturalNumberValue(); static; inline;
+        public
+          class procedure Exercise(); static; inline;
+        end;
+      public
+        class procedure Exercise(); static; inline;
+      end;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -122,46 +143,7 @@ end;
 {BucketInTests.Constructor<TypeUnderTest>}
 class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.Exercise;
 begin
-  InitializesTheGrabbyArmPropertyWhenGivenADefaultValue();
-  InitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue();
-  InitializesTheNamePropertyWhenGivenADefaultValue();
-  InitializesTheNamePropertyWhenGivenANonDefaultValue();
-  InitializesThePredictionPropertyWhenGivenADefaultValue();
-  InitializesThePredictionPropertyWhenGivenANonDefaultValue();
-end;
-
-class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesTheGrabbyArmPropertyWhenGivenADefaultValue;
-begin
-  System.Assert(System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), '').GrabbyArm);
-end;
-
-class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesTheGrabbyArmPropertyWhenGivenANonDefaultValue;
-begin
-  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end, '').GrabbyArm));
-end;
-
-class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesTheNamePropertyWhenGivenADefaultValue;
-begin
-  System.Assert(System.Default(MultiChar) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(MultiChar)).Name);
-end;
-
-class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesTheNamePropertyWhenGivenANonDefaultValue;
-const Expected: MonoChar = 'a';
-begin
-  System.Assert(not (System.Default(MultiChar) = Expected));
-  System.Assert(Expected = BucketIn<T>.Create(nil, Expected).Name);
-end;
-
-class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesThePredictionPropertyWhenGivenADefaultValue;
-begin
-  System.Assert(System.Default(NaturalNumber) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(MultiChar), System.Default(NaturalNumber)).Prediction);
-end;
-
-class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.InitializesThePredictionPropertyWhenGivenANonDefaultValue;
-begin
-  var Expected: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
-  System.Assert(not (System.Default(NaturalNumber) = Expected));
-  System.Assert(Expected = BucketIn<T>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(MultiChar), Expected).Prediction);
+  FoundationalTypes.Exercise();
 end;
 
 {BucketInTests.EqualityOperator<TypeUnderTest>}
@@ -467,6 +449,106 @@ begin
 //  ArrayOfTests<BucketOut>.Exercise(); //I get an internal error (both Win32/Win64)
   BucketInTests<T>.Exercise();
   BucketOutTests.Exercise();
+end;
+
+{ BucketInTests<T>.Constructor<TypeUnderTest>.FoundationalTypes }
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Exercise;
+begin
+  Signature1.Exercise();
+  Signature2.Exercise();
+end;
+
+{ BucketInTests<T>.Constructor<TypeUnderTest>.FoundationalTypes.Signature1 }
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature1.Exercise;
+begin
+  Signature1.InitializesTheGrabbyArmPropertyWhenGivenADefaultSmartClawOfTValue();
+  Signature1.InitializesTheGrabbyArmPropertyWhenGivenANonDefaultSmartClawOfTValue();
+  Signature1.InitializesTheNamePropertyWhenGivenADefaultMultiCharValue();
+  Signature1.InitializesTheNamePropertyWhenGivenANonDefaultMultiCharValue();
+  Signature1.InitializesThePredictionPropertyWhenGivenADefaultNaturalNumberValue();
+  Signature1.InitializesThePredictionPropertyWhenGivenANonDefaultNaturalNumberValue();
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature1.InitializesTheGrabbyArmPropertyWhenGivenADefaultSmartClawOfTValue;
+begin
+  System.Assert(System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(MultiChar), System.Default(NaturalNumber)).GrabbyArm);
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature1.InitializesTheGrabbyArmPropertyWhenGivenANonDefaultSmartClawOfTValue;
+begin
+  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end, System.Default(MultiChar), System.Default(NaturalNumber)).GrabbyArm));
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature1.InitializesTheNamePropertyWhenGivenADefaultMultiCharValue;
+begin
+  System.Assert(System.Default(MultiChar) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(MultiChar), System.Default(NaturalNumber)).Name);
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature1.InitializesTheNamePropertyWhenGivenANonDefaultMultiCharValue;
+const Expected: MonoChar = 'a';
+begin
+  System.Assert(not (System.Default(MultiChar) = Expected));
+  System.Assert(Expected = BucketIn<T>.Create(System.Default(SmartClaw<TypeUnderTest>), Expected, System.Default(NaturalNumber)).Name);
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature1.InitializesThePredictionPropertyWhenGivenADefaultNaturalNumberValue;
+begin
+  System.Assert(System.Default(NaturalNumber) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(MultiChar), System.Default(NaturalNumber)).Prediction);
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature1.InitializesThePredictionPropertyWhenGivenANonDefaultNaturalNumberValue;
+begin
+  var Expected: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
+  System.Assert(not (System.Default(NaturalNumber) = Expected));
+  System.Assert(Expected = BucketIn<T>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(MultiChar), Expected).Prediction);
+end;
+
+{ BucketInTests<T>.Constructor<TypeUnderTest>.FoundationalTypes.Signature2 }
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature2.Exercise;
+begin
+  InitializesTheGrabbyArmPropertyWhenGivenADefaultSmartClawOfTValue();
+  InitializesTheGrabbyArmPropertyWhenGivenANonDefaultSmartClawOfTValue();
+  InitializesTheNamePropertyWhenGivenADefaultArrayOfMonoCharValue();
+  InitializesTheNamePropertyWhenGivenANonDefaultArrayOfMonoCharValue();
+  InitializesThePredictionPropertyWhenGivenADefaultNaturalNumberValue();
+  InitializesThePredictionPropertyWhenGivenANonDefaultNaturalNumberValue();
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature2.InitializesTheGrabbyArmPropertyWhenGivenADefaultSmartClawOfTValue;
+begin
+  System.Assert(System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(ArrayOf<MonoChar>), System.Default(NaturalNumber)).GrabbyArm);
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature2.InitializesTheGrabbyArmPropertyWhenGivenANonDefaultSmartClawOfTValue;
+begin
+  System.Assert(not (System.Default(SmartClaw<TypeUnderTest>) = BucketIn<TypeUnderTest>.Create(function (const A: TypeUnderTest): Boolean begin Result := False end, System.Default(ArrayOf<MonoChar>), System.Default(NaturalNumber)).GrabbyArm));
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature2.InitializesTheNamePropertyWhenGivenADefaultArrayOfMonoCharValue;
+begin
+  System.Assert(System.Default(MultiChar) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(ArrayOf<MonoChar>), System.Default(NaturalNumber)).Name);
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature2.InitializesThePredictionPropertyWhenGivenADefaultNaturalNumberValue();
+begin
+  System.Assert(System.Default(NaturalNumber) = BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(ArrayOf<MonoChar>), System.Default(NaturalNumber)).Prediction);
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature2.InitializesTheNamePropertyWhenGivenANonDefaultArrayOfMonoCharValue;
+begin
+  var Expected: ArrayOf<MonoChar> := Rando_TheUntrustworthy.NonDefaultValue<MultiChar>().ArrayOfMonoChar;
+  System.Assert(not (System.Default(ArrayOf<MonoChar>) = Expected));
+  System.Assert(Expected = BucketIn<T>.Create(System.Default(SmartClaw<TypeUnderTest>), Expected, System.Default(NaturalNumber)).Name);
+end;
+
+class procedure BucketInTests<T>.&Constructor<TypeUnderTest>.FoundationalTypes.Signature2.InitializesThePredictionPropertyWhenGivenANonDefaultNaturalNumberValue;
+begin
+  var Expected: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
+  System.Assert(not (System.Default(NaturalNumber) = Expected));
+  System.Assert(Expected = BucketIn<T>.Create(System.Default(SmartClaw<TypeUnderTest>), System.Default(ArrayOf<MonoChar>), Expected).Prediction);
 end;
 
 end.

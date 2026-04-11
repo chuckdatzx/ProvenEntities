@@ -34,7 +34,8 @@ type
     property Name: MultiChar read FName write SetName;
     property Prediction: NaturalNumber read FPrediction write FPrediction;
   public
-    constructor Create(const GrabbyArm: SmartClaw<T>; const Name: MultiChar; const Prediction: NaturalNumber = System.Default(NaturalNumber));
+    constructor Create(const GrabbyArm: SmartClaw<T>; const Name: MultiChar; const Prediction: NaturalNumber = System.Default(NaturalNumber)); overload;
+    constructor Create(const GrabbyArm: SmartClaw<T>; const Name: ArrayOf<MonoChar> = []; const Prediction: NaturalNumber = System.Default(NaturalNumber)); overload;
   end;
 
   ///<summary>Contains results of operations performed on a BucketIn{T} instance</summary>
@@ -69,6 +70,11 @@ end;
 class constructor BucketIn<T>.Create;
 begin
   System.Assert(GenericRecordsOf<T>.AreSymmetricallyAssignmentCompatible());
+end;
+
+constructor BucketIn<T>.Create(const GrabbyArm: SmartClaw<T>; const Name: ArrayOf<MonoChar>; const Prediction: NaturalNumber);
+begin
+  Create(GrabbyArm, MultiChar.Create(Name), Prediction);
 end;
 
 class operator BucketIn<T>.Equal(const Left, Right: BucketIn<T>): Boolean;

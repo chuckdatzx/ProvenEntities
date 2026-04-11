@@ -20,6 +20,7 @@ type
     class function SameContent(const Left, Right: ArrayOf<MonoChar>): Boolean; inline; static;
     class function ToMonoCharArray(const AString: string): ArrayOf<MonoChar>; inline; static;
   public
+    class operator Equal(const Left: ArrayOf<MonoChar>; const Right: MultiChar): Boolean; static; inline;
     class operator Equal(const Left, Right: MultiChar): Boolean; static; inline;
     class operator Implicit(const Source: string): MultiChar; static; inline;
   strict private
@@ -28,7 +29,8 @@ type
   strict private
     function GetMonoChar(const Index: NativeInt): MonoChar;
   public
-    constructor Create(const Content: string);
+    constructor Create(const Content: string); overload;
+    constructor Create(const Content: ArrayOf<MonoChar>); overload;
     property ArrayOfMonoChar: ArrayOf<MonoChar> read AsArrayOfMonoChar;
     property MonoChars[const &Index: NativeInt]: MonoChar read GetMonoChar; default;
   end;
@@ -47,6 +49,16 @@ end;
 constructor MultiChar.Create(const Content: string);
 begin
   FData := ToMonoCharArray(Content);
+end;
+
+constructor MultiChar.Create(const Content: ArrayOf<MonoChar>);
+begin
+  FData := Content;
+end;
+
+class operator MultiChar.Equal(const Left: ArrayOf<MonoChar>; const Right: MultiChar): Boolean;
+begin
+  Result := SameContent(Left, Right.FData);
 end;
 
 class operator MultiChar.Equal(const Left, Right: MultiChar): Boolean;

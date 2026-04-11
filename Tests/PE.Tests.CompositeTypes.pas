@@ -51,8 +51,20 @@ type
       class procedure Exercise(); static; inline;
     end;
     &Constructor = record
-    strict private
-      class procedure CanBeInitializedWithANativeStringLiteral(); static; inline;
+    public type
+      FoundationalTypes = record
+      strict private
+        class procedure IsInitializedUsingADefaultArrayOfMultiChar(); static; inline;
+        class procedure IsInitializedUsingANonDefaultArrayOfMultiChar(); static; inline;
+      public
+        class procedure Exercise(); static; inline;
+      end;
+      NativeDelphiTypes = record
+        class procedure IsInitializedUsingANativeDefaultStringLiteral(); static; inline;
+        class procedure IsInitializedUsingANativeNonDefaultStringLiteral(); static; inline;
+      public
+        class procedure Exercise(); static; inline;
+      end;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -307,22 +319,10 @@ begin
   System.Assert(Expected = Actual);
 end;
 
-{MultiCharTests.Constructor}
-class procedure MultiCharTests.&Constructor.CanBeInitializedWithANativeStringLiteral;
-const
-  Expected = 'This seems unique enough.';
-begin
-  System.Assert(not (System.Default(string) = Expected));
-  var ActualEmpty: MultiChar := System.Default(MultiChar);
-  System.Assert(System.Default(MultiChar) = ActualEmpty);
-  var Actual: MultiChar := MultiChar.Create(Expected);
-  System.Assert(not (System.Default(MultiChar) = Actual));
-  System.Assert(Expected = Actual);
-end;
-
 class procedure MultiCharTests.&Constructor.Exercise;
 begin
-  CanBeInitializedWithANativeStringLiteral();
+  FoundationalTypes.Exercise();
+  NativeDelphiTypes.Exercise();
 end;
 
 {MultiCharTests.EqualityOperator}
@@ -425,6 +425,56 @@ begin
   System.Assert(not (0 = System.Length(ActualMonoChars)));
   for var I: NaturalNumber := System.Low(ActualMonoChars) to System.High(ActualMonoChars) do
     System.Assert(ActualMonoChars[I] = Actual[I]);
+end;
+
+{ MultiCharTests.Constructor.NativeDelphiTypes }
+
+class procedure MultiCharTests.&Constructor.NativeDelphiTypes.Exercise;
+begin
+  IsInitializedUsingANativeDefaultStringLiteral();
+  IsInitializedUsingANativeNonDefaultStringLiteral();
+end;
+
+class procedure MultiCharTests.&Constructor.NativeDelphiTypes.IsInitializedUsingANativeDefaultStringLiteral;
+begin
+  var Actual: MultiChar := System.Default(string);
+  System.Assert(System.Default(string) = Actual);
+  System.Assert(System.Default(MultiChar) = Actual);
+end;
+
+class procedure MultiCharTests.&Constructor.NativeDelphiTypes.IsInitializedUsingANativeNonDefaultStringLiteral;
+const
+  Expected = 'This seems unique enough.';
+begin
+  System.Assert(not (System.Default(string) = Expected));
+  var ActualEmpty: MultiChar := System.Default(MultiChar);
+  System.Assert(System.Default(MultiChar) = ActualEmpty);
+  var Actual: MultiChar := MultiChar.Create(Expected);
+  System.Assert(not (System.Default(MultiChar) = Actual));
+  System.Assert(Expected = Actual);
+end;
+
+{ MultiCharTests.Constructor.FoundationalTypes }
+
+class procedure MultiCharTests.&Constructor.FoundationalTypes.Exercise;
+begin
+  IsInitializedUsingADefaultArrayOfMultiChar();
+  IsInitializedUsingANonDefaultArrayOfMultiChar();
+end;
+
+class procedure MultiCharTests.&Constructor.FoundationalTypes.IsInitializedUsingADefaultArrayOfMultiChar;
+begin
+  var Actual: MultiChar := MultiChar.Create(System.Default(ArrayOf<MultiChar>));
+  System.Assert(System.Default(ArrayOf<MultiChar>) = Actual);
+  System.Assert(System.Default(MultiChar) = Actual);
+end;
+
+class procedure MultiCharTests.&Constructor.FoundationalTypes.IsInitializedUsingANonDefaultArrayOfMultiChar;
+begin
+  var Expected: ArrayOf<MonoChar> := MultiChar.Create('Hello world').ArrayOfMonoChar;
+  System.Assert(not (System.Default(ArrayOf<MonoChar>) = Expected));
+  var Actual: MultiChar := MultiChar.Create(Expected);
+  System.Assert(Expected = Actual);
 end;
 
 end.
