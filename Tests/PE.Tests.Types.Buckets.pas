@@ -635,6 +635,11 @@ end;
 {TypeTests<T>}
 class procedure TypeTests<T>.Exercise();
 begin
+  {BucketIn<T> by Foundational Types}
+  BucketInTests<Digit>.Exercise();
+  BucketInTests<NaturalNumber>.Exercise();
+  BucketInTests<NaturalNumber32>.Exercise();
+  BucketInTests<NaturalNumber64>.Exercise();
 //  ArrayOfTests<BucketIn<T>>.Exercise(); //I would love to include these, but every time I do,
 //  ExecutableSpecification_ArrayOf<BucketOut>.Exercise(); //I get an internal error (both Win32/Win64)
   BucketInTests<T>.Exercise();

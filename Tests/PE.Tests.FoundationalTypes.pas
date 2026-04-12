@@ -26,6 +26,39 @@ type
   end;
 
 type
+  {$REGION 'Digit'}
+  ExecutableSpecification_Digit = record
+  public type
+    AssignmentCompatibility = record
+    strict private
+      class procedure IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues_ForAllValuesOfDigit(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    Boundaries = record
+    strict private
+      class procedure TheLowestPossibleValueIsZero(); static; inline;
+      class procedure TheHighestPossibleValueIs9(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    Defaults = record
+    strict private
+      class procedure ValueIsZero(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    TypeIdentity = record
+    strict private
+      class procedure HasItsOwnNonNullTypeIdentity(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+  public
+    class procedure Exercise(); static; inline;
+  end;
+  {$ENDREGION}
+
   {$REGION 'MonoChar'}
   ExecutableSpecification_MonoChar = record
   public type
@@ -78,6 +111,16 @@ type
     Defaults = record
     strict private
       class procedure ValueIsZero(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    HelperAddedFunctionality = record
+    strict private {Min property}
+      class procedure TheMinPropertyReturnsZeroForADefaultInstance(); static; inline;
+      class procedure TheMinPropertyReturnsZeroForANonDefaultInstance(); static; inline;
+    strict private {Max property}
+      class procedure TheMaxPropertyReturns4294967295ForADefaultInstance(); static; inline;
+      class procedure TheMaxPropertyReturns4294967295ForANonDefaultInstance(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -143,6 +186,7 @@ implementation
 {AllTests}
 class procedure AllTests.Exercise();
 begin
+  ExecutableSpecification_Digit.Exercise();
   ExecutableSpecification_MonoChar.Exercise();
   ExecutableSpecification_NaturalNumber.Exercise();
   ExecutableSpecification_NaturalNumber32.Exercise();
@@ -226,6 +270,7 @@ begin
   AssignmentCompatibility.Exercise();
   Boundaries.Exercise();
   Defaults.Exercise();
+  HelperAddedFunctionality.Exercise();
   TypeIdentity.Exercise();
 end;
 
@@ -376,6 +421,119 @@ class procedure ExecutableSpecification_NaturalNumber64.TypeIdentity.HasItsOwnTy
 begin
   TypeEquivalenceInquiry<NaturalNumber64>.HasANonNullSystemDotTypeInfoValue();
   TypeEquivalenceInquiry<NaturalNumber64>.DoesNotShareTypeIdentityWith<UInt64>();
+end;
+
+{ ExecutableSpecification_NaturalNumber.HelperAddedFunctionality }
+
+class procedure ExecutableSpecification_NaturalNumber.HelperAddedFunctionality.Exercise;
+begin
+  TheMaxPropertyReturns4294967295ForADefaultInstance();
+  TheMaxPropertyReturns4294967295ForANonDefaultInstance();
+  TheMinPropertyReturnsZeroForADefaultInstance();
+  TheMinPropertyReturnsZeroForANonDefaultInstance
+end;
+
+class procedure ExecutableSpecification_NaturalNumber.HelperAddedFunctionality.TheMaxPropertyReturns4294967295ForADefaultInstance;
+begin
+  var Value: NaturalNumber := System.Default(NaturalNumber);
+  System.Assert(System.Default(NaturalNumber) = Value);
+  System.Assert(4294967295 = Value.Max);
+end;
+
+class procedure ExecutableSpecification_NaturalNumber.HelperAddedFunctionality.TheMaxPropertyReturns4294967295ForANonDefaultInstance;
+begin
+  var Value: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
+  System.Assert(not (System.Default(NaturalNumber) = Value));
+  System.Assert(4294967295 = Value.Max);
+end;
+
+class procedure ExecutableSpecification_NaturalNumber.HelperAddedFunctionality.TheMinPropertyReturnsZeroForADefaultInstance;
+begin
+  var Value: NaturalNumber := System.Default(NaturalNumber);
+  System.Assert(System.Default(NaturalNumber) = Value);
+  System.Assert(0 = Value.Min);
+end;
+
+class procedure ExecutableSpecification_NaturalNumber.HelperAddedFunctionality.TheMinPropertyReturnsZeroForANonDefaultInstance;
+begin
+  var Value: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
+  System.Assert(not (System.Default(NaturalNumber) = Value));
+  System.Assert(0 = Value.Min);
+end;
+
+{ ExecutableSpecification_Digit.Boundaries }
+
+class procedure ExecutableSpecification_Digit.Boundaries.Exercise;
+begin
+  TheLowestPossibleValueIsZero();
+  TheHighestPossibleValueIs9();
+end;
+
+class procedure ExecutableSpecification_Digit.Boundaries.TheHighestPossibleValueIs9();
+begin
+  System.Assert(0 = System.Low(Digit));
+end;
+
+class procedure ExecutableSpecification_Digit.Boundaries.TheLowestPossibleValueIsZero();
+begin
+  System.Assert(9 = System.High(Digit));
+end;
+
+{ ExecutableSpecification_Digit }
+
+class procedure ExecutableSpecification_Digit.Exercise;
+begin
+  AssignmentCompatibility.Exercise();
+  Boundaries.Exercise();
+  Defaults.Exercise();
+  TypeIdentity.Exercise();
+end;
+
+{ ExecutableSpecification_Digit.Defaults }
+
+class procedure ExecutableSpecification_Digit.Defaults.Exercise();
+begin
+  ValueIsZero();
+end;
+
+class procedure ExecutableSpecification_Digit.Defaults.ValueIsZero();
+begin
+  System.Assert(0 = System.Default(Digit));
+end;
+
+{ ExecutableSpecification_Digit.TypeIdentity }
+
+class procedure ExecutableSpecification_Digit.TypeIdentity.Exercise();
+begin
+  HasItsOwnNonNullTypeIdentity();
+end;
+
+class procedure ExecutableSpecification_Digit.TypeIdentity.HasItsOwnNonNullTypeIdentity();
+begin
+  TypeEquivalenceInquiry<Digit>.HasANonNullSystemDotTypeInfoValue();
+end;
+
+{ExecutableSpecification_Digit.  HelperAddedFunctionality.Exercise();}
+class procedure ExecutableSpecification_Digit.AssignmentCompatibility.Exercise();
+begin
+  IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues_ForAllValuesOfDigit();
+end;
+
+class procedure ExecutableSpecification_Digit.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues_ForAllValuesOfDigit();
+begin
+  var ADigit: Digit;
+  var ANaturalNumber: NaturalNumber;
+  for var I: Digit := System.Low(Digit) to System.High(Digit) do
+  begin
+    ADigit := I;
+    ANaturalNumber := ADigit + 1;
+    System.Assert(I = ADigit);
+    System.Assert(not (ANaturalNumber = ADigit));
+    ANaturalNumber := ADigit;
+    System.Assert(ANaturalNumber = ADigit);
+    ADigit := ANaturalNumber;
+    System.Assert(I = ADigit);
+  end;
 end;
 
 end.

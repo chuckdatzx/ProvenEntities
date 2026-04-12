@@ -111,6 +111,7 @@ class procedure AllTests.Exercise;
 begin
   DataStreamTests_Closed.Exercise();
   {Routines by Foundational Types}
+  ExecutableSpecification_DataStreamRoutines<Digit>.Exercise();
   ExecutableSpecification_DataStreamRoutines<NaturalNumber>.Exercise();
   ExecutableSpecification_DataStreamRoutines<NaturalNumber32>.Exercise();
   {$IFDEF CPU64BITS}

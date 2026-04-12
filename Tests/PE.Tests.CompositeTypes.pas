@@ -144,6 +144,7 @@ begin
   {Composite types (save Generics)}
   ExecutableSpecification_MultiChar.Exercise();
   {Composite Generic types by Foundational types}
+  ExecutableSpecification_ArrayOf<Digit>.Exercise();
   ExecutableSpecification_ArrayOf<MonoChar>.Exercise();
   ExecutableSpecification_ArrayOf<NaturalNumber>.Exercise();
   ExecutableSpecification_ArrayOf<NaturalNumber32>.Exercise();
@@ -152,6 +153,7 @@ begin
   {$ELSE}
     {$MESSAGE WARN 'PE.Types.ArrayOf<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
   {$IFEND}
+  ExecutableSpecification_SmartClaw<Digit>.Exercise();
   ExecutableSpecification_SmartClaw<MonoChar>.Exercise();
   ExecutableSpecification_SmartClaw<NaturalNumber>.Exercise();
   ExecutableSpecification_SmartClaw<NaturalNumber32>.Exercise();
