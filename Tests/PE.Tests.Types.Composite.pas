@@ -129,6 +129,7 @@ begin
   ExecutableSpecification_SmartClaw<MultiChar>.Exercise();
 end;
 
+{$REGION 'MultiChar Type'}
 {ExecutableSpecification_MultiChar}
 class procedure ExecutableSpecification_MultiChar.Exercise;
 begin
@@ -329,7 +330,9 @@ begin
   for var I: NaturalNumber := System.Low(ActualMonoChars) to System.High(ActualMonoChars) do
     System.Assert(ActualMonoChars[I] = Actual[I]);
 end;
+{$ENDREGION}
 
+{$REGION 'SmartClaw<T> Type'}
 {ExecutableSpecification_SmartClaw<T>}
 class procedure ExecutableSpecification_SmartClaw<T>.Exercise;
 begin
@@ -398,5 +401,6 @@ class procedure ExecutableSpecification_SmartClaw<T>.Defaults.TheDefaultValueIsN
 begin
   System.Assert(not System.Assigned(System.Default(SmartClaw<T>)));
 end;
+{$ENDREGION}
 
 end.

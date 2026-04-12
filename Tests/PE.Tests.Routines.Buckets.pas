@@ -23,6 +23,7 @@ uses
    {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}
 {$ENDIF}
 
+{$REGION 'PE.Buckets.Routines.Categorize<T>'}
 type
   ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest> = record
   public type
@@ -130,6 +131,7 @@ type
   public
     class procedure Exercise(); static; inline;
   end;
+{$ENDREGION}
 
 implementation
 
@@ -137,6 +139,7 @@ uses
   PE.Delphi.TypeIdentity,
   PE.Types.Foundational.Generics;
 
+{$REGION 'PE.Buckets.Routines.Categorize<T>'}
 {ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>}
 class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.Exercise;
 begin
@@ -858,6 +861,7 @@ class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.Signatur
 begin
   Routines.Categorize<TypeUnderTest>([], ArrayOf<BucketIn<TypeUnderTest>>.Create());
 end;
+{$ENDREGION}
 
 end.
 

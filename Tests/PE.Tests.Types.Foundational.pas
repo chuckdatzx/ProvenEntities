@@ -177,6 +177,7 @@ begin
   ExecutableSpecification_NaturalNumber.Exercise();
 end;
 
+{$REGION 'BigNaturalNumber'}
 {ExecutableSpecification_BigNaturalNumber}
 class procedure ExecutableSpecification_BigNaturalNumber.Exercise;
 begin
@@ -246,7 +247,9 @@ begin
   TypeEquivalenceInquiry<BigNaturalNumber>.HasANonNullSystemDotTypeInfoValue();
   TypeEquivalenceInquiry<BigNaturalNumber>.DoesNotShareTypeIdentityWith<UInt64>();
 end;
+{$ENDREGION}
 
+{$REGION 'Digit'}
 {ExecutableSpecification_Digit}
 class procedure ExecutableSpecification_Digit.Exercise;
 begin
@@ -317,7 +320,9 @@ class procedure ExecutableSpecification_Digit.TypeIdentity.HasItsOwnNonNullTypeI
 begin
   TypeEquivalenceInquiry<Digit>.HasANonNullSystemDotTypeInfoValue();
 end;
+{$ENDREGION}
 
+{$REGION 'MonoChar'}
 {ExecutableSpecification_MonoChar}
 class procedure ExecutableSpecification_MonoChar.Exercise;
 begin
@@ -388,7 +393,9 @@ begin
   TypeEquivalenceInquiry<MonoChar>.HasANonNullSystemDotTypeInfoValue();
   TypeEquivalenceInquiry<MonoChar>.DoesNotShareTypeIdentityWith<Char>();
 end;
+{$ENDREGION}
 
+{$REGION 'NaturalNumber'}
 {ExecutableSpecification_NaturalNumber}
 class procedure ExecutableSpecification_NaturalNumber.Exercise;
 begin
@@ -497,5 +504,6 @@ begin
   TypeEquivalenceInquiry<NaturalNumber>.HasANonNullSystemDotTypeInfoValue();
   TypeEquivalenceInquiry<NaturalNumber>.DoesNotShareTypeIdentityWith<Cardinal>();
 end;
+{$ENDREGION}
 
 end.

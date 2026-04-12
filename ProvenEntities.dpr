@@ -44,9 +44,9 @@ begin
   //just make sure to keep it between the first and last System.Write (that way you can be sure no errors could have occurred)
   PE.Tests.Routines.AllTests.Exercise();
   PE.Tests.Routines.Buckets.ExecutableSpeficiation_CategorizeRoutine<T>.Exercise();
+  PE.Tests.Types.Buckets.AllTests<T>.Exercise();
   PE.Tests.Types.Composite.AllTests.Exercise();
   PE.Tests.Types.Foundational.AllTests.Exercise();
-  PE.Tests.Types.Buckets.TypeTests<T>.Exercise();
   PE.Examples.Delphi.CategorizingWithBuckets.Exercise.AllTests();
   System.Write('Tests Completed');
 end.

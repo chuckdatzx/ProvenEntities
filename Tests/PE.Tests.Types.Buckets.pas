@@ -25,7 +25,7 @@ uses
 {$ENDIF}
 
 type
-  TypeTests<T> = record
+  AllTests<T> = record
   public
     class procedure Exercise(); static; inline;
   end;
@@ -151,6 +151,24 @@ implementation
 
 uses
   PE.Types.Foundational.Generics;
+
+{AllTestsTests<T>}
+class procedure AllTests<T>.Exercise();
+begin
+  {Types Introduced}
+  BucketInTests<T>.Exercise();
+  BucketOutTests.Exercise();
+  {BucketIn<T> by Foundational Types}
+  BucketInTests<BigNaturalNumber>.Exercise();
+  BucketInTests<Digit>.Exercise();
+  BucketInTests<MonoChar>.Exercise();
+  BucketInTests<NaturalNumber>.Exercise();
+  {BucketIn<T> by Foundational Generic Types}
+  BucketInTests<ArrayOf<BigNaturalNumber>>.Exercise();
+  BucketInTests<ArrayOf<Digit>>.Exercise();
+  BucketInTests<ArrayOf<MonoChar>>.Exercise();
+  BucketInTests<ArrayOf<NaturalNumber>>.Exercise();
+end;
 
 {$REGION 'BucketIn<T>'}
 {BucketInTests<T>}
@@ -632,23 +650,5 @@ begin
   TheCountPropertyIsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeAndInitializedToTheNaturalNumberDefault();
 end;
 {$ENDREGION}
-
-{TypeTests<T>}
-class procedure TypeTests<T>.Exercise();
-begin
-  {Types Introduced}
-  BucketInTests<T>.Exercise();
-  BucketOutTests.Exercise();
-  {BucketIn<T> by Foundational Types}
-  BucketInTests<BigNaturalNumber>.Exercise();
-  BucketInTests<Digit>.Exercise();
-  BucketInTests<MonoChar>.Exercise();
-  BucketInTests<NaturalNumber>.Exercise();
-  {BucketIn<T> by Foundational Generic Types}
-  BucketInTests<ArrayOf<BigNaturalNumber>>.Exercise();
-  BucketInTests<ArrayOf<Digit>>.Exercise();
-  BucketInTests<ArrayOf<MonoChar>>.Exercise();
-  BucketInTests<ArrayOf<NaturalNumber>>.Exercise();
-end;
 
 end.

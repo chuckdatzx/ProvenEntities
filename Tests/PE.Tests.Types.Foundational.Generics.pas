@@ -61,6 +61,7 @@ begin
   {$IFEND}
 end;
 
+{$REGION 'ArrayOf<T> type'}
 {ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>}
 class procedure ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.Exercise;
 begin
@@ -116,5 +117,6 @@ class procedure ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.TypeIdentit
 begin
   TypeEquivalenceInquiry<ArrayOf<TypeUnderTest>>.SharesTypeIdentityWith<TArray<TypeUnderTest>>();
 end;
+{$ENDREGION}
 
 end.

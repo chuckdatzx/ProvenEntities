@@ -13,6 +13,7 @@ type
     class procedure Exercise(); static; inline;
   end;
 
+  {$REGION 'PE.Routines.DataStream.<Member X>'}
   ExecutableSpecification_DataStreamRoutines<TypeUnderTest1> = record
   public type
     Contains<TypeUnderTest2> = record
@@ -80,6 +81,7 @@ type
   public
     class procedure Exercise(); static; inline;
   end;
+{$ENDREGION}
 
   DataStreamTests_Closed = record
   public type
@@ -122,6 +124,7 @@ begin
   ExecutableSpecification_DataStreamRoutines<MultiChar>.Exercise();
 end;
 
+{$REGION 'PE.Routines.DataStream.<Member X>'}
 {ExecutableSpecification_DataStreamRoutines<TypeUnderTest1>}
 class procedure ExecutableSpecification_DataStreamRoutines<TypeUnderTest1>.Exercise;
 begin
@@ -428,5 +431,6 @@ begin
   System.Assert(Expected[System.Low(Expected) + 1] = Actual[System.Low(Actual) + 1]);
   System.Assert(Expected[System.Low(Expected) + 2] = Actual[System.Low(Actual) + 2]);
 end;
+{$ENDREGION}
 
 end.
