@@ -55,7 +55,7 @@ begin
   ExecutableSpecification_ArrayOf<MonoChar>.Exercise();
   ExecutableSpecification_ArrayOf<NaturalNumber>.Exercise();
   {$IFDEF CPU64BITS}
-  ExecutableSpecification_ArrayOf<NaturalNumber_Big>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
+  ExecutableSpecification_ArrayOf<BigNaturalNumber>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
   {$ELSE}
     {$MESSAGE WARN 'PE.Types.ArrayOf<T> cannot be proven for the BigNaturalNumber type (other NaturalNumber variations are proven)'}
   {$IFEND}
