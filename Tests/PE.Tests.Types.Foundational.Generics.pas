@@ -3,7 +3,6 @@ unit PE.Tests.Types.Foundational.Generics;
 interface
 
 uses
-  {PE}
   PE.Delphi.TypeIdentity;
 
 {$IF (not PE.Delphi.TypeIdentity.DelphiTypeIdentityEstablishedAtCompileTime)}
@@ -45,7 +44,6 @@ type
 implementation
 
 uses
-  {PE}
   PE.Types.Foundational,
   PE.Types.Foundational.Generics;
 
@@ -56,14 +54,11 @@ begin
   ExecutableSpecification_ArrayOf<Digit>.Exercise();
   ExecutableSpecification_ArrayOf<MonoChar>.Exercise();
   ExecutableSpecification_ArrayOf<NaturalNumber>.Exercise();
-  ExecutableSpecification_ArrayOf<NaturalNumber32>.Exercise();
   {$IFDEF CPU64BITS}
-  ExecutableSpecification_ArrayOf<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
+  ExecutableSpecification_ArrayOf<NaturalNumber_Big>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
   {$ELSE}
-    {$MESSAGE WARN 'PE.Types.ArrayOf<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
+    {$MESSAGE WARN 'PE.Types.ArrayOf<T> cannot be proven for the BigNaturalNumber type (other NaturalNumber variations are proven)'}
   {$IFEND}
-//  {Foundational Generic types by Composite types}
-//  ExecutableSpecification_ArrayOf<MultiChar>.Exercise();
 end;
 
 {ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>}

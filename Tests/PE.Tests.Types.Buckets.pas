@@ -14,11 +14,9 @@ unit PE.Tests.Types.Buckets;
 interface
 
 uses
-  {PE}
   PE.Buckets,
   PE.Delphi.Rando, //For inlining
   PE.Delphi.TypeIdentity,
-  PE.Tests.CompositeTypes,
   PE.Types.Composite, //For inlining
   PE.Types.Foundational;
 
@@ -152,7 +150,6 @@ type
 implementation
 
 uses
-  {PE}
   PE.Types.Foundational.Generics;
 
 {$REGION 'BucketIn<T>'}
@@ -639,15 +636,19 @@ end;
 {TypeTests<T>}
 class procedure TypeTests<T>.Exercise();
 begin
-  {BucketIn<T> by Foundational Types}
-  BucketInTests<Digit>.Exercise();
-  BucketInTests<NaturalNumber>.Exercise();
-  BucketInTests<NaturalNumber32>.Exercise();
-  BucketInTests<NaturalNumber64>.Exercise();
-//  ArrayOfTests<BucketIn<T>>.Exercise(); //I would love to include these, but every time I do,
-//  ExecutableSpecification_ArrayOf<BucketOut>.Exercise(); //I get an internal error (both Win32/Win64)
+  {Types Introduced}
   BucketInTests<T>.Exercise();
   BucketOutTests.Exercise();
+  {BucketIn<T> by Foundational Types}
+  BucketInTests<BigNaturalNumber>.Exercise();
+  BucketInTests<Digit>.Exercise();
+  BucketInTests<MonoChar>.Exercise();
+  BucketInTests<NaturalNumber>.Exercise();
+  {BucketIn<T> by Foundational Generic Types}
+  BucketInTests<ArrayOf<BigNaturalNumber>>.Exercise();
+  BucketInTests<ArrayOf<Digit>>.Exercise();
+  BucketInTests<ArrayOf<MonoChar>>.Exercise();
+  BucketInTests<ArrayOf<NaturalNumber>>.Exercise();
 end;
 
 end.

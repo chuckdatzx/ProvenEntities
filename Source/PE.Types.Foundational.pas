@@ -3,8 +3,6 @@ unit PE.Types.Foundational;
 interface
 
 uses
-  System.SysUtils,
-  {PE}
   PE.Delphi.TypeIdentity;
 
 {$IF (not DelphiTypeIdentityEstablishedAtCompileTime)}
@@ -14,10 +12,10 @@ uses
 type
   Digit = 0..9;
 
+type
   MonoChar = type Char;
   NaturalNumber = type Cardinal;
-  NaturalNumber32 = NaturalNumber;
-  NaturalNumber64 = type UInt64;
+  BigNaturalNumber = type UInt64;
 
 type
   NaturalNumberHelper = record Helper for NaturalNumber

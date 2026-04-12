@@ -13,7 +13,6 @@ unit PE.Tests.Routines.Buckets;
 interface
 
 uses
-  {PE}
   PE.Buckets,
   PE.Delphi.AssignmentCompatibility,
   PE.Delphi.Rando, //For inlining
@@ -27,12 +26,6 @@ uses
 type
   ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest> = record
   public type
-    CasesWhichShouldArguablyBeRefactoredIntoTheExecSpec = record
-    strict private
-      class procedure ABucketInWithoutAGrabbyArmAndBetweenTwoBucketsInWithGrabbyArmsDoesNotInfluenceTheBucketOutCounts(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
     EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues = record
     strict private class function DefaultFocusedGrabbyArm(const Value: TypeUnderTest): Boolean; static; inline;
     strict private {All Bucket Out Counts Are Zero = DataStream(Size: varied; Content: default/non-default) by BucketsIn(Length: varied; Content: default save GrabbyArm[varies by "focus"]) by BucketOut(Length: varied; Content: presumably default save Count)}
@@ -125,8 +118,7 @@ type
     public
       class procedure Exercise(); static; inline;
     end;
-    OrderOfBucketsOutIsDeterminedByBucketsIn = record  //This container is intentially empty; order is already tested by the above test cases (i.e. implicit in their "Domains")
-    end;
+    OrderOfBucketsOutIsDeterminedByBucketsIn = record end; //This container is intentially empty; order is already tested by the above test cases (i.e. implicit in their "Domains")
     SignatureTests = record
     strict private
       class procedure The1stParameterAcceptsAnEmptyArrayOfT(); static; inline;
@@ -152,28 +144,6 @@ begin
   NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Exercise();
   NamePropertyIsCopiedFromBucketInToBucketOut.Exercise();
   SignatureTests.Exercise();
-end;
-
-{ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.CasesWhichShouldArguablyBeRefactoredIntoTheExecSpec}
-class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.CasesWhichShouldArguablyBeRefactoredIntoTheExecSpec.Exercise;
-begin
-  ABucketInWithoutAGrabbyArmAndBetweenTwoBucketsInWithGrabbyArmsDoesNotInfluenceTheBucketOutCounts();
-end;
-
-class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.CasesWhichShouldArguablyBeRefactoredIntoTheExecSpec.ABucketInWithoutAGrabbyArmAndBetweenTwoBucketsInWithGrabbyArmsDoesNotInfluenceTheBucketOutCounts;
-begin
-  var Elements: ArrayOf<TypeUnderTest> := [System.Default(TypeUnderTest), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, System.Default(TypeUnderTest), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, System.Default(TypeUnderTest)];
-  var Actual := Routines.Categorize<TypeUnderTest>(Elements,
-    [BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (System.Default(TypeUnderTest) = AValue); end, 'Defaults'),
-     BucketIn<TypeUnderTest>.Create(nil, 'Dummy'),
-     BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (not (System.Default(TypeUnderTest) = AValue)); end, 'Non-defaults')]);
-  System.Assert(3 = System.Length(Actual));
-  System.Assert('Defaults' = Actual[System.Low(Actual)].Name);
-  System.Assert('Dummy' = Actual[System.Low(Actual) + 1].Name);
-  System.Assert('Non-defaults' = Actual[System.Low(Actual) + 2].Name);
-  System.Assert(3 = Actual[System.Low(Actual)].Count);
-  System.Assert(0 = Actual[System.Low(Actual) + 1].Count);
-  System.Assert(2 = Actual[System.Low(Actual) + 2].Count);
 end;
 
 {ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn}
@@ -651,7 +621,6 @@ end;
 
 class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.Exercise;
 begin
-  CasesWhichShouldArguablyBeRefactoredIntoTheExecSpec.Exercise();
   TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn();
   TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm();
   TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn();

@@ -1,8 +1,8 @@
-unit PE.Tests.FoundationalTypes;
+unit PE.Tests.Types.Foundational;
 {Chuck C.T.
  I'm arguing that the following tests provide enough evidence to claim that all types in PE.Types.Foundational unit are proven. And by proven, I mean proven for:
  - usage within any compilable source code from the PE namespace
- - usage within Delphi (at least where PE type X has been proven to be compatible with native type Y)
+ - usage within Delphi (at least where PE.Types.Foundational.<type X> has been proven to be compatible with native type Y)
  - for all foundational types for all time; if it compiles and successfully runs now, it will continue to do so (like a powered circuit; barring events like power loss)
 
  If you don't believe that the PE.Types.Foundational namespace has been proven; that's fair. There are many points in
@@ -14,7 +14,6 @@ unit PE.Tests.FoundationalTypes;
 interface
 
 uses
-  {PE}
   PE.Delphi.Rando,
   PE.Delphi.TypeIdentity,
   PE.Types.Foundational;
@@ -26,6 +25,38 @@ type
   end;
 
 type
+  {$REGION 'BigNaturalNumber type'}
+  ExecutableSpecification_BigNaturalNumber = record
+  public type
+    AssignmentCompatibility = record
+    strict private
+      class procedure IsSymmetricallyAssignmentCompatibleWithUInt64WhileRetainingUInt64Value(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    Boundaries = record
+    strict private
+      class procedure TheLowestPossibleValueIsZero(); static; inline;
+      class procedure TheHighestPossibleNumberIs18446744073709551615(); static; inline; //Approximately 18.45 quintillion
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    Defaults = record
+      class procedure ValueIsZero(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+    TypeIdentity = record
+    strict private
+      class procedure HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+  public
+    class procedure Exercise(); static; inline;
+  end;
+  {$ENDREGION}
+
   {$REGION 'Digit'}
   ExecutableSpecification_Digit = record
   public type
@@ -135,52 +166,6 @@ type
   end;
   {$ENDREGION}
 
-  {$REGION 'NaturalNumber32 type'}
-  ExecutableSpecification_NaturalNumber32 = record
-  public type
-    TypeIdentity = record
-    strict private
-      class procedure IsTypeIdenticalToTheNaturalNumber(); static; inline;  //I believe this alignment alone allows me to leverage most tests executed against a NaturalNumber type
-    public
-      class procedure Exercise(); static; inline;
-    end;
-  public
-    class procedure Exercise(); static; inline;
-  end;
-  {$ENDREGION}
-
-  {$REGION 'NaturalNumber64 type'}
-  ExecutableSpecification_NaturalNumber64 = record
-  public type
-    AssignmentCompatibility = record
-    strict private
-      class procedure IsSymmetricallyAssignmentCompatibleWithUInt64WhileRetainingUInt64Value(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-    Boundaries = record
-    strict private
-      class procedure TheLowestPossibleValueIsZero(); static; inline;
-      class procedure TheHighestPossibleNumberIs18446744073709551615(); static; inline; //Approximately 18.45 quintillion
-    public
-      class procedure Exercise(); static; inline;
-    end;
-    Defaults = record
-      class procedure ValueIsZero(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-    TypeIdentity = record
-    strict private
-      class procedure HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-  public
-    class procedure Exercise(); static; inline;
-  end;
-  {$ENDREGION}
-
 implementation
 
 {AllTests}
@@ -188,9 +173,149 @@ class procedure AllTests.Exercise();
 begin
   ExecutableSpecification_Digit.Exercise();
   ExecutableSpecification_MonoChar.Exercise();
+  ExecutableSpecification_BigNaturalNumber.Exercise();
   ExecutableSpecification_NaturalNumber.Exercise();
-  ExecutableSpecification_NaturalNumber32.Exercise();
-  ExecutableSpecification_NaturalNumber64.Exercise();
+end;
+
+{ExecutableSpecification_BigNaturalNumber}
+class procedure ExecutableSpecification_BigNaturalNumber.Exercise;
+begin
+  AssignmentCompatibility.Exercise();
+  Boundaries.Exercise();
+  Defaults.Exercise();
+  TypeIdentity.Exercise();
+end;
+
+{ExecutableSpecification_BigNaturalNumber.AssignmentCompatibility}
+class procedure ExecutableSpecification_BigNaturalNumber.AssignmentCompatibility.Exercise;
+begin
+  IsSymmetricallyAssignmentCompatibleWithUInt64WhileRetainingUInt64Value();
+end;
+
+class procedure ExecutableSpecification_BigNaturalNumber.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithUInt64WhileRetainingUInt64Value;
+begin
+  var Expected: UInt64 := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();  //Using the BigNaturalNumber type causes a F2084 interna Error: C2252; so I'm using NaturalNumber instead
+  var ActualUInt64 := Expected;
+  System.Assert(not (System.Default(UInt64) = ActualUInt64));
+  var ActualNaturalNumber64: BigNaturalNumber := System.Default(BigNaturalNumber);
+  System.Assert(not (ActualUInt64 = ActualNaturalNumber64));
+  ActualNaturalNumber64 := ActualUInt64;
+  System.Assert(ActualUInt64 = ActualNaturalNumber64);
+  ActualUInt64 := System.Default(UInt64);
+  System.Assert(System.Default(UInt64) = ActualUInt64);
+  ActualUInt64 := ActualNaturalNumber64;
+  System.Assert(Expected = ActualUInt64);
+end;
+
+{ExecutableSpecification_BigNaturalNumber.Boundaries}
+class procedure ExecutableSpecification_BigNaturalNumber.Boundaries.Exercise;
+begin
+  TheLowestPossibleValueIsZero();
+  TheHighestPossibleNumberIs18446744073709551615();
+end;
+
+class procedure ExecutableSpecification_BigNaturalNumber.Boundaries.TheHighestPossibleNumberIs18446744073709551615;
+begin
+  System.Assert(18446744073709551615 = System.High(BigNaturalNumber));
+end;
+
+class procedure ExecutableSpecification_BigNaturalNumber.Boundaries.TheLowestPossibleValueIsZero;
+begin
+  System.Assert(0 = System.Low(BigNaturalNumber));
+end;
+
+{ExecutableSpecification_BigNaturalNumber.Defaults}
+class procedure ExecutableSpecification_BigNaturalNumber.Defaults.Exercise;
+begin
+  ValueIsZero();
+end;
+
+class procedure ExecutableSpecification_BigNaturalNumber.Defaults.ValueIsZero;
+begin
+  System.Assert(0 = System.Default(BigNaturalNumber));
+end;
+
+{ExecutableSpecification_BigNaturalNumber.TypeIdentity}
+class procedure ExecutableSpecification_BigNaturalNumber.TypeIdentity.Exercise;
+begin
+  HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64();
+end;
+
+class procedure ExecutableSpecification_BigNaturalNumber.TypeIdentity.HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64;
+begin
+  TypeEquivalenceInquiry<BigNaturalNumber>.HasANonNullSystemDotTypeInfoValue();
+  TypeEquivalenceInquiry<BigNaturalNumber>.DoesNotShareTypeIdentityWith<UInt64>();
+end;
+
+{ExecutableSpecification_Digit}
+class procedure ExecutableSpecification_Digit.Exercise;
+begin
+  AssignmentCompatibility.Exercise();
+  Boundaries.Exercise();
+  Defaults.Exercise();
+  TypeIdentity.Exercise();
+end;
+
+{ExecutableSpecification_Digit.AssignmentCompatibility.Exercise}
+class procedure ExecutableSpecification_Digit.AssignmentCompatibility.Exercise();
+begin
+  IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues_ForAllValuesOfDigit();
+end;
+
+class procedure ExecutableSpecification_Digit.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues_ForAllValuesOfDigit();
+begin
+  var ADigit: Digit;
+  var ANaturalNumber: NaturalNumber;
+  for var I: Digit := System.Low(Digit) to System.High(Digit) do
+  begin
+    ADigit := I;
+    ANaturalNumber := ADigit + 1;
+    System.Assert(I = ADigit);
+    System.Assert(not (ANaturalNumber = ADigit));
+    ANaturalNumber := ADigit;
+    System.Assert(ANaturalNumber = ADigit);
+    ADigit := ANaturalNumber;
+    System.Assert(I = ADigit);
+  end;
+end;
+
+{ExecutableSpecification_Digit.Boundaries}
+class procedure ExecutableSpecification_Digit.Boundaries.Exercise;
+begin
+  TheLowestPossibleValueIsZero();
+  TheHighestPossibleValueIs9();
+end;
+
+class procedure ExecutableSpecification_Digit.Boundaries.TheHighestPossibleValueIs9();
+begin
+  System.Assert(0 = System.Low(Digit));
+end;
+
+class procedure ExecutableSpecification_Digit.Boundaries.TheLowestPossibleValueIsZero();
+begin
+  System.Assert(9 = System.High(Digit));
+end;
+
+{ExecutableSpecification_Digit.Defaults}
+class procedure ExecutableSpecification_Digit.Defaults.Exercise();
+begin
+  ValueIsZero();
+end;
+
+class procedure ExecutableSpecification_Digit.Defaults.ValueIsZero();
+begin
+  System.Assert(0 = System.Default(Digit));
+end;
+
+{ExecutableSpecification_Digit.TypeIdentity}
+class procedure ExecutableSpecification_Digit.TypeIdentity.Exercise();
+begin
+  HasItsOwnNonNullTypeIdentity();
+end;
+
+class procedure ExecutableSpecification_Digit.TypeIdentity.HasItsOwnNonNullTypeIdentity();
+begin
+  TypeEquivalenceInquiry<Digit>.HasANonNullSystemDotTypeInfoValue();
 end;
 
 {ExecutableSpecification_MonoChar}
@@ -324,107 +449,7 @@ begin
   System.Assert(0 = System.Default(NaturalNumber));
 end;
 
-{ExecutableSpecification_NaturalNumber.TypeIdentity}
-class procedure ExecutableSpecification_NaturalNumber.TypeIdentity.Exercise;
-begin
-  HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeCardinal();
-end;
-
-class procedure ExecutableSpecification_NaturalNumber.TypeIdentity.HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeCardinal;
-begin
-  TypeEquivalenceInquiry<NaturalNumber>.HasANonNullSystemDotTypeInfoValue();
-  TypeEquivalenceInquiry<NaturalNumber>.DoesNotShareTypeIdentityWith<Cardinal>();
-end;
-
-{ExecutableSpecification_NaturalNumber32}
-class procedure ExecutableSpecification_NaturalNumber32.Exercise;
-begin
-  TypeIdentity.Exercise();
-end;
-
-{ExecutableSpecification_NaturalNumber32.TypeIdentity}
-class procedure ExecutableSpecification_NaturalNumber32.TypeIdentity.Exercise;
-begin
-  IsTypeIdenticalToTheNaturalNumber();
-end;
-
-class procedure ExecutableSpecification_NaturalNumber32.TypeIdentity.IsTypeIdenticalToTheNaturalNumber;
-begin
-  TypeEquivalenceInquiry<NaturalNumber32>.SharesTypeIdentityWith<NaturalNumber>();
-end;
-
-{ExecutableSpecification_NaturalNumber64}
-class procedure ExecutableSpecification_NaturalNumber64.Exercise;
-begin
-  AssignmentCompatibility.Exercise();
-  Boundaries.Exercise();
-  Defaults.Exercise();
-  TypeIdentity.Exercise();
-end;
-
-{ExecutableSpecification_NaturalNumber64.AssignmentCompatibility}
-class procedure ExecutableSpecification_NaturalNumber64.AssignmentCompatibility.Exercise;
-begin
-  IsSymmetricallyAssignmentCompatibleWithUInt64WhileRetainingUInt64Value();
-end;
-
-class procedure ExecutableSpecification_NaturalNumber64.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithUInt64WhileRetainingUInt64Value;
-begin
-  var Expected: UInt64 := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();  //Using the NaturalNumber64 type causes a F2084 interna Error: C2252; so I'm using NaturalNumber instead
-  var ActualUInt64 := Expected;
-  System.Assert(not (System.Default(UInt64) = ActualUInt64));
-  var ActualNaturalNumber64: NaturalNumber64 := System.Default(NaturalNumber64);
-  System.Assert(not (ActualUInt64 = ActualNaturalNumber64));
-  ActualNaturalNumber64 := ActualUInt64;
-  System.Assert(ActualUInt64 = ActualNaturalNumber64);
-  ActualUInt64 := System.Default(UInt64);
-  System.Assert(System.Default(UInt64) = ActualUInt64);
-  ActualUInt64 := ActualNaturalNumber64;
-  System.Assert(Expected = ActualUInt64);
-end;
-
-{ExecutableSpecification_NaturalNumber64.Boundaries}
-class procedure ExecutableSpecification_NaturalNumber64.Boundaries.Exercise;
-begin
-  TheLowestPossibleValueIsZero();
-  TheHighestPossibleNumberIs18446744073709551615();
-end;
-
-class procedure ExecutableSpecification_NaturalNumber64.Boundaries.TheHighestPossibleNumberIs18446744073709551615;
-begin
-  System.Assert(18446744073709551615 = System.High(NaturalNumber64));
-end;
-
-class procedure ExecutableSpecification_NaturalNumber64.Boundaries.TheLowestPossibleValueIsZero;
-begin
-  System.Assert(0 = System.Low(NaturalNumber64));
-end;
-
-{ExecutableSpecification_NaturalNumber64.Defaults}
-class procedure ExecutableSpecification_NaturalNumber64.Defaults.Exercise;
-begin
-  ValueIsZero();
-end;
-
-class procedure ExecutableSpecification_NaturalNumber64.Defaults.ValueIsZero;
-begin
-  System.Assert(0 = System.Default(NaturalNumber64));
-end;
-
-{ExecutableSpecification_NaturalNumber64.TypeIdentity}
-class procedure ExecutableSpecification_NaturalNumber64.TypeIdentity.Exercise;
-begin
-  HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64();
-end;
-
-class procedure ExecutableSpecification_NaturalNumber64.TypeIdentity.HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64;
-begin
-  TypeEquivalenceInquiry<NaturalNumber64>.HasANonNullSystemDotTypeInfoValue();
-  TypeEquivalenceInquiry<NaturalNumber64>.DoesNotShareTypeIdentityWith<UInt64>();
-end;
-
-{ ExecutableSpecification_NaturalNumber.HelperAddedFunctionality }
-
+{ExecutableSpecification_NaturalNumber.HelperAddedFunctionality}
 class procedure ExecutableSpecification_NaturalNumber.HelperAddedFunctionality.Exercise;
 begin
   TheMaxPropertyReturns4294967295ForADefaultInstance();
@@ -461,79 +486,16 @@ begin
   System.Assert(0 = Value.Min);
 end;
 
-{ ExecutableSpecification_Digit.Boundaries }
-
-class procedure ExecutableSpecification_Digit.Boundaries.Exercise;
+{ExecutableSpecification_NaturalNumber.TypeIdentity}
+class procedure ExecutableSpecification_NaturalNumber.TypeIdentity.Exercise;
 begin
-  TheLowestPossibleValueIsZero();
-  TheHighestPossibleValueIs9();
+  HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeCardinal();
 end;
 
-class procedure ExecutableSpecification_Digit.Boundaries.TheHighestPossibleValueIs9();
+class procedure ExecutableSpecification_NaturalNumber.TypeIdentity.HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeCardinal;
 begin
-  System.Assert(0 = System.Low(Digit));
-end;
-
-class procedure ExecutableSpecification_Digit.Boundaries.TheLowestPossibleValueIsZero();
-begin
-  System.Assert(9 = System.High(Digit));
-end;
-
-{ ExecutableSpecification_Digit }
-
-class procedure ExecutableSpecification_Digit.Exercise;
-begin
-  AssignmentCompatibility.Exercise();
-  Boundaries.Exercise();
-  Defaults.Exercise();
-  TypeIdentity.Exercise();
-end;
-
-{ ExecutableSpecification_Digit.Defaults }
-
-class procedure ExecutableSpecification_Digit.Defaults.Exercise();
-begin
-  ValueIsZero();
-end;
-
-class procedure ExecutableSpecification_Digit.Defaults.ValueIsZero();
-begin
-  System.Assert(0 = System.Default(Digit));
-end;
-
-{ ExecutableSpecification_Digit.TypeIdentity }
-
-class procedure ExecutableSpecification_Digit.TypeIdentity.Exercise();
-begin
-  HasItsOwnNonNullTypeIdentity();
-end;
-
-class procedure ExecutableSpecification_Digit.TypeIdentity.HasItsOwnNonNullTypeIdentity();
-begin
-  TypeEquivalenceInquiry<Digit>.HasANonNullSystemDotTypeInfoValue();
-end;
-
-{ExecutableSpecification_Digit.  HelperAddedFunctionality.Exercise();}
-class procedure ExecutableSpecification_Digit.AssignmentCompatibility.Exercise();
-begin
-  IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues_ForAllValuesOfDigit();
-end;
-
-class procedure ExecutableSpecification_Digit.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues_ForAllValuesOfDigit();
-begin
-  var ADigit: Digit;
-  var ANaturalNumber: NaturalNumber;
-  for var I: Digit := System.Low(Digit) to System.High(Digit) do
-  begin
-    ADigit := I;
-    ANaturalNumber := ADigit + 1;
-    System.Assert(I = ADigit);
-    System.Assert(not (ANaturalNumber = ADigit));
-    ANaturalNumber := ADigit;
-    System.Assert(ANaturalNumber = ADigit);
-    ADigit := ANaturalNumber;
-    System.Assert(I = ADigit);
-  end;
+  TypeEquivalenceInquiry<NaturalNumber>.HasANonNullSystemDotTypeInfoValue();
+  TypeEquivalenceInquiry<NaturalNumber>.DoesNotShareTypeIdentityWith<Cardinal>();
 end;
 
 end.

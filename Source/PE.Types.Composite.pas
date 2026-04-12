@@ -3,7 +3,6 @@ unit PE.Types.Composite;
 interface
 
 uses
-  {PE}
   PE.Delphi.TypeIdentity,
   PE.Types.Foundational,
   PE.Types.Foundational.Generics;

@@ -3,7 +3,6 @@ unit PE.Tests.Routines;
 interface
 
 uses
-  {PE}
   PE.Delphi.Rando,  //For inlining
   PE.Routines,
   PE.Types.Foundational;
@@ -103,7 +102,6 @@ type
 implementation
 
 uses
-  {PE}
   PE.Types.Composite,
   PE.Types.Foundational.Generics;
 
@@ -113,14 +111,14 @@ begin
   DataStreamTests_Closed.Exercise();
   {Routines by Foundational Types}
   ExecutableSpecification_DataStreamRoutines<Digit>.Exercise();
+  ExecutableSpecification_DataStreamRoutines<MonoChar>.Exercise();
   ExecutableSpecification_DataStreamRoutines<NaturalNumber>.Exercise();
-  ExecutableSpecification_DataStreamRoutines<NaturalNumber32>.Exercise();
   {$IFDEF CPU64BITS}
-  ExecutableSpecification_DataStreamRoutines<NaturalNumber64>.Exercise();
+  ExecutableSpecification_DataStreamRoutines<BigNaturalNumber>.Exercise();
   {$ELSE}
-    {$MESSAGE WARN 'PE.Routines.DataStream cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
+    {$MESSAGE WARN 'PE.Routines.DataStream cannot be proven for the BigNaturalNumber type (other NaturalNumber variations are proven)'}
   {$IFEND}
-  {Routines by Non-Generic Composite Types}
+  {Routines by Composite Types}
   ExecutableSpecification_DataStreamRoutines<MultiChar>.Exercise();
 end;
 

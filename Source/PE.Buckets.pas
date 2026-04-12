@@ -131,7 +131,6 @@ end;
 begin
   //Assignment Compatibility :: BucketIn by Foundational Types
   System.Assert(GenericRecordsOf<BucketIn<MonoChar>>.AreSymmetricallyAssignmentCompatible());
+  System.Assert(GenericRecordsOf<BucketIn<BigNaturalNumber>>.AreSymmetricallyAssignmentCompatible());
   System.Assert(GenericRecordsOf<BucketIn<NaturalNumber>>.AreSymmetricallyAssignmentCompatible());
-  System.Assert(GenericRecordsOf<BucketIn<NaturalNumber32>>.AreSymmetricallyAssignmentCompatible());
-  System.Assert(GenericRecordsOf<BucketIn<NaturalNumber64>>.AreSymmetricallyAssignmentCompatible());
 end.

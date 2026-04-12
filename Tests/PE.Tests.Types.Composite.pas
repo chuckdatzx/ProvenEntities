@@ -1,4 +1,4 @@
-unit PE.Tests.CompositeTypes;
+unit PE.Tests.Types.Composite;
 {Chuck C.T.
  I'm arguing that the following tests provide enough evidence to claim that all types in PE.Types.Composite unit are proven. And by proven, I mean proven for:
  - usage within any compilable source code from the PE namespace
@@ -14,7 +14,6 @@ unit PE.Tests.CompositeTypes;
 interface
 
 uses
-  {PE}
   PE.Delphi.Rando,  //For inlining
   PE.Types.Composite,
   PE.Types.Foundational;
@@ -109,24 +108,22 @@ type
 implementation
 
 uses
-  {PE}
   PE.Delphi.TypeIdentity,
   PE.Types.Foundational.Generics;
 
 {AllTests}
 class procedure AllTests.Exercise;
 begin
-  {Composite types (save Generics)}
+  {Composite Types}
   ExecutableSpecification_MultiChar.Exercise();
-  {Composite Generic types by Foundational types}
+  {Composite Generic Types by Foundational types}
   ExecutableSpecification_SmartClaw<Digit>.Exercise();
   ExecutableSpecification_SmartClaw<MonoChar>.Exercise();
   ExecutableSpecification_SmartClaw<NaturalNumber>.Exercise();
-  ExecutableSpecification_SmartClaw<NaturalNumber32>.Exercise();
   {$IFDEF CPU64BITS}
-  ExecutableSpecification_SmartClaw<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
+  ExecutableSpecification_SmartClaw<BigNaturalNumber>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
   {$ELSE}
-    {$MESSAGE WARN 'PE.Types.SmartClaw<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
+    {$MESSAGE WARN 'PE.Types.SmartClaw<T> cannot be proven for the BigNaturalNumber type (other NaturalNumber variations are proven)'}
   {$IFEND}
   {Composite types by Composite types}
   ExecutableSpecification_SmartClaw<MultiChar>.Exercise();
@@ -185,8 +182,7 @@ begin
   NativeDelphiTypes.Exercise();
 end;
 
-{ ExecutableSpecification_MultiChar.Constructor.NativeDelphiTypes }
-
+{ExecutableSpecification_MultiChar.Constructor.NativeDelphiTypes}
 class procedure ExecutableSpecification_MultiChar.&Constructor.NativeDelphiTypes.Exercise;
 begin
   IsInitializedUsingANativeDefaultStringLiteral();
@@ -201,9 +197,8 @@ begin
 end;
 
 class procedure ExecutableSpecification_MultiChar.&Constructor.NativeDelphiTypes.IsInitializedUsingANativeNonDefaultStringLiteral;
-const
-  Expected = 'This seems unique enough.';
 begin
+  var Expected: string := Rando_TheUntrustworthy.NonDefaultValue<string>();
   System.Assert(not (System.Default(string) = Expected));
   var ActualEmpty: MultiChar := System.Default(MultiChar);
   System.Assert(System.Default(MultiChar) = ActualEmpty);
@@ -212,8 +207,7 @@ begin
   System.Assert(Expected = Actual);
 end;
 
-{ ExecutableSpecification_MultiChar.Constructor.FoundationalTypes }
-
+{ExecutableSpecification_MultiChar.Constructor.FoundationalTypes}
 class procedure ExecutableSpecification_MultiChar.&Constructor.FoundationalTypes.Exercise;
 begin
   IsInitializedUsingADefaultArrayOfMultiChar();
@@ -300,8 +294,7 @@ begin
   System.Assert(Left = Right);
 end;
 
-{ ExecutableSpecification_MultiChar.Properties }
-
+{ExecutableSpecification_MultiChar.Properties}
 class procedure ExecutableSpecification_MultiChar.Properties.Exercise;
 begin
   TheArrayOfMonoCharReturnsNoMonoCharsWhenAMultiCharIsInitializedToADefaultNativeStringLiteral();

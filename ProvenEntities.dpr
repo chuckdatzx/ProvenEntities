@@ -17,13 +17,13 @@ uses
   PE.Delphi.Rando in 'Delphi\PE.Delphi.Rando.pas',
   PE.Delphi.TypeIdentity in 'Delphi\PE.Delphi.TypeIdentity.pas',
   PE.Examples.Delphi.CategorizingWithBuckets in 'Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
-  PE.Routines in 'Source\PE.Routines.Pas',
-  PE.Tests.CompositeTypes in 'Tests\PE.Tests.CompositeTypes.pas',
-  PE.Tests.Routines.Buckets in 'Tests\PE.Tests.Routines.Buckets.pas',
+  PE.Routines in 'Source\PE.Routines.pas',
   PE.Tests.Routines in 'Tests\PE.Tests.Routines.pas',
-  PE.Tests.Types.Foundational.Generics in 'Tests\PE.Tests.Types.Foundational.Generics.pas',
-  PE.Tests.FoundationalTypes in 'Tests\PE.Tests.FoundationalTypes.pas',
+  PE.Tests.Routines.Buckets in 'Tests\PE.Tests.Routines.Buckets.pas',
   PE.Tests.Types.Buckets in 'Tests\PE.Tests.Types.Buckets.pas',
+  PE.Tests.Types.Composite in 'Tests\PE.Tests.Types.Composite.pas',
+  PE.Tests.Types.Foundational in 'Tests\PE.Tests.Types.Foundational.pas',
+  PE.Tests.Types.Foundational.Generics in 'Tests\PE.Tests.Types.Foundational.Generics.pas',
   PE.Types.Composite in 'Source\PE.Types.Composite.pas',
   PE.Types.Foundational in 'Source\PE.Types.Foundational.pas',
   PE.Types.Foundational.Generics in 'Source\PE.Types.Foundational.Generics.pas';
@@ -44,8 +44,8 @@ begin
   //just make sure to keep it between the first and last System.Write (that way you can be sure no errors could have occurred)
   PE.Tests.Routines.AllTests.Exercise();
   PE.Tests.Routines.Buckets.ExecutableSpeficiation_CategorizeRoutine<T>.Exercise();
-  PE.Tests.CompositeTypes.AllTests.Exercise();
-  PE.Tests.FoundationalTypes.AllTests.Exercise();
+  PE.Tests.Types.Composite.AllTests.Exercise();
+  PE.Tests.Types.Foundational.AllTests.Exercise();
   PE.Tests.Types.Buckets.TypeTests<T>.Exercise();
   PE.Examples.Delphi.CategorizingWithBuckets.Exercise.AllTests();
   System.Write('Tests Completed');
