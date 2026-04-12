@@ -24,7 +24,8 @@ type
     FGrabbyArm: SmartClaw<T>;
     FName: MultiChar;
     FPrediction: NaturalNumber;
-    procedure SetName(const Value: MultiChar);
+    function GetHasGrabbyArm(): Boolean; inline;
+    procedure SetName(const Value: MultiChar); inline;
   public
     class constructor Create();
   public
@@ -33,6 +34,8 @@ type
     property GrabbyArm: SmartClaw<T> read FGrabbyArm write FGrabbyArm;
     property Name: MultiChar read FName write SetName;
     property Prediction: NaturalNumber read FPrediction write FPrediction;
+  public
+    property HasGrabbyArm: Boolean read GetHasGrabbyArm;
   public
     constructor Create(const GrabbyArm: SmartClaw<T>; const Name: MultiChar; const Prediction: NaturalNumber = System.Default(NaturalNumber)); overload;
     constructor Create(const GrabbyArm: SmartClaw<T>; const Name: ArrayOf<MonoChar> = []; const Prediction: NaturalNumber = System.Default(NaturalNumber)); overload;
@@ -46,6 +49,8 @@ type
     procedure SetName(const Value: MultiChar);
   public
     class operator Equal(const A: BucketOut; const B: BucketOut): Boolean; static; inline;
+  public
+    constructor Create(const Name: MultiChar; const Count: NaturalNumber = System.Default(NaturalNumber)); overload;
   public
     property Count: NaturalNumber read FCount write FCount;
     property Name: MultiChar read FName write SetName;
@@ -84,12 +89,23 @@ begin
     Result := (Left.GrabbyArm = Right.GrabbyArm) and (Left.Name = Right.Name) and (Left.Prediction = Right.Prediction);
 end;
 
+function BucketIn<T>.GetHasGrabbyArm: Boolean;
+begin
+  Result := System.Assigned(FGrabbyArm);
+end;
+
 procedure BucketIn<T>.SetName(const Value: MultiChar);
 begin
   FName := Value;
 end;
 
 {BucketOut}
+constructor BucketOut.Create(const Name: MultiChar; const Count: NaturalNumber);
+begin
+  FCount := Count;
+  FName := Name;
+end;
+
 class operator BucketOut.Equal(const A: BucketOut; const B: BucketOut): Boolean;
 begin
   Result := (@A = @B);
@@ -106,14 +122,11 @@ end;
 class function Routines.Categorize<T>(const DataStream: ArrayOf<T>; const Buckets: ArrayOf<BucketIn<T>>): ArrayOf<BucketOut>;
 begin
   Result := [];
-  for var I: NativeInt := Low(Buckets) to High(Buckets) do
-  begin
-    Result := Result + [Default(BucketOut)];
-    Result[High(Result)].Name := Buckets[I].Name;
-  end;
+  for var Each: BucketIn<T> in Buckets do
+    Result := Result + [BucketOut.Create(Each.Name)];
   for var I: NativeInt := Low(DataStream) to High(DataStream) do
     for var J: NativeInt := Low(Buckets) to High(Buckets) do
-      if System.Assigned(Buckets[J].GrabbyArm) then
+      if Buckets[J].HasGrabbyArm then
         if Buckets[J].GrabbyArm(DataStream[I]) then
           Result[J].Count := Result[J].Count + 1;
 end;
@@ -122,7 +135,6 @@ begin
   //Assignment Compatibility :: BucketIn by Foundational Types
   System.Assert(GenericRecordsOf<BucketIn<MonoChar>>.AreSymmetricallyAssignmentCompatible());
   System.Assert(GenericRecordsOf<BucketIn<NaturalNumber>>.AreSymmetricallyAssignmentCompatible());
-  //Assignment Compatibility :: BucketIn by Foundational Type native Counterparts
-  System.Assert(GenericRecordsOf<BucketIn<Char>>.AreSymmetricallyAssignmentCompatible());
-  System.Assert(GenericRecordsOf<BucketIn<Cardinal>>.AreSymmetricallyAssignmentCompatible());
+  System.Assert(GenericRecordsOf<BucketIn<NaturalNumber32>>.AreSymmetricallyAssignmentCompatible());
+  System.Assert(GenericRecordsOf<BucketIn<NaturalNumber64>>.AreSymmetricallyAssignmentCompatible());
 end.
