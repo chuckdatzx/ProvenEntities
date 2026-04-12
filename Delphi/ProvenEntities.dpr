@@ -12,21 +12,21 @@ and not just assume, without pause, that it is unbreakable.}
 {$APPTYPE CONSOLE}
 
 uses
-  PE.Buckets in 'Source\PE.Buckets.pas',
+  PE.Buckets in '..\Source\PE.Buckets.pas',
   PE.Delphi.AssignmentCompatibility in 'Delphi\PE.Delphi.AssignmentCompatibility.pas',
   PE.Delphi.Rando in 'Delphi\PE.Delphi.Rando.pas',
   PE.Delphi.TypeIdentity in 'Delphi\PE.Delphi.TypeIdentity.pas',
-  PE.Examples.Delphi.CategorizingWithBuckets in 'Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
-  PE.Routines in 'Source\PE.Routines.pas',
-  PE.Tests.Routines in 'Tests\PE.Tests.Routines.pas',
-  PE.Tests.Routines.Buckets in 'Tests\PE.Tests.Routines.Buckets.pas',
-  PE.Tests.Types.Buckets in 'Tests\PE.Tests.Types.Buckets.pas',
-  PE.Tests.Types.Composite in 'Tests\PE.Tests.Types.Composite.pas',
-  PE.Tests.Types.Foundational in 'Tests\PE.Tests.Types.Foundational.pas',
-  PE.Tests.Types.Foundational.Generics in 'Tests\PE.Tests.Types.Foundational.Generics.pas',
-  PE.Types.Composite in 'Source\PE.Types.Composite.pas',
-  PE.Types.Foundational in 'Source\PE.Types.Foundational.pas',
-  PE.Types.Foundational.Generics in 'Source\PE.Types.Foundational.Generics.pas';
+  PE.Examples.Delphi.CategorizingWithBuckets in '..\Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
+  PE.Routines in '..\Source\PE.Routines.pas',
+  PE.Tests.Routines in '..\Tests\PE.Tests.Routines.pas',
+  PE.Tests.Routines.Buckets in '..\Tests\PE.Tests.Routines.Buckets.pas',
+  PE.Tests.Types.Buckets in '..\Tests\PE.Tests.Types.Buckets.pas',
+  PE.Tests.Types.Composite in '..\Tests\PE.Tests.Types.Composite.pas',
+  PE.Tests.Types.Foundational in '..\Tests\PE.Tests.Types.Foundational.pas',
+  PE.Tests.Types.Foundational.Generics in '..\Tests\PE.Tests.Types.Foundational.Generics.pas',
+  PE.Types.Composite in '..\Source\PE.Types.Composite.pas',
+  PE.Types.Foundational in '..\Source\PE.Types.Foundational.pas',
+  PE.Types.Foundational.Generics in '..\Source\PE.Types.Foundational.Generics.pas';
 
 type
   //Replace T with any compilable type; or add your own tests below.
