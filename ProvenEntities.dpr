@@ -21,10 +21,12 @@ uses
   PE.Tests.CompositeTypes in 'Tests\PE.Tests.CompositeTypes.pas',
   PE.Tests.Routines.Buckets in 'Tests\PE.Tests.Routines.Buckets.pas',
   PE.Tests.Routines in 'Tests\PE.Tests.Routines.pas',
+  PE.Tests.Types.Foundational.Generics in 'Tests\PE.Tests.Types.Foundational.Generics.pas',
   PE.Tests.FoundationalTypes in 'Tests\PE.Tests.FoundationalTypes.pas',
   PE.Tests.Types.Buckets in 'Tests\PE.Tests.Types.Buckets.pas',
   PE.Types.Composite in 'Source\PE.Types.Composite.pas',
-  PE.Types.Foundational in 'Source\PE.Types.Foundational.pas';
+  PE.Types.Foundational in 'Source\PE.Types.Foundational.pas',
+  PE.Types.Foundational.Generics in 'Source\PE.Types.Foundational.Generics.pas';
 
 type
   //Replace T with any compilable type; or add your own tests below.

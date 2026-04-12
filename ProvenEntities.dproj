@@ -103,10 +103,12 @@
         <DCCReference Include="Tests\PE.Tests.CompositeTypes.pas"/>
         <DCCReference Include="Tests\PE.Tests.Routines.Buckets.pas"/>
         <DCCReference Include="Tests\PE.Tests.Routines.pas"/>
+        <DCCReference Include="Tests\PE.Tests.Types.Foundational.Generics.pas"/>
         <DCCReference Include="Tests\PE.Tests.FoundationalTypes.pas"/>
         <DCCReference Include="Tests\PE.Tests.Types.Buckets.pas"/>
         <DCCReference Include="Source\PE.Types.Composite.pas"/>
         <DCCReference Include="Source\PE.Types.Foundational.pas"/>
+        <DCCReference Include="Source\PE.Types.Foundational.Generics.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

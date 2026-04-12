@@ -151,6 +151,10 @@ type
 
 implementation
 
+uses
+  {PE}
+  PE.Types.Foundational.Generics;
+
 {$REGION 'BucketIn<T>'}
 {BucketInTests<T>}
 class procedure BucketInTests<T>.Exercise;

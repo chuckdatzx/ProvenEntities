@@ -5,14 +5,12 @@ interface
 uses
   {PE}
   PE.Delphi.TypeIdentity,
-  PE.Types.Foundational;
+  PE.Types.Foundational,
+  PE.Types.Foundational.Generics;
 
 {$IF (not DelphiTypeIdentityEstablishedAtCompileTime)}
    {$MESSAGE FATAL 'Unable to continue without compile-time proof established.'}
 {$ENDIF}
-
-type
-  ArrayOf<T> = array of T;
 
 type
   MultiChar = record

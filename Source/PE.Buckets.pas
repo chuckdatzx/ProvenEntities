@@ -7,13 +7,10 @@ uses
   PE.Delphi.AssignmentCompatibility,
   PE.Delphi.TypeIdentity,
   PE.Types.Composite,
-  PE.Types.Foundational;
+  PE.Types.Foundational,
+  PE.Types.Foundational.Generics;
 
-{$IF (not DelphiTypeIdentityEstablishedAtCompileTime)}
-   {$MESSAGE FATAL 'Unable to continue without compile-time proof established.'}
-{$ENDIF}
-
-{$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime)}
+{$IF (not DelphiTypeIdentityEstablishedAtCompileTime) or (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime)}
    {$MESSAGE FATAL 'Unable to continue without compile-time proof established.'}
 {$ENDIF}
 

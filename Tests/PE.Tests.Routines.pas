@@ -104,7 +104,8 @@ implementation
 
 uses
   {PE}
-  PE.Types.Composite;
+  PE.Types.Composite,
+  PE.Types.Foundational.Generics;
 
 {AllTests}
 class procedure AllTests.Exercise;

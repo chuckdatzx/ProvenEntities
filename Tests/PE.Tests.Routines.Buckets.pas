@@ -142,7 +142,8 @@ type
 implementation
 
 uses
-  PE.Delphi.TypeIdentity;
+  PE.Delphi.TypeIdentity,
+  PE.Types.Foundational.Generics;
 
 {ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>}
 class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.Exercise;

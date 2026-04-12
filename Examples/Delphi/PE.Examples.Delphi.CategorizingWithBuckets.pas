@@ -6,7 +6,8 @@ uses
   {PE}
   PE.Buckets,
   PE.Types.Composite,
-  PE.Types.Foundational;
+  PE.Types.Foundational,
+  PE.Types.Foundational.Generics;
 
 type
   TCustomEnumeratedType = (cetSour, cetSweet, cetFuzzy);
