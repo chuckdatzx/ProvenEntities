@@ -25,13 +25,13 @@ type
     class operator Implicit(const Source: string): MultiChar; static; inline;
   strict private
     FData: ArrayOf<MonoChar>;
-    function AsArrayOfMonoChar(): ArrayOf<MonoChar>; inline;
+    function GetArrayOfMonoChar(): ArrayOf<MonoChar>; inline;
   strict private
     function GetMonoChar(const Index: NativeInt): MonoChar;
   public
     constructor Create(const Content: string); overload;
     constructor Create(const Content: ArrayOf<MonoChar>); overload;
-    property ArrayOfMonoChar: ArrayOf<MonoChar> read AsArrayOfMonoChar;
+    property ArrayOfMonoChar: ArrayOf<MonoChar> read GetArrayOfMonoChar;
     property MonoChars[const &Index: NativeInt]: MonoChar read GetMonoChar; default;
   end;
 
@@ -41,7 +41,7 @@ type
 implementation
 
 {MultiChar}
-function MultiChar.AsArrayOfMonoChar: ArrayOf<MonoChar>;
+function MultiChar.GetArrayOfMonoChar: ArrayOf<MonoChar>;
 begin
   Result := FData;
 end;

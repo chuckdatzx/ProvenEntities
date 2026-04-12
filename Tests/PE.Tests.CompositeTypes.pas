@@ -1,5 +1,16 @@
 unit PE.Tests.CompositeTypes;
+{Chuck C.T.
+ I'm arguing that the following tests provide enough evidence to claim that all types in PE.Types.Composite unit are proven. And by proven, I mean proven for:
+ - usage within any compilable source code from the PE namespace
+ - usage within Delphi (at least where PE type X has been proven to be compatible with native type Y)
+ - for all foundational types for all time; if it compiles and successfully runs now, it will continue to do so (like a powered circuit; barring events like power loss)
 
+ If you don't believe that the PE.Types.Foundational namespace has been proven; that's fair. There are many points in
+ my own life where I would have laughed at someone making such a claim and just moved on.
+ However, if you truly disagree with me, please take the time show me where I'm wrong. I've put quite a bit of thought into
+ the following; it seems unlikley that any given 1 person is going to find a problem at first glance (though I certainly
+ could be wrong about that).
+}
 interface
 
 uses
@@ -15,7 +26,7 @@ type
   end;
 
   {$REGION 'ArrayOf<T> type'}
-  ArrayOfTests<T> = record
+  ExecutableSpecification_ArrayOf<TypeUnderTest_Outer> = record
   public type
     AssignmentOperator<TypeUnderTest> = record
     strict private
@@ -41,7 +52,7 @@ type
   {$ENDREGION}
 
   {$REGION 'MultiChar type'}
-  MultiCharTests = record
+  ExecutableSpecification_MultiChar = record
   public type
     AssignmentOperator = record
     strict private
@@ -94,7 +105,7 @@ type
   {$ENDREGION}
 
   {$REGION 'SmartClaw<T> type'}
-  SmartClawTypeTests<T> = record
+  ExecutableSpecification_SmartClaw<T> = record
   public type
     AssignmentCompatibility = record
     strict private
@@ -130,50 +141,45 @@ uses
 {AllTests}
 class procedure AllTests.Exercise;
 begin
-  ArrayOfTests<NaturalNumber>.Exercise();
-  ArrayOfTests<NaturalNumber32>.Exercise();
+  {Composite types (save Generics)}
+  ExecutableSpecification_MultiChar.Exercise();
+  {Composite Generic types by Foundational types}
+  ExecutableSpecification_ArrayOf<MonoChar>.Exercise();
+  ExecutableSpecification_ArrayOf<NaturalNumber>.Exercise();
+  ExecutableSpecification_ArrayOf<NaturalNumber32>.Exercise();
   {$IFDEF CPU64BITS}
-  ArrayOfTests<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
+  ExecutableSpecification_ArrayOf<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
   {$ELSE}
     {$MESSAGE WARN 'PE.Types.ArrayOf<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
   {$IFEND}
-  MultiCharTests.Exercise();
-  SmartClawTypeTests<NaturalNumber>.Exercise();
-  SmartClawTypeTests<NaturalNumber32>.Exercise();
+  ExecutableSpecification_SmartClaw<MonoChar>.Exercise();
+  ExecutableSpecification_SmartClaw<NaturalNumber>.Exercise();
+  ExecutableSpecification_SmartClaw<NaturalNumber32>.Exercise();
   {$IFDEF CPU64BITS}
-  SmartClawTypeTests<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
+  ExecutableSpecification_SmartClaw<NaturalNumber64>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
   {$ELSE}
     {$MESSAGE WARN 'PE.Types.SmartClaw<T> cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
   {$IFEND}
+  {Composite types by Composite types}
+  ExecutableSpecification_ArrayOf<MultiChar>.Exercise();
+  ExecutableSpecification_SmartClaw<MultiChar>.Exercise();
 end;
 
-{ArrayOfTests<T>.Defaults<TypeUnderTest>}
-class procedure ArrayOfTests<T>.Defaults<TypeUnderTest>.Exercise;
+{ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>}
+class procedure ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.Exercise;
 begin
-  IsInitializedToAnEmptyCollectionOfElements();
+  AssignmentOperator<TypeUnderTest_Outer>.Exercise();
+  Defaults<TypeUnderTest_Outer>.Exercise();
+  TypeIdentity<TypeUnderTest_Outer>.Exercise();
 end;
 
-class procedure ArrayOfTests<T>.Defaults<TypeUnderTest>.IsInitializedToAnEmptyCollectionOfElements;
-begin
-  var Actual: ArrayOf<TypeUnderTest> := System.Default(ArrayOf<TypeUnderTest>);
-  System.Assert(0 = System.Length(Actual));
-end;
-
-{ArrayOfTests<T>}
-class procedure ArrayOfTests<T>.Exercise;
-begin
-  AssignmentOperator<T>.Exercise();
-  Defaults<T>.Exercise();
-  TypeIdentity<T>.Exercise();
-end;
-
-{ArrayOfTests<T>.AssignmentOperator<TypeUnderTest>}
-class procedure ArrayOfTests<T>.AssignmentOperator<TypeUnderTest>.Exercise;
+{ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.AssignmentOperator<TypeUnderTest>}
+class procedure ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.AssignmentOperator<TypeUnderTest>.Exercise;
 begin
   IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements();
 end;
 
-class procedure ArrayOfTests<T>.AssignmentOperator<TypeUnderTest>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements();
+class procedure ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.AssignmentOperator<TypeUnderTest>.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesElements();
 begin
   var Expected: ArrayOf<TypeUnderTest> := [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)];
   System.Assert(3 = System.Length(Expected));
@@ -192,88 +198,31 @@ begin
   System.Assert(System.Default(TypeUnderTest) = Expected[System.Low(Expected) + 2]);
 end;
 
-{ArrayOfTests<T>.TypeIdentity<TypeUnderTest>}
-class procedure ArrayOfTests<T>.TypeIdentity<TypeUnderTest>.Exercise;
+{ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.Defaults<TypeUnderTest>}
+class procedure ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.Defaults<TypeUnderTest>.Exercise;
+begin
+  IsInitializedToAnEmptyCollectionOfElements();
+end;
+
+class procedure ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.Defaults<TypeUnderTest>.IsInitializedToAnEmptyCollectionOfElements;
+begin
+  var Actual: ArrayOf<TypeUnderTest> := System.Default(ArrayOf<TypeUnderTest>);
+  System.Assert(0 = System.Length(Actual));
+end;
+
+{ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.TypeIdentity<TypeUnderTest>}
+class procedure ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.TypeIdentity<TypeUnderTest>.Exercise;
 begin
   SharesTypeIdentityWithTArray();
 end;
 
-class procedure ArrayOfTests<T>.TypeIdentity<TypeUnderTest>.SharesTypeIdentityWithTArray();
+class procedure ExecutableSpecification_ArrayOf<TypeUnderTest_Outer>.TypeIdentity<TypeUnderTest>.SharesTypeIdentityWithTArray();
 begin
   TypeEquivalenceInquiry<ArrayOf<TypeUnderTest>>.SharesTypeIdentityWith<TArray<TypeUnderTest>>();
 end;
 
-{SmartClawTypeTests<T>.AssignmentCompatibility}
-class procedure SmartClawTypeTests<T>.AssignmentCompatibility.Exercise;
-begin
-  IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType();
-  IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType();
-end;
-
-class function SmartClawTypeTests<T>.AssignmentCompatibility.ExpectedProceduralType<TypeUnderTest>(const AValue: TypeUnderTest): Boolean; begin Result := False; end;
-
-class procedure SmartClawTypeTests<T>.AssignmentCompatibility.IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType;
-begin
-  var Actual: SmartClaw<T> := System.Default(SmartClaw<T>);
-  System.Assert(not System.Assigned(Actual));
-  Actual := function (const AValue: T): Boolean begin Result := False end;
-  System.Assert(System.Assigned(Actual));
-end;
-
-class procedure SmartClawTypeTests<T>.AssignmentCompatibility.IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType;
-begin
-  var Actual: SmartClaw<T> := System.Default(SmartClaw<T>);
-  System.Assert(not System.Assigned(Actual));
-  Actual := ExpectedProceduralType<T>;
-  System.Assert(System.Assigned(Actual));
-end;
-
-{SmartClawTypeTests<T>.Behaviors}
-class procedure SmartClawTypeTests<T>.Behaviors.Exercise;
-begin
-  ReturnsFalseWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
-  ReturnsTrueWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
-end;
-
-class procedure SmartClawTypeTests<T>.Behaviors.ReturnsFalseWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT;
-begin
-  var ActualValue: T := Rando_TheUntrustworthy.NonDefaultValue<T>();
-  System.Assert(not (System.Default(T) = ActualValue));
-  var Actual: SmartClaw<T> := function(const AValue: T):Boolean begin Result:=(AValue=System.Default(T))end;
-  System.Assert(System.Assigned(Actual));
-  System.Assert(not Actual(ActualValue));
-end;
-
-class procedure SmartClawTypeTests<T>.Behaviors.ReturnsTrueWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT;
-begin
-  var ActualValue: T := System.Default(T);
-  System.Assert(System.Default(T) = ActualValue);
-  var Actual: SmartClaw<T> := function(const AValue: T):Boolean begin Result:=(AValue=System.Default(T))end;
-  System.Assert(System.Assigned(Actual));
-  System.Assert(Actual(ActualValue));
-end;
-
-{SmartClawTypeTests<T>.Defaults}
-class procedure SmartClawTypeTests<T>.Defaults.Exercise;
-begin
-  TheDefaultValueIsNil();
-end;
-
-class procedure SmartClawTypeTests<T>.Defaults.TheDefaultValueIsNil;
-begin
-  System.Assert(not System.Assigned(System.Default(SmartClaw<T>)));
-end;
-
-{SmartClawTypeTests<T>}
-class procedure SmartClawTypeTests<T>.Exercise;
-begin
-  AssignmentCompatibility.Exercise();
-  Behaviors.Exercise();
-  Defaults.Exercise();
-end;
-
-{MultiCharTests}
-class procedure MultiCharTests.Exercise;
+{ExecutableSpecification_MultiChar}
+class procedure ExecutableSpecification_MultiChar.Exercise;
 begin
   AssignmentOperator.Exercise();
   &Constructor.Exercise();
@@ -281,14 +230,14 @@ begin
   Properties.Exercise();
 end;
 
-{MultiCharTests.AssignmentOperator}
-class procedure MultiCharTests.AssignmentOperator.Exercise;
+{ExecutableSpecification_MultiChar.AssignmentOperator}
+class procedure ExecutableSpecification_MultiChar.AssignmentOperator.Exercise;
 begin
   IsSymmetricallyAssignmentCompatibleWithItselfAndPreservesMonoCharContent();
   IsSymmetricallyAssignmentCompatibleWithTheNativeStringAndPreservesStringContent();
 end;
 
-class procedure MultiCharTests.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfAndPreservesMonoCharContent;
+class procedure ExecutableSpecification_MultiChar.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfAndPreservesMonoCharContent;
 begin
   var ExpectedString: string := Rando_TheUntrustworthy.NonDefaultValue<string>();
   System.Assert(not (System.Default(string) = ExpectedString));
@@ -304,7 +253,7 @@ begin
   System.Assert(Expectedstring = Actual);
 end;
 
-class procedure MultiCharTests.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithTheNativeStringAndPreservesStringContent;
+class procedure ExecutableSpecification_MultiChar.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithTheNativeStringAndPreservesStringContent;
 begin
   var Expected: string := Rando_TheUntrustworthy.NonDefaultValue<string>();
   System.Assert(not (System.Default(string) = Expected));
@@ -319,14 +268,64 @@ begin
   System.Assert(Expected = Actual);
 end;
 
-class procedure MultiCharTests.&Constructor.Exercise;
+class procedure ExecutableSpecification_MultiChar.&Constructor.Exercise;
 begin
   FoundationalTypes.Exercise();
   NativeDelphiTypes.Exercise();
 end;
 
-{MultiCharTests.EqualityOperator}
-class procedure MultiCharTests.EqualityOperator.Exercise;
+{ ExecutableSpecification_MultiChar.Constructor.NativeDelphiTypes }
+
+class procedure ExecutableSpecification_MultiChar.&Constructor.NativeDelphiTypes.Exercise;
+begin
+  IsInitializedUsingANativeDefaultStringLiteral();
+  IsInitializedUsingANativeNonDefaultStringLiteral();
+end;
+
+class procedure ExecutableSpecification_MultiChar.&Constructor.NativeDelphiTypes.IsInitializedUsingANativeDefaultStringLiteral;
+begin
+  var Actual: MultiChar := System.Default(string);
+  System.Assert(System.Default(string) = Actual);
+  System.Assert(System.Default(MultiChar) = Actual);
+end;
+
+class procedure ExecutableSpecification_MultiChar.&Constructor.NativeDelphiTypes.IsInitializedUsingANativeNonDefaultStringLiteral;
+const
+  Expected = 'This seems unique enough.';
+begin
+  System.Assert(not (System.Default(string) = Expected));
+  var ActualEmpty: MultiChar := System.Default(MultiChar);
+  System.Assert(System.Default(MultiChar) = ActualEmpty);
+  var Actual: MultiChar := MultiChar.Create(Expected);
+  System.Assert(not (System.Default(MultiChar) = Actual));
+  System.Assert(Expected = Actual);
+end;
+
+{ ExecutableSpecification_MultiChar.Constructor.FoundationalTypes }
+
+class procedure ExecutableSpecification_MultiChar.&Constructor.FoundationalTypes.Exercise;
+begin
+  IsInitializedUsingADefaultArrayOfMultiChar();
+  IsInitializedUsingANonDefaultArrayOfMultiChar();
+end;
+
+class procedure ExecutableSpecification_MultiChar.&Constructor.FoundationalTypes.IsInitializedUsingADefaultArrayOfMultiChar;
+begin
+  var Actual: MultiChar := MultiChar.Create(System.Default(ArrayOf<MultiChar>));
+  System.Assert(System.Default(ArrayOf<MultiChar>) = Actual);
+  System.Assert(System.Default(MultiChar) = Actual);
+end;
+
+class procedure ExecutableSpecification_MultiChar.&Constructor.FoundationalTypes.IsInitializedUsingANonDefaultArrayOfMultiChar;
+begin
+  var Expected: ArrayOf<MonoChar> := Rando_TheUntrustworthy.NonDefaultValue<MultiChar>.ArrayOfMonoChar;
+  System.Assert(not (System.Default(ArrayOf<MonoChar>) = Expected));
+  var Actual: MultiChar := MultiChar.Create(Expected);
+  System.Assert(Expected = Actual);
+end;
+
+{ExecutableSpecification_MultiChar.EqualityOperator}
+class procedure ExecutableSpecification_MultiChar.EqualityOperator.Exercise;
 begin
   ReturnsFalseWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefaultAndNotIdentical();
   ReturnsTrueWhenComparingIdenticalInstancesAndTheMonoCharContentIsDefault();
@@ -335,7 +334,7 @@ begin
   ReturnsTrueWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefault();
 end;
 
-class procedure MultiCharTests.EqualityOperator.ReturnsFalseWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefaultAndNotIdentical;
+class procedure ExecutableSpecification_MultiChar.EqualityOperator.ReturnsFalseWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefaultAndNotIdentical;
 begin
   var Left: MultiChar := MultiChar.Create('i');
   var Right: MultiChar := MultiChar.Create('I');
@@ -349,7 +348,7 @@ begin
   System.Assert(not (Left = Right));
 end;
 
-class procedure MultiCharTests.EqualityOperator.ReturnsTrueWhenComparingIdenticalInstancesAndTheMonoCharContentIsDefault;
+class procedure ExecutableSpecification_MultiChar.EqualityOperator.ReturnsTrueWhenComparingIdenticalInstancesAndTheMonoCharContentIsDefault;
 begin
   var ADefault: MultiChar := System.Default(MultiChar);
   System.Assert(System.Default(MultiChar) = ADefault);
@@ -357,7 +356,7 @@ begin
   System.Assert(ADefault = ADefault);
 end;
 
-class procedure MultiCharTests.EqualityOperator.ReturnsTrueWhenComparingIdenticalInstancesAndTheMonoCharContentIsNonDefault;
+class procedure ExecutableSpecification_MultiChar.EqualityOperator.ReturnsTrueWhenComparingIdenticalInstancesAndTheMonoCharContentIsNonDefault;
 begin
   var AValue: MultiChar := MultiChar.Create('111');
   System.Assert(not (System.Default(MultiChar) = AValue));
@@ -365,7 +364,7 @@ begin
   System.Assert(AValue = AValue);
 end;
 
-class procedure MultiCharTests.EqualityOperator.ReturnsTrueWhenComparingSeparateInstancesAndAllMonoCharContentIsDefault;
+class procedure ExecutableSpecification_MultiChar.EqualityOperator.ReturnsTrueWhenComparingSeparateInstancesAndAllMonoCharContentIsDefault;
 begin
   var Left: MultiChar := System.Default(MultiChar);
   var Right: MultiChar := System.Default(MultiChar);
@@ -375,7 +374,7 @@ begin
   System.Assert(Left = Right);
 end;
 
-class procedure MultiCharTests.EqualityOperator.ReturnsTrueWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefault;
+class procedure ExecutableSpecification_MultiChar.EqualityOperator.ReturnsTrueWhenComparingSeparateInstancesAndAllMonoCharContentIsNonDefault;
 begin
   var Left: MultiChar := MultiChar.Create('Instance');
   var Right: MultiChar := MultiChar.Create('Instance');
@@ -390,22 +389,22 @@ begin
   System.Assert(Left = Right);
 end;
 
-{ MultiCharTests.Properties }
+{ ExecutableSpecification_MultiChar.Properties }
 
-class procedure MultiCharTests.Properties.Exercise;
+class procedure ExecutableSpecification_MultiChar.Properties.Exercise;
 begin
   TheArrayOfMonoCharReturnsNoMonoCharsWhenAMultiCharIsInitializedToADefaultNativeStringLiteral();
   TheArrayOfMonoCharReturnsTheProvidedMonoCharsWhenAMultiCharIsInitializedToNonDefaultStringLiteral();
   TheMonoCharsProvidesIndexBasedAccessToEachMonoCharWhenInitializedToANonDefaultStringValue();
 end;
 
-class procedure MultiCharTests.Properties.TheArrayOfMonoCharReturnsNoMonoCharsWhenAMultiCharIsInitializedToADefaultNativeStringLiteral;
+class procedure ExecutableSpecification_MultiChar.Properties.TheArrayOfMonoCharReturnsNoMonoCharsWhenAMultiCharIsInitializedToADefaultNativeStringLiteral;
 begin
   var Value: MultiChar := MultiChar(System.Default(string));
   System.Assert(System.Default(ArrayOf<MonoChar>) = Value.ArrayOfMonoChar);
 end;
 
-class procedure MultiCharTests.Properties.TheArrayOfMonoCharReturnsTheProvidedMonoCharsWhenAMultiCharIsInitializedToNonDefaultStringLiteral;
+class procedure ExecutableSpecification_MultiChar.Properties.TheArrayOfMonoCharReturnsTheProvidedMonoCharsWhenAMultiCharIsInitializedToNonDefaultStringLiteral;
 begin
   var Expected: string := Rando_TheUntrustworthy.NonDefaultValue<string>();
   var AcualString: string;
@@ -416,7 +415,7 @@ begin
     System.Assert(Expected[I] = Actual[I - 1]);
 end;
 
-class procedure MultiCharTests.Properties.TheMonoCharsProvidesIndexBasedAccessToEachMonoCharWhenInitializedToANonDefaultStringValue;
+class procedure ExecutableSpecification_MultiChar.Properties.TheMonoCharsProvidesIndexBasedAccessToEachMonoCharWhenInitializedToANonDefaultStringValue;
 begin
   var Expected: string := Rando_TheUntrustworthy.NonDefaultValue<string>();
   System.Assert(not (System.Default(string) = Expected));
@@ -427,54 +426,73 @@ begin
     System.Assert(ActualMonoChars[I] = Actual[I]);
 end;
 
-{ MultiCharTests.Constructor.NativeDelphiTypes }
-
-class procedure MultiCharTests.&Constructor.NativeDelphiTypes.Exercise;
+{ExecutableSpecification_SmartClaw<T>}
+class procedure ExecutableSpecification_SmartClaw<T>.Exercise;
 begin
-  IsInitializedUsingANativeDefaultStringLiteral();
-  IsInitializedUsingANativeNonDefaultStringLiteral();
+  AssignmentCompatibility.Exercise();
+  Behaviors.Exercise();
+  Defaults.Exercise();
 end;
 
-class procedure MultiCharTests.&Constructor.NativeDelphiTypes.IsInitializedUsingANativeDefaultStringLiteral;
+{ExecutableSpecification_SmartClaw<T>.AssignmentCompatibility}
+class procedure ExecutableSpecification_SmartClaw<T>.AssignmentCompatibility.Exercise;
 begin
-  var Actual: MultiChar := System.Default(string);
-  System.Assert(System.Default(string) = Actual);
-  System.Assert(System.Default(MultiChar) = Actual);
+  IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType();
+  IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType();
 end;
 
-class procedure MultiCharTests.&Constructor.NativeDelphiTypes.IsInitializedUsingANativeNonDefaultStringLiteral;
-const
-  Expected = 'This seems unique enough.';
+class function ExecutableSpecification_SmartClaw<T>.AssignmentCompatibility.ExpectedProceduralType<TypeUnderTest>(const AValue: TypeUnderTest): Boolean; begin Result := False; end;
+
+class procedure ExecutableSpecification_SmartClaw<T>.AssignmentCompatibility.IsLeftAssigmentCompatibleWithAnAnonymousMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType;
 begin
-  System.Assert(not (System.Default(string) = Expected));
-  var ActualEmpty: MultiChar := System.Default(MultiChar);
-  System.Assert(System.Default(MultiChar) = ActualEmpty);
-  var Actual: MultiChar := MultiChar.Create(Expected);
-  System.Assert(not (System.Default(MultiChar) = Actual));
-  System.Assert(Expected = Actual);
+  var Actual: SmartClaw<T> := System.Default(SmartClaw<T>);
+  System.Assert(not System.Assigned(Actual));
+  Actual := function (const AValue: T): Boolean begin Result := False end;
+  System.Assert(System.Assigned(Actual));
 end;
 
-{ MultiCharTests.Constructor.FoundationalTypes }
-
-class procedure MultiCharTests.&Constructor.FoundationalTypes.Exercise;
+class procedure ExecutableSpecification_SmartClaw<T>.AssignmentCompatibility.IsLeftAssigmentCompatibleWithAProceduralMethodComprisedOfAFunctionWithASingleImmutableValueOfTAndReturningABooleanType;
 begin
-  IsInitializedUsingADefaultArrayOfMultiChar();
-  IsInitializedUsingANonDefaultArrayOfMultiChar();
+  var Actual: SmartClaw<T> := System.Default(SmartClaw<T>);
+  System.Assert(not System.Assigned(Actual));
+  Actual := ExpectedProceduralType<T>;
+  System.Assert(System.Assigned(Actual));
 end;
 
-class procedure MultiCharTests.&Constructor.FoundationalTypes.IsInitializedUsingADefaultArrayOfMultiChar;
+{ExecutableSpecification_SmartClaw<T>.Behaviors}
+class procedure ExecutableSpecification_SmartClaw<T>.Behaviors.Exercise;
 begin
-  var Actual: MultiChar := MultiChar.Create(System.Default(ArrayOf<MultiChar>));
-  System.Assert(System.Default(ArrayOf<MultiChar>) = Actual);
-  System.Assert(System.Default(MultiChar) = Actual);
+  ReturnsFalseWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
+  ReturnsTrueWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT();
 end;
 
-class procedure MultiCharTests.&Constructor.FoundationalTypes.IsInitializedUsingANonDefaultArrayOfMultiChar;
+class procedure ExecutableSpecification_SmartClaw<T>.Behaviors.ReturnsFalseWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT;
 begin
-  var Expected: ArrayOf<MonoChar> := MultiChar.Create('Hello world').ArrayOfMonoChar;
-  System.Assert(not (System.Default(ArrayOf<MonoChar>) = Expected));
-  var Actual: MultiChar := MultiChar.Create(Expected);
-  System.Assert(Expected = Actual);
+  var ActualValue: T := Rando_TheUntrustworthy.NonDefaultValue<T>();
+  System.Assert(not (System.Default(T) = ActualValue));
+  var Actual: SmartClaw<T> := function(const AValue: T):Boolean begin Result:=(AValue=System.Default(T))end;
+  System.Assert(System.Assigned(Actual));
+  System.Assert(not Actual(ActualValue));
+end;
+
+class procedure ExecutableSpecification_SmartClaw<T>.Behaviors.ReturnsTrueWhenGivenANonDefaultTAndWhenSolelyComprisedOfCodeComparingTheProvidedValueOfTAgainstTheDefaultOfT;
+begin
+  var ActualValue: T := System.Default(T);
+  System.Assert(System.Default(T) = ActualValue);
+  var Actual: SmartClaw<T> := function(const AValue: T):Boolean begin Result:=(AValue=System.Default(T))end;
+  System.Assert(System.Assigned(Actual));
+  System.Assert(Actual(ActualValue));
+end;
+
+{ExecutableSpecification_SmartClaw<T>.Defaults}
+class procedure ExecutableSpecification_SmartClaw<T>.Defaults.Exercise;
+begin
+  TheDefaultValueIsNil();
+end;
+
+class procedure ExecutableSpecification_SmartClaw<T>.Defaults.TheDefaultValueIsNil;
+begin
+  System.Assert(not System.Assigned(System.Default(SmartClaw<T>)));
 end;
 
 end.

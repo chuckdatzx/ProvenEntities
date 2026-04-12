@@ -14,7 +14,7 @@ type
     class procedure Exercise(); static; inline;
   end;
 
-  DataStreamTests = record
+  ExecutableSpecification_DataStreamRoutines = record
   public type
     Contains<TypeUnderTest1> = record
     public type
@@ -108,39 +108,203 @@ uses
 {AllTests}
 class procedure AllTests.Exercise;
 begin
-  {Helpers for helped types}
   DataStreamTests_Closed.Exercise();
-  DataStreamTests.Contains<NaturalNumber>.Exercise();
-  DataStreamTests.UniqueElements<NaturalNumber>.Exercise();
-  DataStreamTests.UniqueElements<NaturalNumber32>.Exercise();
+  {Routines by Foundational Types}
+  ExecutableSpecification_DataStreamRoutines.Contains<MonoChar>.Exercise();
+  ExecutableSpecification_DataStreamRoutines.Contains<NaturalNumber>.Exercise();
+  ExecutableSpecification_DataStreamRoutines.UniqueElements<NaturalNumber>.Exercise();
+  ExecutableSpecification_DataStreamRoutines.UniqueElements<NaturalNumber32>.Exercise();
   {$IFDEF CPU64BITS}
   DataStreamTests.UniqueElements<NaturalNumber64>.Exercise();
   {$ELSE}
     {$MESSAGE WARN 'PE.Routines.DataStream cannot be proven for the NaturalNumber64 type (other NaturalNumber variations are proven)'}
   {$IFEND}
+  {Routines by Non-Generic Composite Types}
+  ExecutableSpecification_DataStreamRoutines.Contains<MultiChar>.Exercise();
 end;
 
-{DataStreamTests.UniqueElements<TypeUnderTest>}
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.Exercise;
+{ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>}
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.Exercise;
+begin
+  MatchingElementsAreNoticed<TypeUnderTest1>.Exercise();
+  MissingElementsAreNotNoticed<TypeUnderTest1>.Exercise();
+  RoutineStructure<TypeUnderTest1>.Exercise();
+end;
+
+{ ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.RoutineStructure<TypeUnderTest2> }
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.ReturnsABooleanValue;
+begin
+  var Dummy1: ArrayOf<TypeUnderTest2> := []; var Dummy2: TypeUnderTest2 := System.Default(TypeUnderTest2);
+  var Expected: Boolean := DataStream.Contains<TypeUnderTest2>(Dummy1, Dummy2);
+  System.Assert(not (Expected));
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.Exercise;
+begin
+  The1stParameterAcceptsAnEmptyArrayOfT();
+  The2ndParameterAcceptsADefaultValueOfT();
+  ReturnsABooleanValue();
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.The1stParameterAcceptsAnEmptyArrayOfT;
+begin
+  var Expected: ArrayOf<TypeUnderTest2> := []; var Dummy: TypeUnderTest2 := System.Default(TypeUnderTest2);
+  DataStream.Contains<TypeUnderTest2>(Expected, Dummy);
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.The2ndParameterAcceptsADefaultValueOfT;
+begin
+  var Dummy: ArrayOf<TypeUnderTest2> := []; var Expected: TypeUnderTest2 := System.Default(TypeUnderTest2);
+  DataStream.Contains<TypeUnderTest2>(Dummy, Expected);
+end;
+
+{ ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2> }
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.Exercise;
+begin
+  ReturnsFalseWhenGivenAnEmptyArrayAndADefaultValueOfT();
+  ReturnsFalseWhenGivenAnEmptyArrayAndANonDefaultValueOfT();
+  ReturnsFalseWhenGivenASingleElementOfDefaultTAndANonDefaultValueOfT();
+  ReturnsFalseWhenGivenASingleElementOfNonDefaultTAndADefaultValueOfT();
+  ReturnsFalseWhenGivenMultipleIdenticalElementsOfDefaultTAndANonDefaultValueOfT();
+  ReturnsFalseWhenGivenMultipleIdenticalElementsOfNonDefaultTAndADefaultValueOfT();
+  ReturnsFalseWhenGivenMultipleVariedElementsOfNonDefaultTAndADefaultValueOfT();
+  ReturnsFalseWhenGivenMultipleVariedElementsOfNonDefaultTAndANonMatchingNonDefaultValueOfT();
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenAnEmptyArrayAndADefaultValueOfT;
+begin
+  var Actual1: ArrayOf<TypeUnderTest2> := []; var Actual2: TypeUnderTest2 := System.Default(TypeUnderTest2);
+  System.Assert(0 = System.Length(Actual1));
+  System.Assert(System.Default(TypeUnderTest2) = Actual2);
+  System.Assert(not (DataStream.Contains<TypeUnderTest2>(Actual1, Actual2)));
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenAnEmptyArrayAndANonDefaultValueOfT;
+begin
+  var Actual1: ArrayOf<TypeUnderTest2> := []; var Actual2: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  System.Assert(0 = System.Length(Actual1));
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual2));
+  System.Assert(not (DataStream.Contains<TypeUnderTest2>(Actual1, Actual2)));
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenASingleElementOfDefaultTAndANonDefaultValueOfT;
+begin
+  var Actual: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual));
+  System.Assert(not (DataStream.Contains<TypeUnderTest2>([System.Default(TypeUnderTest2)], Actual)));
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenASingleElementOfNonDefaultTAndADefaultValueOfT;
+begin
+  var Actual: ArrayOf<TypeUnderTest2> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>()];
+  System.Assert(1 = System.Length(Actual));
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual[System.Low(Actual)]));
+  System.Assert(not (DataStream.Contains<TypeUnderTest2>(Actual, System.Default(TypeUnderTest2))));
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenMultipleIdenticalElementsOfDefaultTAndANonDefaultValueOfT;
+begin
+  var Actual: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual));
+  System.Assert(not (DataStream.Contains<TypeUnderTest2>([System.Default(TypeUnderTest2), System.Default(TypeUnderTest2), System.Default(TypeUnderTest2)], Actual)));
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenMultipleIdenticalElementsOfNonDefaultTAndADefaultValueOfT;
+begin
+  var Actual: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual));
+  System.Assert(not (DataStream.Contains<TypeUnderTest2>([Actual, Actual, Actual], System.Default(TypeUnderTest2))));
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenMultipleVariedElementsOfNonDefaultTAndADefaultValueOfT;
+begin
+  var Actual1: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  var Actual2: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  var Actual3: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual1));
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual2));
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual3));
+  System.Assert(not (Actual1 = Actual2));
+  System.Assert(not (Actual1 = Actual3));
+  System.Assert(not (Actual2 = Actual3));
+  System.Assert(not (DataStream.Contains<TypeUnderTest2>([Actual1, Actual2, Actual3], System.Default(TypeUnderTest2))));
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenMultipleVariedElementsOfNonDefaultTAndANonMatchingNonDefaultValueOfT;
+begin
+  var Actual1: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  var Actual2: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  var Actual3: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  var Actual4: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual1));
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual2));
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual3));
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual4));
+  System.Assert(not (Actual1 = Actual2));
+  System.Assert(not (Actual1 = Actual3));
+  System.Assert(not (Actual1 = Actual4));
+  System.Assert(not (Actual2 = Actual3));
+  System.Assert(not (Actual2 = Actual4));
+  System.Assert(not (Actual3 = Actual4));
+  System.Assert(not (DataStream.Contains<TypeUnderTest2>([Actual1, Actual2, Actual3], Actual4)));
+end;
+
+{ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2>}
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2>.Exercise;
+begin
+  ReturnsTrueWhenGivenASingleElementOfDefaultTAndDefaultValueOfT();
+  ReturnsTrueWhenGivenASingleElementOfNonDefaultTAndMatchingElementOfNonDefaultT();
+  ReturnsTrueWhenGivenMultipleIdenticalElementsOfDefaultTAndADefaultValueOfT();
+  ReturnsTrueWhenGivenMultipleIdenticalElementsOfNonDefaultTAndTheSameNonDefaultValueOfT();
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2>.ReturnsTrueWhenGivenASingleElementOfDefaultTAndDefaultValueOfT;
+begin
+  System.Assert(DataStream.Contains<TypeUnderTest2>([System.Default(TypeUnderTest2)], System.Default(TypeUnderTest2)));
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2>.ReturnsTrueWhenGivenASingleElementOfNonDefaultTAndMatchingElementOfNonDefaultT;
+begin
+  var Actual: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  System.Assert(not (Actual = System.Default(TypeUnderTest2)));
+  System.Assert(DataStream.Contains<TypeUnderTest2>([Actual], Actual));
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2>.ReturnsTrueWhenGivenMultipleIdenticalElementsOfDefaultTAndADefaultValueOfT;
+begin
+  System.Assert(DataStream.Contains<TypeUnderTest2>([System.Default(TypeUnderTest2), System.Default(TypeUnderTest2), System.Default(TypeUnderTest2)], System.Default(TypeUnderTest2)));
+end;
+
+class procedure ExecutableSpecification_DataStreamRoutines.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2>.ReturnsTrueWhenGivenMultipleIdenticalElementsOfNonDefaultTAndTheSameNonDefaultValueOfT;
+begin
+  var Actual: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
+  System.Assert(not (System.Default(TypeUnderTest2) = Actual));
+  System.Assert(DataStream.Contains<TypeUnderTest2>([Actual, Actual, Actual], Actual));
+end;
+
+{ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest>}
+class procedure ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.Exercise;
 begin
   RoutineStructure<TypeUnderTest1>.Exercise();
   RepeatedElementsAreFilteredOut<TypeUnderTest1>.Exercise();
 end;
 
-{DataStreamTests.UniqueElements<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>}
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.Exercise;
+{ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>}
+class procedure ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.Exercise;
 begin
   TheOnlyParameterAcceptsAnEmptyArrayOfT();
   ReturnsAnArrayOfT();
 end;
 
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.ReturnsAnArrayOfT;
+class procedure ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.ReturnsAnArrayOfT;
 begin
   var Dummy: ArrayOf<TypeUnderTest2>;
   var Expected: ArrayOf<TypeUnderTest2> := DataStream.UniqueElements<TypeUnderTest2>(Dummy);
 end;
 
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.TheOnlyParameterAcceptsAnEmptyArrayOfT;
+class procedure ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.TheOnlyParameterAcceptsAnEmptyArrayOfT;
 begin
   var Dummy: ArrayOf<TypeUnderTest2>; var Expected: ArrayOf<TypeUnderTest2>;
   Expected := DataStream.UniqueElements<TypeUnderTest2>(Dummy);
@@ -188,8 +352,8 @@ begin
   UniqueElements.ResultOrder_UsingNaturalNumber.Exercise();
 end;
 
-{DataStreamTests.UniqueElements<TypeUnderTest>.RepeatedElementsAreFilteredOut}
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Exercise;
+{ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest>.RepeatedElementsAreFilteredOut}
+class procedure ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Exercise;
 begin
   Returns1DefaultElementWhenGiven1DefaultElement();
   Returns1DefaultElementWhenGiven3DefaultElements();
@@ -199,28 +363,28 @@ begin
   Returns3UniqueNonDefaultElementsAnd1DefaultElementWhenGivenTheSame3UniqueNonDefaultElementsAmongstNonDefaultElements();
 end;
 
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns1DefaultElementWhenGiven1DefaultElement;
+class procedure ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns1DefaultElementWhenGiven1DefaultElement;
 begin
   var Actual: ArrayOf<TypeUnderTest2> := DataStream.UniqueElements<TypeUnderTest2>([System.Default(TypeUnderTest2)]);
   System.Assert(1 = System.Length(Actual));
   System.Assert(System.Default(TypeUnderTest2) = Actual[0]);
 end;
 
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns1DefaultElementWhenGiven3DefaultElements;
+class procedure ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns1DefaultElementWhenGiven3DefaultElements;
 begin
   var Actual: ArrayOf<TypeUnderTest2> := DataStream.UniqueElements<TypeUnderTest2>([System.Default(TypeUnderTest2), System.Default(TypeUnderTest2), System.Default(TypeUnderTest2)]);
   System.Assert(1 = System.Length(Actual));
   System.Assert(System.Default(TypeUnderTest2) = Actual[0]);
 end;
 
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns1NonDefaultElementWhenGiven1NonDefaultElement;
+class procedure ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns1NonDefaultElementWhenGiven1NonDefaultElement;
 begin
   var Actual: ArrayOf<TypeUnderTest2> := DataStream.UniqueElements<TypeUnderTest2>([Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>()]);
   System.Assert(1 = System.Length(Actual));
   System.Assert(System.Default(TypeUnderTest2) <> Actual[0]);
 end;
 
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns1NonDefaultElementWhenGiven3OfTheSameNonDefaultElements;
+class procedure ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns1NonDefaultElementWhenGiven3OfTheSameNonDefaultElements;
 begin
   var DataElement: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
   var Actual: ArrayOf<TypeUnderTest2> := DataStream.UniqueElements<TypeUnderTest2>([DataElement, DataElement, DataElement]);
@@ -228,7 +392,7 @@ begin
   System.Assert(System.Default(TypeUnderTest2) <> Actual[0]);
 end;
 
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns3UniqueNonDefaultElementsAnd1DefaultElementWhenGivenTheSame3UniqueNonDefaultElementsAmongstNonDefaultElements;
+class procedure ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns3UniqueNonDefaultElementsAnd1DefaultElementWhenGivenTheSame3UniqueNonDefaultElementsAmongstNonDefaultElements;
 begin
   var Expected: ArrayOf<TypeUnderTest2> := [System.Default(TypeUnderTest2), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>()];
   System.Assert(4 = System.Length(Expected));
@@ -247,7 +411,7 @@ begin
   System.Assert(Expected[System.Low(Expected) + 3] = Actual[System.Low(Actual) + 3]);
 end;
 
-class procedure DataStreamTests.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns3UniqueNonDefaultElementsWhenGivenTheSame3UniqueNonDefaultElements;
+class procedure ExecutableSpecification_DataStreamRoutines.UniqueElements<TypeUnderTest1>.RepeatedElementsAreFilteredOut<TypeUnderTest2>.Returns3UniqueNonDefaultElementsWhenGivenTheSame3UniqueNonDefaultElements;
 begin
   var Expected: ArrayOf<TypeUnderTest2> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>()];
   System.Assert(3 = System.Length(Expected));
@@ -259,168 +423,6 @@ begin
   System.Assert(Expected[System.Low(Expected)] = Actual[System.Low(Actual)]);
   System.Assert(Expected[System.Low(Expected) + 1] = Actual[System.Low(Actual) + 1]);
   System.Assert(Expected[System.Low(Expected) + 2] = Actual[System.Low(Actual) + 2]);
-end;
-
-{DataStreamTests.Contains<TypeUnderTest1>}
-class procedure DataStreamTests.Contains<TypeUnderTest1>.Exercise;
-begin
-  MatchingElementsAreNoticed<TypeUnderTest1>.Exercise();
-  MissingElementsAreNotNoticed<TypeUnderTest1>.Exercise();
-  RoutineStructure<TypeUnderTest1>.Exercise();
-end;
-
-{ DataStreamTests.Contains<TypeUnderTest1>.RoutineStructure<TypeUnderTest2> }
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.ReturnsABooleanValue;
-begin
-  var Dummy1: ArrayOf<TypeUnderTest2> := []; var Dummy2: TypeUnderTest2 := System.Default(TypeUnderTest2);
-  var Expected: Boolean := DataStream.Contains<TypeUnderTest2>(Dummy1, Dummy2);
-  System.Assert(not (Expected));
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.Exercise;
-begin
-  The1stParameterAcceptsAnEmptyArrayOfT();
-  The2ndParameterAcceptsADefaultValueOfT();
-  ReturnsABooleanValue();
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.The1stParameterAcceptsAnEmptyArrayOfT;
-begin
-  var Expected: ArrayOf<TypeUnderTest2> := []; var Dummy: TypeUnderTest2 := System.Default(TypeUnderTest2);
-  DataStream.Contains<TypeUnderTest2>(Expected, Dummy);
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.RoutineStructure<TypeUnderTest2>.The2ndParameterAcceptsADefaultValueOfT;
-begin
-  var Dummy: ArrayOf<TypeUnderTest2> := []; var Expected: TypeUnderTest2 := System.Default(TypeUnderTest2);
-  DataStream.Contains<TypeUnderTest2>(Dummy, Expected);
-end;
-
-{ DataStreamTests.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2> }
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.Exercise;
-begin
-  ReturnsFalseWhenGivenAnEmptyArrayAndADefaultValueOfT();
-  ReturnsFalseWhenGivenAnEmptyArrayAndANonDefaultValueOfT();
-  ReturnsFalseWhenGivenASingleElementOfDefaultTAndANonDefaultValueOfT();
-  ReturnsFalseWhenGivenASingleElementOfNonDefaultTAndADefaultValueOfT();
-  ReturnsFalseWhenGivenMultipleIdenticalElementsOfDefaultTAndANonDefaultValueOfT();
-  ReturnsFalseWhenGivenMultipleIdenticalElementsOfNonDefaultTAndADefaultValueOfT();
-  ReturnsFalseWhenGivenMultipleVariedElementsOfNonDefaultTAndADefaultValueOfT();
-  ReturnsFalseWhenGivenMultipleVariedElementsOfNonDefaultTAndANonMatchingNonDefaultValueOfT();
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenAnEmptyArrayAndADefaultValueOfT;
-begin
-  var Actual1: ArrayOf<TypeUnderTest2> := []; var Actual2: TypeUnderTest2 := System.Default(TypeUnderTest2);
-  System.Assert(0 = System.Length(Actual1));
-  System.Assert(System.Default(TypeUnderTest2) = Actual2);
-  System.Assert(not (DataStream.Contains<TypeUnderTest2>(Actual1, Actual2)));
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenAnEmptyArrayAndANonDefaultValueOfT;
-begin
-  var Actual1: ArrayOf<TypeUnderTest2> := []; var Actual2: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  System.Assert(0 = System.Length(Actual1));
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual2));
-  System.Assert(not (DataStream.Contains<TypeUnderTest2>(Actual1, Actual2)));
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenASingleElementOfDefaultTAndANonDefaultValueOfT;
-begin
-  var Actual: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual));
-  System.Assert(not (DataStream.Contains<TypeUnderTest2>([System.Default(TypeUnderTest2)], Actual)));
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenASingleElementOfNonDefaultTAndADefaultValueOfT;
-begin
-  var Actual: ArrayOf<TypeUnderTest2> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>()];
-  System.Assert(1 = System.Length(Actual));
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual[System.Low(Actual)]));
-  System.Assert(not (DataStream.Contains<TypeUnderTest2>(Actual, System.Default(TypeUnderTest2))));
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenMultipleIdenticalElementsOfDefaultTAndANonDefaultValueOfT;
-begin
-  var Actual: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual));
-  System.Assert(not (DataStream.Contains<TypeUnderTest2>([System.Default(TypeUnderTest2), System.Default(TypeUnderTest2), System.Default(TypeUnderTest2)], Actual)));
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenMultipleIdenticalElementsOfNonDefaultTAndADefaultValueOfT;
-begin
-  var Actual: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual));
-  System.Assert(not (DataStream.Contains<TypeUnderTest2>([Actual, Actual, Actual], System.Default(TypeUnderTest2))));
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenMultipleVariedElementsOfNonDefaultTAndADefaultValueOfT;
-begin
-  var Actual1: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  var Actual2: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  var Actual3: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual1));
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual2));
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual3));
-  System.Assert(not (Actual1 = Actual2));
-  System.Assert(not (Actual1 = Actual3));
-  System.Assert(not (Actual2 = Actual3));
-  System.Assert(not (DataStream.Contains<TypeUnderTest2>([Actual1, Actual2, Actual3], System.Default(TypeUnderTest2))));
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MissingElementsAreNotNoticed<TypeUnderTest2>.ReturnsFalseWhenGivenMultipleVariedElementsOfNonDefaultTAndANonMatchingNonDefaultValueOfT;
-begin
-  var Actual1: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  var Actual2: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  var Actual3: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  var Actual4: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual1));
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual2));
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual3));
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual4));
-  System.Assert(not (Actual1 = Actual2));
-  System.Assert(not (Actual1 = Actual3));
-  System.Assert(not (Actual1 = Actual4));
-  System.Assert(not (Actual2 = Actual3));
-  System.Assert(not (Actual2 = Actual4));
-  System.Assert(not (Actual3 = Actual4));
-  System.Assert(not (DataStream.Contains<TypeUnderTest2>([Actual1, Actual2, Actual3], Actual4)));
-end;
-
-{ DataStreamTests.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2> }
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2>.Exercise;
-begin
-  ReturnsTrueWhenGivenASingleElementOfDefaultTAndDefaultValueOfT();
-  ReturnsTrueWhenGivenASingleElementOfNonDefaultTAndMatchingElementOfNonDefaultT();
-  ReturnsTrueWhenGivenMultipleIdenticalElementsOfDefaultTAndADefaultValueOfT();
-  ReturnsTrueWhenGivenMultipleIdenticalElementsOfNonDefaultTAndTheSameNonDefaultValueOfT();
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2>.ReturnsTrueWhenGivenASingleElementOfDefaultTAndDefaultValueOfT;
-begin
-  System.Assert(DataStream.Contains<TypeUnderTest2>([System.Default(TypeUnderTest2)], System.Default(TypeUnderTest2)));
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2>.ReturnsTrueWhenGivenASingleElementOfNonDefaultTAndMatchingElementOfNonDefaultT;
-begin
-  var Actual: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  System.Assert(not (Actual = System.Default(TypeUnderTest2)));
-  System.Assert(DataStream.Contains<TypeUnderTest2>([Actual], Actual));
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2>.ReturnsTrueWhenGivenMultipleIdenticalElementsOfDefaultTAndADefaultValueOfT;
-begin
-  System.Assert(DataStream.Contains<TypeUnderTest2>([System.Default(TypeUnderTest2), System.Default(TypeUnderTest2), System.Default(TypeUnderTest2)], System.Default(TypeUnderTest2)));
-end;
-
-class procedure DataStreamTests.Contains<TypeUnderTest1>.MatchingElementsAreNoticed<TypeUnderTest2>.ReturnsTrueWhenGivenMultipleIdenticalElementsOfNonDefaultTAndTheSameNonDefaultValueOfT;
-begin
-  var Actual: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  System.Assert(not (System.Default(TypeUnderTest2) = Actual));
-  System.Assert(DataStream.Contains<TypeUnderTest2>([Actual, Actual, Actual], Actual));
 end;
 
 end.

@@ -41,7 +41,7 @@ begin
   //If you want to cover more ground, just copy/paste(the line of source code below that tests what you want to cover) and replace T with whatever type.
   //just make sure to keep it between the first and last System.Write (that way you can be sure no errors could have occurred)
   PE.Tests.Routines.AllTests.Exercise();
-  PE.Tests.Routines.Buckets.CategorizeRoutineTests<T>.Exercise();
+  PE.Tests.Routines.Buckets.ExecutableSpeficiation_CategorizeRoutine<T>.Exercise();
   PE.Tests.CompositeTypes.AllTests.Exercise();
   PE.Tests.FoundationalTypes.AllTests.Exercise();
   PE.Tests.Types.Buckets.TypeTests<T>.Exercise();

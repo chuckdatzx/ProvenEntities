@@ -1,9 +1,8 @@
 unit PE.Tests.Routines.Buckets;
 {Chuck C.T.
- I'll try to keep this short and clear. I'm arguing that the following tests provide enough evidence to claim
- that the PE.Buckets.Routines.Categorize<T> routine has been proven. And by proven, I mean proven for:
+ I'm arguing that the following tests provide enough evidence to claim that the PE.Buckets.Routines.Categorize<T> routine has been proven. And by proven, I mean proven for:
  - whatever type T you decide to use where T is both compilable and passes the below battery of tests
- - for all T for all time; if it compiles and successfully runs now, it will continue to do so (barring events like power loss)
+ - for all T for all time; if it compiles and successfully runs now, it will continue to do so (like a powered circuit; barring events like power loss)
 
  If you don't believe that the PE.Buckets.Routines.Categorize<T> has been proven; that's fair. There are many points in
  my own life where I would have laughed at someone making such a claim and just moved on.
@@ -26,11 +25,11 @@ uses
 {$ENDIF}
 
 type
-  CategorizeRoutineTests<TypeUnderTest> = record
+  ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest> = record
   public type
-    BugsMissedRequiringRefactoringOfTheCurrentProof = record
+    CasesWhichShouldArguablyBeRefactoredIntoTheExecSpec = record
     strict private
-      class procedure WellDotDotDotIAmTryingToClassifyThisOne(); static; inline;
+      class procedure ABucketInWithoutAGrabbyArmAndBetweenTwoBucketsInWithGrabbyArmsDoesNotInfluenceTheBucketOutCounts(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -145,8 +144,8 @@ implementation
 uses
   PE.Delphi.TypeIdentity;
 
-{CategorizeRoutineTests<TypeUnderTest>}
-class procedure CategorizeRoutineTests<TypeUnderTest>.Exercise;
+{ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>}
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.Exercise;
 begin
   EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.Exercise();
   NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Exercise();
@@ -154,32 +153,30 @@ begin
   SignatureTests.Exercise();
 end;
 
-{ CategorizeRoutineTests<TypeUnderTest>.SignatureTests }
-
-class procedure CategorizeRoutineTests<TypeUnderTest>.SignatureTests.Exercise;
+{ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.CasesWhichShouldArguablyBeRefactoredIntoTheExecSpec}
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.CasesWhichShouldArguablyBeRefactoredIntoTheExecSpec.Exercise;
 begin
-  The1stParameterAcceptsAnEmptyArrayOfT();
-  The2ndParameterAcceptsAnEmptyArrayOfBucketInOfT();
-  ReturnsAnEmptyArrayOfBucketOut();
+  ABucketInWithoutAGrabbyArmAndBetweenTwoBucketsInWithGrabbyArmsDoesNotInfluenceTheBucketOutCounts();
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.SignatureTests.ReturnsAnEmptyArrayOfBucketOut;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.CasesWhichShouldArguablyBeRefactoredIntoTheExecSpec.ABucketInWithoutAGrabbyArmAndBetweenTwoBucketsInWithGrabbyArmsDoesNotInfluenceTheBucketOutCounts;
 begin
-  System.Assert(ArrayOf<BucketOut>.Create() = Routines.Categorize<TypeUnderTest>(ArrayOf<TypeUnderTest>.Create(), ArrayOf<BucketIn<TypeUnderTest>>.Create()));
+  var Elements: ArrayOf<TypeUnderTest> := [System.Default(TypeUnderTest), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, System.Default(TypeUnderTest), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, System.Default(TypeUnderTest)];
+  var Actual := Routines.Categorize<TypeUnderTest>(Elements,
+    [BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (System.Default(TypeUnderTest) = AValue); end, 'Defaults'),
+     BucketIn<TypeUnderTest>.Create(nil, 'Dummy'),
+     BucketIn<TypeUnderTest>.Create(function (const AValue: TypeUnderTest): Boolean begin Result := (not (System.Default(TypeUnderTest) = AValue)); end, 'Non-defaults')]);
+  System.Assert(3 = System.Length(Actual));
+  System.Assert('Defaults' = Actual[System.Low(Actual)].Name);
+  System.Assert('Dummy' = Actual[System.Low(Actual) + 1].Name);
+  System.Assert('Non-defaults' = Actual[System.Low(Actual) + 2].Name);
+  System.Assert(3 = Actual[System.Low(Actual)].Count);
+  System.Assert(0 = Actual[System.Low(Actual) + 1].Count);
+  System.Assert(2 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.SignatureTests.The1stParameterAcceptsAnEmptyArrayOfT;
-begin
-  Routines.Categorize<TypeUnderTest>(ArrayOf<TypeUnderTest>.Create(), []);
-end;
-
-class procedure CategorizeRoutineTests<TypeUnderTest>.SignatureTests.The2ndParameterAcceptsAnEmptyArrayOfBucketInOfT;
-begin
-  Routines.Categorize<TypeUnderTest>([], ArrayOf<BucketIn<TypeUnderTest>>.Create());
-end;
-
-{CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn}
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Exercise;
+{ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn}
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Exercise;
 begin
   ReturnsZeroBucketsOutWhenGivenAnEmptyDataStreamAndZeroBucketsIn();
   ReturnsZeroBucketsOutWhenGivenASingleDefaultElementAsADataStreamAndZeroBucketsIn();
@@ -208,14 +205,14 @@ begin
   Returns3BucketsOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd3NonDefaultBucketInOfT();
 end;
 
-class function CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.NonDefaultSmartClaw(const Value: TypeUnderTest): Boolean; begin Result := False; end;
+class function ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.NonDefaultSmartClaw(const Value: TypeUnderTest): Boolean; begin Result := False; end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd1DefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd1DefaultBucketInOfT;
 begin
   System.Assert(1 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>)])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd1NonDefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd1NonDefaultBucketInOfT;
 begin
   var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>)];
   System.Assert(1 = System.Length(BucketsIn));
@@ -223,7 +220,7 @@ begin
   System.Assert(1 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], BucketsIn)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd1DefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd1DefaultBucketInOfT;
 begin
   var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(3 = System.Length(Elements));
@@ -233,7 +230,7 @@ begin
   System.Assert(1 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, [System.Default(BucketIn<TypeUnderTest>)])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd1NonDefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd1NonDefaultBucketInOfT;
 begin
   var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>)];
   System.Assert(1 = System.Length(BucketsIn));
@@ -246,13 +243,13 @@ begin
   System.Assert(1 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, BucketsIn)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAnEmptyDataStreamAnd1DefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAnEmptyDataStreamAnd1DefaultBucketInOfT;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>)]);
   System.Assert(1 = System.Length(Actual));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAnEmptyDataStreamAnd1NonDefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenAnEmptyDataStreamAnd1NonDefaultBucketInOfT;
 begin
   var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>)];
   System.Assert(1 = System.Length(BucketsIn));
@@ -261,12 +258,12 @@ begin
   System.Assert(1 = System.Length(Actual));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenASingleDefaultElementAsADataStreamAnd1DefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenASingleDefaultElementAsADataStreamAnd1DefaultBucketInOfT;
 begin
   System.Assert(1 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>)])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenASingleDefaultElementAsADataStreamAnd1NonDefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenASingleDefaultElementAsADataStreamAnd1NonDefaultBucketInOfT;
 begin
   var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>)];
   System.Assert(1 = System.Length(BucketsIn));
@@ -274,7 +271,7 @@ begin
   System.Assert(1 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], BucketsIn)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenASingleNonDefaultElementAsADataStreamAnd1DefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenASingleNonDefaultElementAsADataStreamAnd1DefaultBucketInOfT;
 begin
   var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(1 = System.Length(Elements));
@@ -282,7 +279,7 @@ begin
   System.Assert(1 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, [System.Default(BucketIn<TypeUnderTest>)])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenASingleNonDefaultElementAsADataStreamAnd1NonDefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns1BucketOutWhenGivenASingleNonDefaultElementAsADataStreamAnd1NonDefaultBucketInOfT;
 begin
   var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>)];
   System.Assert(1 = System.Length(BucketsIn));
@@ -293,13 +290,13 @@ begin
   System.Assert(1 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, BucketsIn)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd3DefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd3DefaultBucketInOfT;
 begin
   System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
     [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd3NonDefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd3NonDefaultBucketInOfT;
 begin
   var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
     BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
@@ -311,7 +308,7 @@ begin
   System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], BucketsIn)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd3DefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd3DefaultBucketInOfT;
 begin
   var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(3 = System.Length(Elements));
@@ -321,7 +318,7 @@ begin
   System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd3NonDefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd3NonDefaultBucketInOfT;
 begin
   var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
     BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
@@ -338,12 +335,12 @@ begin
   System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, BucketsIn)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT;
 begin
   System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAnEmptyDataStreamAnd3NonDefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAnEmptyDataStreamAnd3NonDefaultBucketInOfT;
 begin
   var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
     BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
@@ -355,12 +352,12 @@ begin
   System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([], BucketsIn)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleDefaultElementAsADataStreamAnd3DefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleDefaultElementAsADataStreamAnd3DefaultBucketInOfT;
 begin
   System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleDefaultElementAsADataStreamAnd3NonDefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleDefaultElementAsADataStreamAnd3NonDefaultBucketInOfT;
 begin
   var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
     BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
@@ -372,7 +369,7 @@ begin
   System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], BucketsIn)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAnd3DefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAnd3DefaultBucketInOfT;
 begin
   var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(1 = System.Length(Elements));
@@ -380,7 +377,7 @@ begin
   System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAnd3NonDefaultBucketInOfT;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAnd3NonDefaultBucketInOfT;
 begin
   var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
     BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
@@ -395,17 +392,17 @@ begin
   System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, BucketsIn)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.ReturnsZeroBucketsOutWhenGivenAnEmptyDataStreamAndZeroBucketsIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.ReturnsZeroBucketsOutWhenGivenAnEmptyDataStreamAndZeroBucketsIn;
 begin
   System.Assert(0 = System.Length(Routines.Categorize<TypeUnderTest>([], [])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.ReturnsZeroBucketsOutWhenGivenASingleDefaultElementAsADataStreamAndZeroBucketsIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.ReturnsZeroBucketsOutWhenGivenASingleDefaultElementAsADataStreamAndZeroBucketsIn;
 begin
   System.Assert(0 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.ReturnsZeroBucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAndZeroBucketsIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.ReturnsZeroBucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAndZeroBucketsIn;
 begin
   var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(1 = System.Length(Elements));
@@ -413,12 +410,12 @@ begin
   System.Assert(0 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, [])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.ReturnsZeroBucketsOutWhenGivenMultipleDefaultElementAsADataStreamAndZeroBucketsIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.ReturnsZeroBucketsOutWhenGivenMultipleDefaultElementAsADataStreamAndZeroBucketsIn;
 begin
   System.Assert(0 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.ReturnsZeroBucketsOutWhenGivenMultipleNonDefaultElementAsADataStreamAndZeroBucketsIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.ReturnsZeroBucketsOutWhenGivenMultipleNonDefaultElementAsADataStreamAndZeroBucketsIn;
 begin
   var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(3 = System.Length(Elements));
@@ -428,8 +425,8 @@ begin
   System.Assert(0 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, [])));
 end;
 
-{CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues}
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndAMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
+{ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues}
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndAMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)],
     [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)]);
@@ -439,19 +436,19 @@ begin
   System.Assert(1 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm();
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm();
 begin
   System.Assert(1 = Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)])[0].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveANonDefaultFocusedGrabbyArm;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndASingleDefaultBucketSaveANonDefaultFocusedGrabbyArm;
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
   System.Assert(1 = Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(function (const Value: TypeUnderTest): Boolean begin Result := (Value = Element) end)])[0].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs1WhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm;
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   var FocusedArm: SmartClaw<TypeUnderTest> := function (const Value: TypeUnderTest): Boolean begin Result := (Value = Element) end;
@@ -463,14 +460,14 @@ begin
   System.Assert(1 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketSaveADefaultFocusedGrabbyArm;
 begin
   var Actual := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)]);
   System.Assert(1 = System.Length(Actual));
   System.Assert(3 = Actual[System.Low(Actual)].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
 begin
   var Actual := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
     [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)]);
@@ -480,7 +477,7 @@ begin
   System.Assert(3 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm();
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm();
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   var FocusedArm: SmartClaw<TypeUnderTest> := function (const Value: TypeUnderTest): Boolean begin Result := (Value = Element) end;
@@ -492,7 +489,7 @@ begin
   System.Assert(3 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketSaveANonDefaultFocusedGrabbyArm;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIs3WhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketSaveANonDefaultFocusedGrabbyArm;
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
@@ -501,17 +498,17 @@ begin
   System.Assert(3 = Actual[System.Low(Actual)].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn;
 begin
   System.Assert(0 = Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>)])[0].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm;
 begin
   System.Assert(0 = Routines.Categorize<TypeUnderTest>([], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)])[0].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
   System.Assert(3 = System.Length(Actual));
@@ -520,7 +517,7 @@ begin
   System.Assert(0 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([],
     [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm), BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)]);
@@ -530,12 +527,12 @@ begin
   System.Assert(0 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndASingleDefaultBucketIn;
 begin
   System.Assert(0 = Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>)])[0].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsIn;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
   System.Assert(3 = System.Length(Actual));
@@ -544,21 +541,21 @@ begin
   System.Assert(0 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleNonDefaultElementOfTAsADataStreamAndASingleDefaultBucketIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleNonDefaultElementOfTAsADataStreamAndASingleDefaultBucketIn;
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
   System.Assert(0 = Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>))])[0].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleNonDefaultElementOfTAsADataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleNonDefaultElementOfTAsADataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm;
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
   System.Assert(0 = Routines.Categorize<TypeUnderTest>([Element], [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)])[0].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsIn;
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
@@ -572,7 +569,7 @@ begin
   System.Assert(0 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenASingleNonDefaultElementOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
 begin
   var Element: TypeUnderTest := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>();
   System.Assert(not (Element = System.Default(TypeUnderTest)));
@@ -586,12 +583,12 @@ begin
   System.Assert(0 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndASingleDefaultBucketIn;
 begin
   System.Assert(0 = Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>)])[0].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
     [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
@@ -601,7 +598,7 @@ begin
   System.Assert(0 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketIn;
 begin
   var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(3 = System.Length(Elements));
@@ -610,7 +607,7 @@ begin
   System.Assert(0 = Routines.Categorize<TypeUnderTest>(Elements, [BucketIn<TypeUnderTest>.Create(System.Default(SmartClaw<TypeUnderTest>))])[0].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm;
 begin
   var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(3 = System.Length(Elements));
@@ -619,7 +616,7 @@ begin
   System.Assert(0 = Routines.Categorize<TypeUnderTest>(Elements, [BucketIn<TypeUnderTest>.Create(DefaultFocusedGrabbyArm)])[0].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsIn;
 begin
   var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(3 = System.Length(Elements));
@@ -632,7 +629,7 @@ begin
   System.Assert(0 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.TheBucketOutCountIsZeroWhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveADefaultFocusedGrabbyArm;
 begin
   var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(3 = System.Length(Elements));
@@ -646,14 +643,14 @@ begin
   System.Assert(0 = Actual[System.Low(Actual) + 2].Count);
 end;
 
-class constructor CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.Create;
+class constructor ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.Create;
 begin
   System.Assert(DefaultFocusedGrabbyArm(System.Default(TypeUnderTest)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.Exercise;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.Exercise;
 begin
-  BugsMissedRequiringRefactoringOfTheCurrentProof.Exercise();
+  CasesWhichShouldArguablyBeRefactoredIntoTheExecSpec.Exercise();
   TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn();
   TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm();
   TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn();
@@ -680,18 +677,18 @@ begin
   TheBucketOutCountIs3WhenGivenMultipleNonDefaultElementsOfTAsADataStreamAndMultipleDefaultBucketsInSaveANonDefaultFocusedGrabbyArm();
 end;
 
-class function CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.DefaultFocusedGrabbyArm(const Value: TypeUnderTest): Boolean;
+class function ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.DefaultFocusedGrabbyArm(const Value: TypeUnderTest): Boolean;
 begin Result := (Value = System.Default(TypeUnderTest)); end;
 
-{CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut}
-class constructor CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.Create;
+{ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut}
+class constructor ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.Create;
 begin
   System.Assert(not (NonDefaultMonoChar = NonDefaultMonoChar2));
   System.Assert(not (NonDefaultMonoChar = NonDefaultMonoChar3));
   System.Assert(not (NonDefaultMonoChar2 = NonDefaultMonoChar3));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.Exercise;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.Exercise;
 begin
   WhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn();
   WhenGivenAnEmptyDataStreamAndASingleNonDefaultNameDefaultBucketIn();
@@ -710,17 +707,17 @@ begin
   WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames();
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn;
 begin
   System.Assert(System.Default(BucketIn<TypeUnderTest>).Name = Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>)])[0].Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndASingleNonDefaultNameDefaultBucketIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndASingleNonDefaultNameDefaultBucketIn;
 begin
   System.Assert(NonDefaultMonoChar = Routines.Categorize<TypeUnderTest>([], [BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar)])[0].Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndMultipleDefaultBucketInElements;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndMultipleDefaultBucketInElements;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
   System.Assert(3 = System.Length(Actual));
@@ -728,7 +725,7 @@ begin
     System.Assert(System.Default(BucketIn<TypeUnderTest>).Name = Each.Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [BucketIn<TypeUnderTest>.Create(nil,  NonDefaultMonoChar), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar)]);
   System.Assert(3 = System.Length(Actual));
@@ -736,7 +733,7 @@ begin
     System.Assert(NonDefaultMonoChar = Each.Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenAnEmptyDataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar2), BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar3)]);
   System.Assert(3 = System.Length(Actual));
@@ -745,18 +742,18 @@ begin
   System.Assert(NonDefaultMonoChar3 = Actual[Low(Actual) + 2].Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleDefaultBucketIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleDefaultBucketIn;
 begin
   System.Assert(System.Default(BucketIn<TypeUnderTest>).Name = Routines.Categorize<TypeUnderTest>(
     [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>)])[0].Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn;
 begin
   System.Assert(NonDefaultMonoChar = Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], [BucketIn<TypeUnderTest>.Create(nil, NonDefaultMonoChar)])[0].Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(
     [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
@@ -766,7 +763,7 @@ begin
     System.Assert(System.Default(BucketIn<T>).Name = Each.Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(
     [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
@@ -776,7 +773,7 @@ begin
     System.Assert('a' = Each.Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames;
 begin
   var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(
     [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
@@ -787,7 +784,7 @@ begin
   System.Assert(NonDefaultMonoChar3 = Actual[Low(Actual) + 2].Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndASingleDefaultBucketIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndASingleDefaultBucketIn;
 begin
   var NonDefaultElements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(3 = System.Length(NonDefaultElements));
@@ -799,7 +796,7 @@ begin
   System.Assert(System.Default(MultiChar) = Actual[System.Low(Actual)].Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndASingleNonDefaultNameDefaultBucketIn;
 begin
   var Expected: MultiChar := Rando_TheUntrustworthy.NonDefaultValue<MultiChar>();
   System.Assert(not (System.Default(MultiChar) = Expected));
@@ -813,7 +810,7 @@ begin
   System.Assert(Expected = Actual[System.Low(Actual)].Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleDefaultBucketInElements;
 begin
   var NonDefaultElements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
   System.Assert(3 = System.Length(NonDefaultElements));
@@ -827,7 +824,7 @@ begin
   System.Assert(System.Default(MultiChar) = Actual[System.Low(Actual) + 2].Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllSharingIdenticalNames;
 begin
   var Expected: MultiChar := Rando_TheUntrustworthy.NonDefaultValue<MultiChar>();
   System.Assert(not (System.Default(MultiChar) = Expected));
@@ -844,7 +841,7 @@ begin
   System.Assert(Expected = Actual[System.Low(Actual) + 2].Name);
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.NamePropertyIsCopiedFromBucketInToBucketOut.WhenGivenMultipleNonDefaultTElementsAsADataStreamAndMultipleNonDefaultBucketInElementsAllWithUniqueNames;
 begin
   var Expected: ArrayOf<MultiChar> := [NonDefaultMonoChar, NonDefaultMonoChar2, NonDefaultMonoChar3];
   System.Assert(3 = System.Length(Expected));
@@ -869,29 +866,27 @@ begin
   System.Assert(Expected[System.Low(Expected) + 2] = Actual[System.Low(Actual) + 2].Name);
 end;
 
-{ CategorizeRoutineTests<TypeUnderTest>.BugsMissedRequiringRefactoringOfTheCurrentProot }
-
-class procedure CategorizeRoutineTests<TypeUnderTest>.BugsMissedRequiringRefactoringOfTheCurrentProof.Exercise;
+{ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.SignatureTests}
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.SignatureTests.Exercise;
 begin
-  WellDotDotDotIAmTryingToClassifyThisOne();
+  The1stParameterAcceptsAnEmptyArrayOfT();
+  The2ndParameterAcceptsAnEmptyArrayOfBucketInOfT();
+  ReturnsAnEmptyArrayOfBucketOut();
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.BugsMissedRequiringRefactoringOfTheCurrentProof.WellDotDotDotIAmTryingToClassifyThisOne;
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.SignatureTests.ReturnsAnEmptyArrayOfBucketOut;
 begin
-  var Actual := Routines.Categorize<NaturalNumber>([1,2,3,4,5,6,7],
-    [BucketIn<NaturalNumber>.Create(function (const AValue: NaturalNumber): Boolean begin Result := ((AValue mod 2) = 0); end, 'Even'),
-     BucketIn<NaturalNumber>.Create(nil, 'Dummy'),
-     BucketIn<NaturalNumber>.Create(function (const AValue: NaturalNumber): Boolean begin Result := ((AValue mod 2) <> 0); end, 'Odd')]);
-  System.Assert(3 = System.Length(Actual));
-  System.Assert('Even' = Actual[System.Low(Actual)].Name);
-  System.Assert('Dummy' = Actual[System.Low(Actual) + 1].Name);
-  System.Assert('Odd' = Actual[System.Low(Actual) + 2].Name);
-  System.Assert(3 = Actual[System.Low(Actual)].Count);
-  System.Assert(0 = Actual[System.Low(Actual) + 1].Count);
-  System.Assert(4 = Actual[System.Low(Actual) + 2].Count);
-  {The above is what I used to prove the bug existed in previous versions. However, the only reason the bug came about was that I wasn't
-   diciplined enough to follow my own advice. I tried optimizing the categorize routine before writing the simple version 1st.
-   Anyways, the bug is fixed of course. I'll keep this here as my reminder until it no longer seems necessary.}
+  System.Assert(ArrayOf<BucketOut>.Create() = Routines.Categorize<TypeUnderTest>(ArrayOf<TypeUnderTest>.Create(), ArrayOf<BucketIn<TypeUnderTest>>.Create()));
+end;
+
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.SignatureTests.The1stParameterAcceptsAnEmptyArrayOfT;
+begin
+  Routines.Categorize<TypeUnderTest>(ArrayOf<TypeUnderTest>.Create(), []);
+end;
+
+class procedure ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>.SignatureTests.The2ndParameterAcceptsAnEmptyArrayOfBucketInOfT;
+begin
+  Routines.Categorize<TypeUnderTest>([], ArrayOf<BucketIn<TypeUnderTest>>.Create());
 end;
 
 end.

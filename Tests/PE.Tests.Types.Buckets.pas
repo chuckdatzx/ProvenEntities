@@ -1,5 +1,16 @@
 unit PE.Tests.Types.Buckets;
+{Chuck C.T.
+ I'm arguing that the following tests provide enough evidence to claim that all types in PE.Buckets unit are proven. And by proven, I mean proven for:
+ - usage within any compilable source code from the PE namespace
+ - usage within Delphi (at least where PE type X has been proven to be compatible with native type Y)
+ - for all types for all time; if it compiles and successfully runs now, it will continue to do so (like a powered circuit; barring events like power loss)
 
+ If you don't believe that the types of the PE.buckets namespace have been proven; that's fair. There are many points in
+ my own life where I would have laughed at someone making such a claim and just moved on.
+ However, if you truly disagree with me, please take the time show me where I'm wrong. I've put quite a bit of thought into
+ the following; it seems unlikley that any given 1 person is going to find a problem at first glance (though I certainly
+ could be wrong about that).
+}
 interface
 
 uses
@@ -625,7 +636,7 @@ end;
 class procedure TypeTests<T>.Exercise();
 begin
 //  ArrayOfTests<BucketIn<T>>.Exercise(); //I would love to include these, but every time I do,
-//  ArrayOfTests<BucketOut>.Exercise(); //I get an internal error (both Win32/Win64)
+//  ExecutableSpecification_ArrayOf<BucketOut>.Exercise(); //I get an internal error (both Win32/Win64)
   BucketInTests<T>.Exercise();
   BucketOutTests.Exercise();
 end;
