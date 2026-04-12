@@ -95,10 +95,17 @@ type
       class procedure Returns1BucketOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd1NonDefaultBucketInOfT(); static; inline;
       class procedure Returns1BucketOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd1DefaultBucketInOfT(); static; inline;
       class procedure Returns1BucketOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd1NonDefaultBucketInOfT(); static; inline;
-    strict private {Varying Data Stream; Returning multiple buckets}
-      class procedure Returns3DefaultBucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT(); static; inline;
-      class procedure Returns3DefaultBucketsOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd3DefaultBucketInOfT(); static; inline;
-      class procedure Returns3DefaultBucketsOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd3DefaultBucketInOfT(); static; inline;
+    strict private {3 Buckets Out}
+      class procedure Returns3BucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT(); static; inline;
+      class procedure Returns3BucketsOutWhenGivenAnEmptyDataStreamAnd3NonDefaultBucketInOfT(); static; inline;
+      class procedure Returns3BucketsOutWhenGivenASingleDefaultElementAsADataStreamAnd3DefaultBucketInOfT(); static; inline;
+      class procedure Returns3BucketsOutWhenGivenASingleDefaultElementAsADataStreamAnd3NonDefaultBucketInOfT(); static; inline;
+      class procedure Returns3BucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAnd3DefaultBucketInOfT(); static; inline;
+      class procedure Returns3BucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAnd3NonDefaultBucketInOfT(); static; inline;
+      class procedure Returns3BucketsOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd3DefaultBucketInOfT(); static; inline;
+      class procedure Returns3BucketsOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd3NonDefaultBucketInOfT(); static; inline;
+      class procedure Returns3BucketsOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd3DefaultBucketInOfT(); static; inline;
+      class procedure Returns3BucketsOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd3NonDefaultBucketInOfT(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -172,11 +179,16 @@ begin
   Returns1BucketOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd1NonDefaultBucketInOfT();
   Returns1BucketOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd1DefaultBucketInOfT();
   Returns1BucketOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd1NonDefaultBucketInOfT();
-
-
-  Returns3DefaultBucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT();
-  Returns3DefaultBucketsOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd3DefaultBucketInOfT();
-  Returns3DefaultBucketsOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd3DefaultBucketInOfT();
+  Returns3BucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT();
+  Returns3BucketsOutWhenGivenAnEmptyDataStreamAnd3NonDefaultBucketInOfT();
+  Returns3BucketsOutWhenGivenASingleDefaultElementAsADataStreamAnd3DefaultBucketInOfT();
+  Returns3BucketsOutWhenGivenASingleDefaultElementAsADataStreamAnd3NonDefaultBucketInOfT();
+  Returns3BucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAnd3DefaultBucketInOfT();
+  Returns3BucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAnd3NonDefaultBucketInOfT();
+  Returns3BucketsOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd3DefaultBucketInOfT();
+  Returns3BucketsOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd3NonDefaultBucketInOfT();
+  Returns3BucketsOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd3DefaultBucketInOfT();
+  Returns3BucketsOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd3NonDefaultBucketInOfT();
 end;
 
 class function CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.NonDefaultSmartClaw(const Value: TypeUnderTest): Boolean; begin Result := False; end;
@@ -264,33 +276,106 @@ begin
   System.Assert(1 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, BucketsIn)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3DefaultBucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT;
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd3DefaultBucketInOfT;
 begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
-  System.Assert(3 = System.Length(Actual));
-  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual)]);
-  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 1]);
-  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 2]);
+  System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
+    [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)])));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3DefaultBucketsOutWhenGivenASingleDefaultElementOfTAsADataStreamAnd3DefaultBucketInOfT;
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleDefaultElementsAsADataStreamAnd3NonDefaultBucketInOfT;
 begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>([Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
-  System.Assert(3 = System.Length(Actual));
-  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual)]);
-  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 1]);
-  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 2]);
+  var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
+    BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
+    BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>)];
+  System.Assert(3 = System.Length(BucketsIn));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn)]));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn) + 1]));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn) + 2]));
+  System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)], BucketsIn)));
 end;
 
-class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3DefaultBucketsOutWhenGivenMultipleDefaultElementsOfTAsADataStreamAnd3DefaultBucketInOfT;
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd3DefaultBucketInOfT;
 begin
-  var Actual: ArrayOf<BucketOut> := Routines.Categorize<TypeUnderTest>(
-    [System.Default(TypeUnderTest), System.Default(TypeUnderTest), System.Default(TypeUnderTest)],
-    [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)]);
-  System.Assert(3 = System.Length(Actual));
-  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual)]);
-  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 1]);
-  System.Assert(System.Default(BucketOut) = Actual[System.Low(Actual) + 2]);
+  var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
+  System.Assert(3 = System.Length(Elements));
+  System.Assert(not (System.Default(TypeUnderTest) = Elements[System.Low(Elements)]));
+  System.Assert(not (System.Default(TypeUnderTest) = Elements[System.Low(Elements) + 1]));
+  System.Assert(not (System.Default(TypeUnderTest) = Elements[System.Low(Elements) + 2]));
+  System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)])));
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAMultipleNonDefaultElementsAsADataStreamAnd3NonDefaultBucketInOfT;
+begin
+  var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
+    BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
+    BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>)];
+  System.Assert(3 = System.Length(BucketsIn));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn)]));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn) + 1]));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn) + 2]));
+  var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>(), Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
+  System.Assert(3 = System.Length(Elements));
+  System.Assert(not (System.Default(TypeUnderTest) = Elements[System.Low(Elements)]));
+  System.Assert(not (System.Default(TypeUnderTest) = Elements[System.Low(Elements) + 1]));
+  System.Assert(not (System.Default(TypeUnderTest) = Elements[System.Low(Elements) + 2]));
+  System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, BucketsIn)));
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAnEmptyDataStreamAnd3DefaultBucketInOfT;
+begin
+  System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)])));
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenAnEmptyDataStreamAnd3NonDefaultBucketInOfT;
+begin
+  var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
+    BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
+    BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>)];
+  System.Assert(3 = System.Length(BucketsIn));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn)]));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn) + 1]));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn) + 2]));
+  System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([], BucketsIn)));
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleDefaultElementAsADataStreamAnd3DefaultBucketInOfT;
+begin
+  System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)])));
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleDefaultElementAsADataStreamAnd3NonDefaultBucketInOfT;
+begin
+  var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
+    BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
+    BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>)];
+  System.Assert(3 = System.Length(BucketsIn));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn)]));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn) + 1]));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn) + 2]));
+  System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>([System.Default(TypeUnderTest)], BucketsIn)));
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAnd3DefaultBucketInOfT;
+begin
+  var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
+  System.Assert(1 = System.Length(Elements));
+  System.Assert(not (System.Default(TypeUnderTest) = Elements[System.Low(Elements)]));
+  System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, [System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>), System.Default(BucketIn<TypeUnderTest>)])));
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.Returns3BucketsOutWhenGivenASingleNonDefaultElementAsADataStreamAnd3NonDefaultBucketInOfT;
+begin
+  var BucketsIn: ArrayOf<BucketIn<TypeUnderTest>> := [BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
+    BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>),
+    BucketIn<TypeUnderTest>.Create(NonDefaultSmartClaw, Rando_TheUntrustworthy.NonDefaultValue<MultiChar>, Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>)];
+  System.Assert(3 = System.Length(BucketsIn));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn)]));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn) + 1]));
+  System.Assert(not (System.Default(BucketIn<TypeUnderTest>) = BucketsIn[System.Low(BucketsIn) + 2]));
+  var Elements: ArrayOf<TypeUnderTest> := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>()];
+  System.Assert(1 = System.Length(Elements));
+  System.Assert(not (System.Default(TypeUnderTest) = Elements[System.Low(Elements)]));
+  System.Assert(3 = System.Length(Routines.Categorize<TypeUnderTest>(Elements, BucketsIn)));
 end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.NumberOfBucketsOutIsDeterminedByTheNumberOfBucketsIn.ReturnsZeroBucketsOutWhenGivenAnEmptyDataStreamAndZeroBucketsIn;
