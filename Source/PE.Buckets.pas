@@ -104,22 +104,18 @@ end;
 
 {Routines}
 class function Routines.Categorize<T>(const DataStream: ArrayOf<T>; const Buckets: ArrayOf<BucketIn<T>>): ArrayOf<BucketOut>;
-var
-  SmartBuckets: ArrayOf<BucketIn<T>>;
 begin
   Result := [];
-  SmartBuckets := [];
   for var I: NativeInt := Low(Buckets) to High(Buckets) do
   begin
     Result := Result + [Default(BucketOut)];
     Result[High(Result)].Name := Buckets[I].Name;
-    if Assigned(Buckets[I].GrabbyArm) then
-      SmartBuckets := SmartBuckets + [Buckets[I]];
   end;
   for var I: NativeInt := Low(DataStream) to High(DataStream) do
-    for var J: NativeInt := Low(SmartBuckets) to High(SmartBuckets) do
-      if SmartBuckets[J].GrabbyArm(DataStream[I]) then
-        Result[J].Count := Result[J].Count + 1;
+    for var J: NativeInt := Low(Buckets) to High(Buckets) do
+      if System.Assigned(Buckets[J].GrabbyArm) then
+        if Buckets[J].GrabbyArm(DataStream[I]) then
+          Result[J].Count := Result[J].Count + 1;
 end;
 
 begin

@@ -1,5 +1,16 @@
 unit PE.Tests.Routines.Buckets;
+{Chuck C.T.
+ I'll try to keep this short and clear. I'm arguing that the following tests provide enough evidence to claim
+ that the PE.Buckets.Routines.Categorize<T> routine has been proven. And by proven, I mean proven for:
+ - whatever type T you decide to use where T is both compilable and passes the below battery of tests
+ - for all T for all time; if it compiles and successfully runs now, it will continue to do so (barring events like power loss)
 
+ If you don't believe that the PE.Buckets.Routines.Categorize<T> has been proven; that's fair. There are many points in
+ my own life where I would have laughed at someone making such a claim and just moved on.
+ However, if you truly disagree with me, please take the time show me where I'm wrong. I've put quite a bit of thought into
+ the following; it seems unlikley that any given 1 person is going to find a problem at first glance (though I certainly
+ could be wrong about that).
+}
 interface
 
 uses
@@ -17,6 +28,12 @@ uses
 type
   CategorizeRoutineTests<TypeUnderTest> = record
   public type
+    BugsMissedRequiringRefactoringOfTheCurrentProof = record
+    strict private
+      class procedure WellDotDotDotIAmTryingToClassifyThisOne(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
     EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues = record
     strict private class function DefaultFocusedGrabbyArm(const Value: TypeUnderTest): Boolean; static; inline;
     strict private {All Bucket Out Counts Are Zero = DataStream(Size: varied; Content: default/non-default) by BucketsIn(Length: varied; Content: default save GrabbyArm[varies by "focus"]) by BucketOut(Length: varied; Content: presumably default save Count)}
@@ -636,6 +653,7 @@ end;
 
 class procedure CategorizeRoutineTests<TypeUnderTest>.EachBucketOutCountIsDeterminedByTheAssociatedBucketInGrabbyArmAndTheDataStreamValues.Exercise;
 begin
+  BugsMissedRequiringRefactoringOfTheCurrentProof.Exercise();
   TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketIn();
   TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndASingleDefaultBucketInSaveADefaultFocusedGrabbyArm();
   TheBucketOutCountIsZeroWhenGivenAnEmptyDataStreamAndMultipleDefaultBucketsIn();
@@ -849,6 +867,31 @@ begin
   System.Assert(Expected[System.Low(Expected)] = Actual[System.Low(Actual)].Name);
   System.Assert(Expected[System.Low(Expected) + 1] = Actual[System.Low(Actual) + 1].Name);
   System.Assert(Expected[System.Low(Expected) + 2] = Actual[System.Low(Actual) + 2].Name);
+end;
+
+{ CategorizeRoutineTests<TypeUnderTest>.BugsMissedRequiringRefactoringOfTheCurrentProot }
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.BugsMissedRequiringRefactoringOfTheCurrentProof.Exercise;
+begin
+  WellDotDotDotIAmTryingToClassifyThisOne();
+end;
+
+class procedure CategorizeRoutineTests<TypeUnderTest>.BugsMissedRequiringRefactoringOfTheCurrentProof.WellDotDotDotIAmTryingToClassifyThisOne;
+begin
+  var Actual := Routines.Categorize<NaturalNumber>([1,2,3,4,5,6,7],
+    [BucketIn<NaturalNumber>.Create(function (const AValue: NaturalNumber): Boolean begin Result := ((AValue mod 2) = 0); end, 'Even'),
+     BucketIn<NaturalNumber>.Create(nil, 'Dummy'),
+     BucketIn<NaturalNumber>.Create(function (const AValue: NaturalNumber): Boolean begin Result := ((AValue mod 2) <> 0); end, 'Odd')]);
+  System.Assert(3 = System.Length(Actual));
+  System.Assert('Even' = Actual[System.Low(Actual)].Name);
+  System.Assert('Dummy' = Actual[System.Low(Actual) + 1].Name);
+  System.Assert('Odd' = Actual[System.Low(Actual) + 2].Name);
+  System.Assert(3 = Actual[System.Low(Actual)].Count);
+  System.Assert(0 = Actual[System.Low(Actual) + 1].Count);
+  System.Assert(4 = Actual[System.Low(Actual) + 2].Count);
+  {The above is what I used to prove the bug existed in previous versions. However, the only reason the bug came about was that I wasn't
+   diciplined enough to follow my own advice. I tried optimizing the categorize routine before writing the simple version 1st.
+   Anyways, the bug is fixed of course. I'll keep this here as my reminder until it no longer seems necessary.}
 end;
 
 end.
