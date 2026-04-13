@@ -14,9 +14,9 @@ unit PE.Tests.Routines.Buckets;
 interface
 
 uses
+  PE.Actors.Rando, //For inlining
   PE.Buckets,
   PE.Delphi.AssignmentCompatibility,
-  PE.Delphi.Rando, //For inlining
   PE.Types.Composite, //For inlining
   PE.Types.Foundational;
 

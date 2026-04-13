@@ -15,7 +15,7 @@ and not just assume, without pause, that it is unbreakable.}
 uses
   PE.Buckets in '..\Source\PE.Buckets.pas',
   PE.Delphi.AssignmentCompatibility in 'Delphi\PE.Delphi.AssignmentCompatibility.pas',
-  PE.Delphi.Rando in 'PE.Delphi.Rando.pas',
+  PE.Actors.Rando in 'PE.Actors.Rando.pas',
   PE.Delphi.TypeIdentity in 'Delphi\PE.Delphi.TypeIdentity.pas',
   PE.Examples.Delphi.CategorizingWithBuckets in '..\Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
   PE.Routines in '..\Source\PE.Routines.pas',

@@ -15,7 +15,7 @@ unit PE.Tests.Types.Composite;
 interface
 
 uses
-  PE.Delphi.Rando,  //For inlining
+  PE.Actors.Rando,  //For inlining
   PE.Types.Composite,
   PE.Types.Foundational;
 

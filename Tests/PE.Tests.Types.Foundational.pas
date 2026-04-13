@@ -15,7 +15,7 @@ unit PE.Tests.Types.Foundational;
 interface
 
 uses
-  PE.Delphi.Rando,
+  PE.Actors.Rando,
   PE.Delphi.TypeIdentity,
   PE.Types.Foundational;
 
