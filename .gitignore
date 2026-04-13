@@ -6,6 +6,10 @@
 *.map
 *.rsm
 
-ProvenEntities.res
-ProvenEntities.exe
+#Ignoring specific binaries
+PatternMatching.exe
+ProvenEntitiesTestRunner.exe
+PatternMatching.res
+ProvenEntitiesTestRunner.res
+
 TestInsightSettings.ini

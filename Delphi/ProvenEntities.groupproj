@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{CCF5DF89-2E7D-436D-A30F-1817DA4124EE}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ProvenEntitiesTestRunner.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ProvenEntitiesTestRunner">
+        <MSBuild Projects="ProvenEntitiesTestRunner.dproj"/>
+    </Target>
+    <Target Name="ProvenEntitiesTestRunner:Clean">
+        <MSBuild Projects="ProvenEntitiesTestRunner.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ProvenEntitiesTestRunner:Make">
+        <MSBuild Projects="ProvenEntitiesTestRunner.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ProvenEntitiesTestRunner"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ProvenEntitiesTestRunner:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ProvenEntitiesTestRunner:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

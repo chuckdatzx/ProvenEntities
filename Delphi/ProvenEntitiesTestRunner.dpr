@@ -1,4 +1,4 @@
-program ProvenEntities;
+program ProvenEntitiesTestRunner;
 {Chuck C.T.
 Full Declaration of Transparency:
 You should only consider the code under test proven insofar as you agree with everything presented
