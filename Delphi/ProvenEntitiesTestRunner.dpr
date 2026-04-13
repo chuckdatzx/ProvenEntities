@@ -1,4 +1,5 @@
 program ProvenEntitiesTestRunner;
+{$SCOPEDENUMS ON}
 {Chuck C.T.
 Full Declaration of Transparency:
 You should only consider the code under test proven insofar as you agree with everything presented
@@ -14,7 +15,7 @@ and not just assume, without pause, that it is unbreakable.}
 uses
   PE.Buckets in '..\Source\PE.Buckets.pas',
   PE.Delphi.AssignmentCompatibility in 'Delphi\PE.Delphi.AssignmentCompatibility.pas',
-  PE.Delphi.Rando in 'Delphi\PE.Delphi.Rando.pas',
+  PE.Delphi.Rando in 'PE.Delphi.Rando.pas',
   PE.Delphi.TypeIdentity in 'Delphi\PE.Delphi.TypeIdentity.pas',
   PE.Examples.Delphi.CategorizingWithBuckets in '..\Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
   PE.Routines in '..\Source\PE.Routines.pas',

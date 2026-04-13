@@ -1,5 +1,5 @@
 unit PE.Tests.Routines;
-
+{$SCOPEDENUMS ON}
 interface
 
 uses

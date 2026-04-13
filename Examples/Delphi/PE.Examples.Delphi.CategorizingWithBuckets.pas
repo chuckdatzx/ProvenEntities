@@ -1,5 +1,5 @@
 unit PE.Examples.Delphi.CategorizingWithBuckets;
-
+{$SCOPEDENUMS ON}
 interface
 
 uses
@@ -13,7 +13,9 @@ type
   TCustomEnumeratedType = (cetSour, cetSweet, cetFuzzy);
   NaturalNumberArray = ArrayOf<NaturalNumber>;
 const
-  MyCandyDish: ArrayOf<TCustomEnumeratedType> = [cetSour, cetSweet, cetFuzzy, cetSour, cetSweet];
+  MyCandyDish: ArrayOf<TCustomEnumeratedType> = [TCustomEnumeratedType.cetSour,
+    TCustomEnumeratedType.cetSweet, TCustomEnumeratedType.cetFuzzy, TCustomEnumeratedType.cetSour,
+    TCustomEnumeratedType.cetSweet];
 
 type
   Exercise = record
@@ -104,7 +106,7 @@ var
 begin
   //Asking: "How many of my favorites does this candy dish have?"
   Actual := Routines.Categorize<TCustomEnumeratedType>(MyCandyDish,
-    [BucketIn<TCustomEnumeratedType>.Create(function (const AValue: TCustomEnumeratedType): Boolean begin Result := (AValue = cetSweet); end, 'Favorites')]);
+    [BucketIn<TCustomEnumeratedType>.Create(function (const AValue: TCustomEnumeratedType): Boolean begin Result := (AValue = TCustomEnumeratedType.cetSweet); end, 'Favorites')]);
   //Proving the answer is as expected
   System.Assert(1 = System.Length(Actual));
   System.Assert('Favorites' = Actual[System.Low(Actual)].Name);
@@ -112,7 +114,7 @@ begin
 
   //Asking: "How many candies were snuck back into the dish (i.e. found under the couch cushions)?"
   Actual := Routines.Categorize<TCustomEnumeratedType>(MyCandyDish,
-    [BucketIn<TCustomEnumeratedType>.Create(function (const AValue: TCustomEnumeratedType): Boolean begin Result := (AValue = cetFuzzy); end, '>5SecondRule')]);
+    [BucketIn<TCustomEnumeratedType>.Create(function (const AValue: TCustomEnumeratedType): Boolean begin Result := (AValue = TCustomEnumeratedType.cetFuzzy); end, '>5SecondRule')]);
   //Proving the answer is as expected
   System.Assert(1 = System.Length(Actual));
   System.Assert('>5SecondRule' = Actual[System.Low(Actual)].Name);

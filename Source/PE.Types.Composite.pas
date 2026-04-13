@@ -1,5 +1,5 @@
 unit PE.Types.Composite;
-
+{$SCOPEDENUMS ON}
 interface
 
 uses

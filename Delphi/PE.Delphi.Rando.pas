@@ -1,5 +1,5 @@
 unit PE.Delphi.Rando;
-
+{$SCOPEDENUMS ON}
 interface
 
 uses

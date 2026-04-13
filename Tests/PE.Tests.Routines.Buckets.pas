@@ -1,4 +1,5 @@
 unit PE.Tests.Routines.Buckets;
+{$SCOPEDENUMS ON}
 {Chuck C.T.
  I'm arguing that the following tests provide enough evidence to claim that the PE.Buckets.Routines.Categorize<T> routine has been proven. And by proven, I mean proven for:
  - whatever type T you decide to use where T is both compilable and passes the below battery of tests

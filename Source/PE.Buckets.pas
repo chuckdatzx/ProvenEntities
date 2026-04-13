@@ -1,5 +1,5 @@
 unit PE.Buckets;
-
+{$SCOPEDENUMS ON}
 interface
 
 uses

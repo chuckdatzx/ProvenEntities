@@ -1,4 +1,5 @@
 unit PE.Delphi.AssignmentCompatibility;
+{$SCOPEDENUMS ON}
 {
 All of the following can only be considered as valid as your compiler and my interpretation of
 https://docwiki.embarcadero.com/RADStudio/Florence/en/Type_Compatibility_and_Identity_(Delphi)

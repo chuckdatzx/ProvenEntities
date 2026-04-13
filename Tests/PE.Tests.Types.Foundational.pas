@@ -1,4 +1,5 @@
 unit PE.Tests.Types.Foundational;
+{$SCOPEDENUMS ON}
 {Chuck C.T.
  I'm arguing that the following tests provide enough evidence to claim that all types in PE.Types.Foundational unit are proven. And by proven, I mean proven for:
  - usage within any compilable source code from the PE namespace
@@ -25,7 +26,7 @@ type
   end;
 
 type
-  {$REGION 'BigNaturalNumber type'}
+  {$REGION 'BigNaturalNumber'}
   ExecutableSpecification_BigNaturalNumber = record
   public type
     AssignmentCompatibility = record
@@ -79,6 +80,19 @@ type
     public
       class procedure Exercise(); static; inline;
     end;
+    ///<notes>Sorry; is currently in English only</notes>
+    Transformations = record
+    public type
+      ToMonoChar = record
+      strict private const ExpectedMonoChars: array[System.Low(Digit)..System.High(Digit)] of Char = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+      strict private
+        class procedure ReturnsTheExpectedMonoCharCounterpartForEveryValueInDigit(); static; inline;
+      public
+        class procedure Exercise(); static; inline;
+      end;
+    public
+      class procedure Exercise(); static; inline;
+    end;
     TypeIdentity = record
     strict private
       class procedure HasItsOwnNonNullTypeIdentity(); static; inline;
@@ -123,7 +137,7 @@ type
   end;
   {$ENDREGION}
 
-  {$REGION 'NaturalNumber type'}
+  {$REGION 'NaturalNumber'}
   ExecutableSpecification_NaturalNumber = record
   public type
     AssignmentCompatibility = record
@@ -136,6 +150,12 @@ type
     strict private
       class procedure TheLowestPossibleValueIsZero(); static; inline;
       class procedure TheHighestPossibleNumberIs4294967295(); static; inline; //4.2 billion
+    strict private {Min property}
+      class procedure TheMinPropertyReturnsZeroForADefaultInstance(); static; inline;
+      class procedure TheMinPropertyReturnsZeroForANonDefaultInstance(); static; inline;
+    strict private {Max property}
+      class procedure TheMaxPropertyReturns4294967295ForADefaultInstance(); static; inline;
+      class procedure TheMaxPropertyReturns4294967295ForANonDefaultInstance(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -145,13 +165,14 @@ type
     public
       class procedure Exercise(); static; inline;
     end;
-    HelperAddedFunctionality = record
-    strict private {Min property}
-      class procedure TheMinPropertyReturnsZeroForADefaultInstance(); static; inline;
-      class procedure TheMinPropertyReturnsZeroForANonDefaultInstance(); static; inline;
-    strict private {Max property}
-      class procedure TheMaxPropertyReturns4294967295ForADefaultInstance(); static; inline;
-      class procedure TheMaxPropertyReturns4294967295ForANonDefaultInstance(); static; inline;
+    Transformations = record
+    public type
+      FromAnArrayOfDigit = record
+      strict private
+        class procedure TransformsDigitArrayCombinationsIntoTheirNaturalNumberCounterparts_ForEveryValueOfNaturalNumber(); static; inline;  //Chonky demand on runtime; but proves all values
+      public
+        class procedure Exercise(); static; inline;
+      end;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -167,6 +188,9 @@ type
   {$ENDREGION}
 
 implementation
+
+uses
+  PE.Types.Foundational.Generics;
 
 {AllTests}
 class procedure AllTests.Exercise();
@@ -256,6 +280,7 @@ begin
   AssignmentCompatibility.Exercise();
   Boundaries.Exercise();
   Defaults.Exercise();
+  Transformations.Exercise();
   TypeIdentity.Exercise();
 end;
 
@@ -402,7 +427,7 @@ begin
   AssignmentCompatibility.Exercise();
   Boundaries.Exercise();
   Defaults.Exercise();
-  HelperAddedFunctionality.Exercise();
+  Transformations.Exercise();
   TypeIdentity.Exercise();
 end;
 
@@ -431,8 +456,12 @@ end;
 {ExecutableSpecification_NaturalNumber.Boundaries}
 class procedure ExecutableSpecification_NaturalNumber.Boundaries.Exercise;
 begin
-  Boundaries.TheLowestPossibleValueIsZero();
-  Boundaries.TheHighestPossibleNumberIs4294967295();
+  TheLowestPossibleValueIsZero();
+  TheHighestPossibleNumberIs4294967295();
+  TheMinPropertyReturnsZeroForADefaultInstance();
+  TheMinPropertyReturnsZeroForANonDefaultInstance();
+  TheMaxPropertyReturns4294967295ForADefaultInstance();
+  TheMaxPropertyReturns4294967295ForANonDefaultInstance();
 end;
 
 class procedure ExecutableSpecification_NaturalNumber.Boundaries.TheHighestPossibleNumberIs4294967295;
@@ -456,37 +485,29 @@ begin
   System.Assert(0 = System.Default(NaturalNumber));
 end;
 
-{ExecutableSpecification_NaturalNumber.HelperAddedFunctionality}
-class procedure ExecutableSpecification_NaturalNumber.HelperAddedFunctionality.Exercise;
-begin
-  TheMaxPropertyReturns4294967295ForADefaultInstance();
-  TheMaxPropertyReturns4294967295ForANonDefaultInstance();
-  TheMinPropertyReturnsZeroForADefaultInstance();
-  TheMinPropertyReturnsZeroForANonDefaultInstance
-end;
-
-class procedure ExecutableSpecification_NaturalNumber.HelperAddedFunctionality.TheMaxPropertyReturns4294967295ForADefaultInstance;
+{ExecutableSpecification_NaturalNumber.Boundaries}
+class procedure ExecutableSpecification_NaturalNumber.Boundaries.TheMaxPropertyReturns4294967295ForADefaultInstance;
 begin
   var Value: NaturalNumber := System.Default(NaturalNumber);
   System.Assert(System.Default(NaturalNumber) = Value);
   System.Assert(4294967295 = Value.Max);
 end;
 
-class procedure ExecutableSpecification_NaturalNumber.HelperAddedFunctionality.TheMaxPropertyReturns4294967295ForANonDefaultInstance;
+class procedure ExecutableSpecification_NaturalNumber.Boundaries.TheMaxPropertyReturns4294967295ForANonDefaultInstance;
 begin
   var Value: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
   System.Assert(not (System.Default(NaturalNumber) = Value));
   System.Assert(4294967295 = Value.Max);
 end;
 
-class procedure ExecutableSpecification_NaturalNumber.HelperAddedFunctionality.TheMinPropertyReturnsZeroForADefaultInstance;
+class procedure ExecutableSpecification_NaturalNumber.Boundaries.TheMinPropertyReturnsZeroForADefaultInstance;
 begin
   var Value: NaturalNumber := System.Default(NaturalNumber);
   System.Assert(System.Default(NaturalNumber) = Value);
   System.Assert(0 = Value.Min);
 end;
 
-class procedure ExecutableSpecification_NaturalNumber.HelperAddedFunctionality.TheMinPropertyReturnsZeroForANonDefaultInstance;
+class procedure ExecutableSpecification_NaturalNumber.Boundaries.TheMinPropertyReturnsZeroForANonDefaultInstance;
 begin
   var Value: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
   System.Assert(not (System.Default(NaturalNumber) = Value));
@@ -505,5 +526,81 @@ begin
   TypeEquivalenceInquiry<NaturalNumber>.DoesNotShareTypeIdentityWith<Cardinal>();
 end;
 {$ENDREGION}
+
+{ ExecutableSpecification_Digit.Transformations.ToMonoChar }
+
+class procedure ExecutableSpecification_Digit.Transformations.ToMonoChar.Exercise();
+begin
+  ReturnsTheExpectedMonoCharCounterpartForEveryValueInDigit();
+end;
+
+class procedure ExecutableSpecification_Digit.Transformations.ToMonoChar.ReturnsTheExpectedMonoCharCounterpartForEveryValueInDigit();
+begin
+  System.Assert(10 = System.Length(ExpectedMonoChars));
+  System.Assert('0' = ExpectedMonoChars[0]);
+  System.Assert('1' = ExpectedMonoChars[1]);
+  System.Assert('2' = ExpectedMonoChars[2]);
+  System.Assert('3' = ExpectedMonoChars[3]);
+  System.Assert('4' = ExpectedMonoChars[4]);
+  System.Assert('5' = ExpectedMonoChars[5]);
+  System.Assert('6' = ExpectedMonoChars[6]);
+  System.Assert('7' = ExpectedMonoChars[7]);
+  System.Assert('8' = ExpectedMonoChars[8]);
+  System.Assert('9' = ExpectedMonoChars[9]);
+  Digit.ToMonoChar(0);
+  for var I: Digit := System.Low(Digit) to System.High(Digit) do
+    System.Assert(ExpectedMonoChars[I] = Digit.ToMonoChar(I));
+end;
+
+{ ExecutableSpecification_Digit.Transformations }
+
+class procedure ExecutableSpecification_Digit.Transformations.Exercise;
+begin
+  ToMonoChar.Exercise()
+end;
+
+{ ExecutableSpecification_NaturalNumber.Transformations.FromAnArrayOfDigit }
+
+class procedure ExecutableSpecification_NaturalNumber.Transformations.FromAnArrayOfDigit.Exercise();
+begin
+  TransformsDigitArrayCombinationsIntoTheirNaturalNumberCounterparts_ForEveryValueOfNaturalNumber();
+end;
+
+class procedure ExecutableSpecification_NaturalNumber.Transformations.FromAnArrayOfDigit.TransformsDigitArrayCombinationsIntoTheirNaturalNumberCounterparts_ForEveryValueOfNaturalNumber();
+begin
+  //4294967295
+  for var Digit1: Digit := 0 to 4 do
+    for var Digit2: Digit := 0 to 2 do
+      for var Digit3: Digit := 0 to 9 do
+        for var Digit4: Digit := 0 to 4 do
+          for var Digit5: Digit := 0 to 9 do
+            for var Digit6: Digit := 0 to 6 do
+              for var Digit7: Digit := 0 to 7 do
+                for var Digit8: Digit := 0 to 2 do
+                  for var Digit9: Digit := 0 to 9 do
+                    for var Digit10: Digit := 0 to 5 do
+                    begin
+                      var Expected: NaturalNumber := System.Default(NaturalNumber);
+                      Expected := ((Expected * 10) + Digit1);
+                      Expected := ((Expected * 10) + Digit2);
+                      Expected := ((Expected * 10) + Digit3);
+                      Expected := ((Expected * 10) + Digit4);
+                      Expected := ((Expected * 10) + Digit5);
+                      Expected := ((Expected * 10) + Digit6);
+                      Expected := ((Expected * 10) + Digit7);
+                      Expected := ((Expected * 10) + Digit8);
+                      Expected := ((Expected * 10) + Digit9);
+                      Expected := ((Expected * 10) + Digit10);
+                      var Data: ArrayOf<Digit> := [Digit1, Digit2, Digit3, Digit4, Digit5, Digit6, Digit7, Digit8, Digit9, Digit10];
+                      System.Assert(Expected = NaturalNumber.FromArrayOfDigit(Data));
+                    end;
+end;
+
+{ ExecutableSpecification_NaturalNumber.Transformations }
+
+class procedure ExecutableSpecification_NaturalNumber.Transformations.Exercise;
+begin
+  FromAnArrayOfDigit.Exercise();
+end;
 
 end.

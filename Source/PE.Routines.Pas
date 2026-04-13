@@ -1,5 +1,5 @@
 unit PE.Routines;
-
+{$SCOPEDENUMS ON}
 interface
 
 uses

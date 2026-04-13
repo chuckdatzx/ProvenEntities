@@ -1,5 +1,5 @@
 unit PE.Types.Foundational.Generics;
-
+{$SCOPEDENUMS ON}
 interface
 
 type

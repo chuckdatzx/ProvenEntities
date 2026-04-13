@@ -1,5 +1,5 @@
 unit PE.Tests.Types.Foundational.Generics;
-
+{$SCOPEDENUMS ON}
 interface
 
 uses

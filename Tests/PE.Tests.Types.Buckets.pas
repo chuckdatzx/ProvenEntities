@@ -1,4 +1,5 @@
 unit PE.Tests.Types.Buckets;
+{$SCOPEDENUMS ON}
 {Chuck C.T.
  I'm arguing that the following tests provide enough evidence to claim that all types in PE.Buckets unit are proven. And by proven, I mean proven for:
  - usage within any compilable source code from the PE namespace

@@ -1,5 +1,5 @@
 unit PE.Delphi.TypeIdentity;
-
+{$SCOPEDENUMS ON}
 interface
 
 type
