@@ -6,6 +6,9 @@
         <Projects Include="ProvenEntitiesTestRunner.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Sample Projects\PatternMatching.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -23,14 +26,23 @@
     <Target Name="ProvenEntitiesTestRunner:Make">
         <MSBuild Projects="ProvenEntitiesTestRunner.dproj" Targets="Make"/>
     </Target>
+    <Target Name="PatternMatching">
+        <MSBuild Projects="Sample Projects\PatternMatching.dproj"/>
+    </Target>
+    <Target Name="PatternMatching:Clean">
+        <MSBuild Projects="Sample Projects\PatternMatching.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PatternMatching:Make">
+        <MSBuild Projects="Sample Projects\PatternMatching.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ProvenEntitiesTestRunner"/>
+        <CallTarget Targets="ProvenEntitiesTestRunner;PatternMatching"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ProvenEntitiesTestRunner:Clean"/>
+        <CallTarget Targets="ProvenEntitiesTestRunner:Clean;PatternMatching:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ProvenEntitiesTestRunner:Make"/>
+        <CallTarget Targets="ProvenEntitiesTestRunner:Make;PatternMatching:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
