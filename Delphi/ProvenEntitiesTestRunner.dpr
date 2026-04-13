@@ -1,5 +1,20 @@
 program ProvenEntitiesTestRunner;
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEFINITIONINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$HIGHCHARUNICODE ON}
+{$HINTS ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$OPTIMIZATION ON}
+{$POINTERMATH OFF}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
 {$SCOPEDENUMS ON}
+{$STACKFRAMES OFF}
+{$WARNINGS ON}
+{$WRITEABLECONST OFF}
 {Chuck C.T.
 Full Declaration of Transparency:
 You should only consider the code under test proven insofar as you agree with everything presented
@@ -13,10 +28,10 @@ and not just assume, without pause, that it is unbreakable.}
 {$APPTYPE CONSOLE}
 
 uses
-  PE.Buckets in '..\Source\PE.Buckets.pas',
-  PE.Delphi.AssignmentCompatibility in 'Delphi\PE.Delphi.AssignmentCompatibility.pas',
   PE.Actors.Rando in 'PE.Actors.Rando.pas',
-  PE.Delphi.TypeIdentity in 'Delphi\PE.Delphi.TypeIdentity.pas',
+  PE.Buckets in '..\Source\PE.Buckets.pas',
+  PE.Delphi.AssignmentCompatibility in 'PE.Delphi.AssignmentCompatibility.pas',
+  PE.Delphi.TypeIdentity in 'PE.Delphi.TypeIdentity.pas',
   PE.Examples.Delphi.CategorizingWithBuckets in '..\Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
   PE.Routines in '..\Source\PE.Routines.pas',
   PE.Tests.Routines in '..\Tests\PE.Tests.Routines.pas',

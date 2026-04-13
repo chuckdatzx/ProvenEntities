@@ -1,17 +1,23 @@
 unit PE.Tests.Types.Foundational;
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEFINITIONINFO ON}
+{$DENYPACKAGEUNIT ON}
+{$EXTENDEDSYNTAX ON}
+{$HIGHCHARUNICODE ON}
+{$HINTS ON}
+{$IMPLICITBUILD OFF}
+{$IMPORTEDDATA OFF}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$OPTIMIZATION ON}
+{$POINTERMATH OFF}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
 {$SCOPEDENUMS ON}
-{Chuck C.T.
- I'm arguing that the following tests provide enough evidence to claim that all types in PE.Types.Foundational unit are proven. And by proven, I mean proven for:
- - usage within any compilable source code from the PE namespace
- - usage within Delphi (at least where PE.Types.Foundational.<type X> has been proven to be compatible with native type Y)
- - for all foundational types for all time; if it compiles and successfully runs now, it will continue to do so (like a powered circuit; barring events like power loss)
-
- If you don't believe that the PE.Types.Foundational namespace has been proven; that's fair. There are many points in
- my own life where I would have laughed at someone making such a claim and just moved on.
- However, if you truly disagree with me, please take the time show me where I'm wrong. I've put quite a bit of thought into
- the following; it seems unlikley that any given 1 person is going to find a problem at first glance (though I certainly
- could be wrong about that).
-}
+{$STACKFRAMES OFF}
+{$WARNINGS ON}
+{$WRITEABLECONST OFF}
 interface
 
 uses

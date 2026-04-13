@@ -1,9 +1,23 @@
 unit PE.Delphi.AssignmentCompatibility;
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEFINITIONINFO ON}
+{$DENYPACKAGEUNIT ON}
+{$EXTENDEDSYNTAX ON}
+{$HIGHCHARUNICODE ON}
+{$HINTS ON}
+{$IMPLICITBUILD OFF}
+{$IMPORTEDDATA OFF}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$OPTIMIZATION ON}
+{$POINTERMATH OFF}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
 {$SCOPEDENUMS ON}
-{
-All of the following can only be considered as valid as your compiler and my interpretation of
-https://docwiki.embarcadero.com/RADStudio/Florence/en/Type_Compatibility_and_Identity_(Delphi)
-}
+{$STACKFRAMES OFF}
+{$WARNINGS ON}
+{$WRITEABLECONST OFF}
 interface
 
 type

@@ -5,7 +5,7 @@
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Console</AppType>
         <MainSource>ProvenEntitiesTestRunner.dpr</MainSource>
@@ -94,10 +94,10 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="..\Source\PE.Buckets.pas"/>
-        <DCCReference Include="Delphi\PE.Delphi.AssignmentCompatibility.pas"/>
         <DCCReference Include="PE.Actors.Rando.pas"/>
-        <DCCReference Include="Delphi\PE.Delphi.TypeIdentity.pas"/>
+        <DCCReference Include="..\Source\PE.Buckets.pas"/>
+        <DCCReference Include="PE.Delphi.AssignmentCompatibility.pas"/>
+        <DCCReference Include="PE.Delphi.TypeIdentity.pas"/>
         <DCCReference Include="..\Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas"/>
         <DCCReference Include="..\Source\PE.Routines.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Routines.pas"/>

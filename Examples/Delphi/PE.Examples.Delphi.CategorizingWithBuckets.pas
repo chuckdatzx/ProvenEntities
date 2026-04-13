@@ -1,5 +1,23 @@
 unit PE.Examples.Delphi.CategorizingWithBuckets;
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEFINITIONINFO ON}
+{$DENYPACKAGEUNIT ON}
+{$EXTENDEDSYNTAX ON}
+{$HIGHCHARUNICODE ON}
+{$HINTS ON}
+{$IMPLICITBUILD OFF}
+{$IMPORTEDDATA OFF}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$OPTIMIZATION ON}
+{$POINTERMATH OFF}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
 {$SCOPEDENUMS ON}
+{$STACKFRAMES OFF}
+{$WARNINGS ON}
+{$WRITEABLECONST OFF}
 interface
 
 uses
@@ -24,20 +42,20 @@ type
 
   IsCompatibleWithDelphisSystemDotTArray = record
   public
-    class procedure AsIsShownInThisExample(); static; //inline;
+    class procedure AsIsShownInThisExample(); static;
   end;
 
   OrganizingCustomEnumeratedTypes = record
   public
-    class procedure IsLikeTellingARobotHowToSortACandyDish(); static; //inline;
+    class procedure IsLikeTellingARobotHowToSortACandyDish(); static;
   end;
 
   OrganizingNumbers = record
   strict private type BucketIn_NaturalNumber = BucketIn<NaturalNumber>;
   strict private const SomeCollectionOfNaturalNumbers: NaturalNumberArray = [1, 2, 3, 4, 5, 6, 7];
   public
-    class procedure ByCherryPicking(); static; //inline;
-    class procedure ByOddsAndEvens(); static; //inline;
+    class procedure ByCherryPicking(); static;
+    class procedure ByOddsAndEvens(); static;
   end;
 
 implementation
