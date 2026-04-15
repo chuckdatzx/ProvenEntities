@@ -40,7 +40,6 @@ uses
   PE.Tests.Routines.Buckets in '..\Tests\PE.Tests.Routines.Buckets.pas',
   PE.Tests.Types.Buckets in '..\Tests\PE.Tests.Types.Buckets.pas',
   PE.Tests.Types.Composite in '..\Tests\PE.Tests.Types.Composite.pas',
-  PE.Tests.Types.Foundational in '..\Tests\PE.Tests.Types.Foundational.pas',
   PE.Tests.Types.Foundational.BigNaturalNumber.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.BigNaturalNumber.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.Digit.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete.pas',
@@ -61,26 +60,13 @@ begin
   1) Complete Failure: (Likely brought to you by everyone's favorite bug to track down!) Runtime error <X> at address <Y>, or
   2) Complete Passing: After running the binary, you see "Tests Started...Tests Completed"
   }
-
-  if ExecuteTypeAndValueCompleteProof then
-  begin
-    Writeln('Run a COMPLETE TYPE AND VALUE PROOF? Enter EXACTLY the following character and press Enter to continue(otherwise is ignored): Y');
-    var OptInResult: MonoChar;
-    Read(OptInResult);
-    if (OptInResult = 'Y') then
-    begin
-      System.Write('Tests Started (Type And Value Complete)...');
-      PE.Tests.Execute.DoExecuteTypeAndValueCompleteProof();
-      System.Write('Tests Finished (Type And Value Complete)'); { TODO -oChuck -cMusings : Maybe at a time elapsed to this? }
-      System.Writeln;
-    end;
-  end;
+  System.Assert(ExecuteTypeAndValueCompleteProof, 'This test runner expects to run a type complete and value complete execution every time');
   System.Write('Tests Started...');
+  PE.Tests.Execute.DoExecuteTypeAndValueCompleteProof();
   PE.Tests.Routines.AllTests.Exercise();
   PE.Tests.Routines.Buckets.ExecutableSpeficiation_CategorizeRoutine<T>.Exercise();
   PE.Tests.Types.Buckets.AllTests<T>.Exercise();
   PE.Tests.Types.Composite.AllTests.Exercise();
-  PE.Tests.Types.Foundational.Exercise();
   PE.Examples.Delphi.CategorizingWithBuckets.Exercise.AllTests();
   System.Write('Tests Completed');
 end.

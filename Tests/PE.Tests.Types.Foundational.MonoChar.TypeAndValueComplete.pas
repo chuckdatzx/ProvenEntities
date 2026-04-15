@@ -68,8 +68,6 @@ type
     class procedure Exercise(); static; inline;
   end;
 
-procedure Exercise(); inline;
-
 implementation
 
 {ExecutableSpecification_MonoChar_Complete}
@@ -196,11 +194,6 @@ end;
 class procedure ExecutableSpecification_MonoChar_Complete.TypeIdentity.HasItsOwnNonNullTypeIdentity();
 begin
   TypeEquivalenceInquiry<MonoChar>.HasANonNullSystemDotTypeInfoValue();
-end;
-
-procedure Exercise();
-begin
-  ExecutableSpecification_MonoChar_Complete.Exercise();
 end;
 
 end.

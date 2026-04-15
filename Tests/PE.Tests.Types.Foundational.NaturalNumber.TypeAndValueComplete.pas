@@ -70,14 +70,7 @@ type
     class procedure Exercise(); static; inline;
   end;
 
-procedure Exercise(); inline;
-
 implementation
-
-procedure Exercise();
-begin
-  ExecutableSpecification_NaturalNumber_Complete.Exercise();
-end;
 
 { ExecutableSpecification_NaturalNumber_Complete.Boundaries }
 

@@ -87,8 +87,6 @@ type
     class procedure Exercise(); static; inline;
   end;
 
-  procedure Exercise(); inline;
-
 implementation
 
 {ExecutableSpecification_Digit_Complete}
@@ -307,11 +305,6 @@ end;
 class procedure ExecutableSpecification_Digit_Complete.StaticTransformations.Exercise;
 begin
   ToEnglishMonoChar.Exercise()
-end;
-
-procedure Exercise();
-begin
-  ExecutableSpecification_Digit_Complete.Exercise();
 end;
 
 end.
