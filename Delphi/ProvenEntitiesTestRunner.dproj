@@ -107,6 +107,7 @@
         <DCCReference Include="..\Tests\PE.Tests.Types.Buckets.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Composite.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.pas"/>
+        <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.BigNaturalNumber.TypeAndValueComplete.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas"/>

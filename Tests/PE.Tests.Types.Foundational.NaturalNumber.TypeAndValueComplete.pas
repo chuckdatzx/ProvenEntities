@@ -66,7 +66,6 @@ type
     end;
   public
     class procedure TheDefaultValueIsZero(); static; inline;
-
   public
     class procedure Exercise(); static; inline;
   end;

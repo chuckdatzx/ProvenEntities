@@ -35,24 +35,6 @@ type
     public
       class procedure Exercise(); static; inline;
     end;
-    Boundaries = record
-    strict private
-      class procedure TheLowestPossibleValueIsZero(); static; inline;
-      class procedure TheHighestPossibleNumberIs18446744073709551615(); static; inline; //Approximately 18.45 quintillion
-    public
-      class procedure Exercise(); static; inline;
-    end;
-    Defaults = record
-      class procedure ValueIsZero(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-    TypeIdentity = record
-    strict private
-      class procedure HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
   public
     class procedure Exercise(); static; inline;
   end;
@@ -71,9 +53,6 @@ uses
 class procedure ExecutableSpecification_BigNaturalNumber.Exercise;
 begin
   AssignmentCompatibility.Exercise();
-  Boundaries.Exercise();
-  Defaults.Exercise();
-  TypeIdentity.Exercise();
 end;
 
 {ExecutableSpecification_BigNaturalNumber.AssignmentCompatibility}
@@ -95,46 +74,6 @@ begin
   System.Assert(System.Default(UInt64) = ActualUInt64);
   ActualUInt64 := ActualNaturalNumber64;
   System.Assert(Expected = ActualUInt64);
-end;
-
-{ExecutableSpecification_BigNaturalNumber.Boundaries}
-class procedure ExecutableSpecification_BigNaturalNumber.Boundaries.Exercise;
-begin
-  TheLowestPossibleValueIsZero();
-  TheHighestPossibleNumberIs18446744073709551615();
-end;
-
-class procedure ExecutableSpecification_BigNaturalNumber.Boundaries.TheHighestPossibleNumberIs18446744073709551615;
-begin
-  System.Assert(18446744073709551615 = System.High(BigNaturalNumber));
-end;
-
-class procedure ExecutableSpecification_BigNaturalNumber.Boundaries.TheLowestPossibleValueIsZero;
-begin
-  System.Assert(0 = System.Low(BigNaturalNumber));
-end;
-
-{ExecutableSpecification_BigNaturalNumber.Defaults}
-class procedure ExecutableSpecification_BigNaturalNumber.Defaults.Exercise;
-begin
-  ValueIsZero();
-end;
-
-class procedure ExecutableSpecification_BigNaturalNumber.Defaults.ValueIsZero;
-begin
-  System.Assert(0 = System.Default(BigNaturalNumber));
-end;
-
-{ExecutableSpecification_BigNaturalNumber.TypeIdentity}
-class procedure ExecutableSpecification_BigNaturalNumber.TypeIdentity.Exercise;
-begin
-  HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64();
-end;
-
-class procedure ExecutableSpecification_BigNaturalNumber.TypeIdentity.HasItsOwnTypeIdentityAndIsNotTypeIdenticalToTheNativeUInt64;
-begin
-  TypeEquivalenceInquiry<BigNaturalNumber>.HasANonNullSystemDotTypeInfoValue();
-  TypeEquivalenceInquiry<BigNaturalNumber>.DoesNotShareTypeIdentityWith<UInt64>();
 end;
 {$ENDREGION}
 

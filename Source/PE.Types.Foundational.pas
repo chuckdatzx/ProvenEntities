@@ -27,23 +27,27 @@ uses
 
 {$IF PE.Tests.ExecuteTypeAndValueCompleteProof}  //Requiring "opting out" of type complete and value complete testing of the Foundational types
 type
+  BigNaturalNumber = type UInt64;
   Digit = 0..9;
   MonoChar = type Char;
   NaturalNumber = type Cardinal;
   {$MESSAGE HINT 'All types in the PE.Types.Foundational namespace appear to include type complete and value complete testing coverage'}
 {$ELSE}
 type
+  BigNaturalNumber = type UInt64;
   Digit = 0..9;
   MonoChar = type Char;
   NaturalNumber = type Cardinal;
   {$MESSAGE WARN 'Type complete and value complete coverage may have been intentionally avoided for all types in the PE.Types.Foundational namespace'}
 {$ENDIF}
 
-
 type
-  BigNaturalNumber = type UInt64;
+  BigNaturalNumberCharHelper = record Helper for BigNaturalNumber
+  {public :: "Class Properties"}
+    public const Max: BigNaturalNumber = System.High(BigNaturalNumber);
+    public const Min: BigNaturalNumber = System.Low(BigNaturalNumber);
+  end;
 
-type
   DigitHelper = record Helper for Digit
   public type StaticTransformations = record
     public const DigitToEnglishMonoCharMap: array [System.Low(Digit)..System.High(Digit)] of MonoChar = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');

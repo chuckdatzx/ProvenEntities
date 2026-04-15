@@ -28,7 +28,6 @@ interface
 uses
   PE.Actors.Rando,  //In the interface section for inlining
   PE.Delphi.TypeIdentity,  //In the interface section for inlining
-  PE.Tests,
   PE.Types.Foundational;
 
 type

@@ -41,6 +41,7 @@ uses
   PE.Tests.Types.Buckets in '..\Tests\PE.Tests.Types.Buckets.pas',
   PE.Tests.Types.Composite in '..\Tests\PE.Tests.Types.Composite.pas',
   PE.Tests.Types.Foundational in '..\Tests\PE.Tests.Types.Foundational.pas',
+  PE.Tests.Types.Foundational.BigNaturalNumber.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.BigNaturalNumber.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.Digit.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas',
