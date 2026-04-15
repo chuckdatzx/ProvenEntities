@@ -110,7 +110,7 @@
         <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.Generics.pas"/>
+        <DCCReference Include="..\Tests\PE.Tests.TypeCompleteAndValueComplete.ArrayOf.pas"/>
         <DCCReference Include="..\Source\PE.Types.Composite.pas"/>
         <DCCReference Include="..\Source\PE.Types.Foundational.pas"/>
         <DCCReference Include="..\Source\PE.Types.Foundational.Generics.pas"/>

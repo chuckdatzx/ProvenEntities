@@ -1,6 +1,6 @@
 unit PE.Types.Foundational;
 {$ASSERTIONS ON}
-{$BOOLEVAL OFF}
+{$BOOLEVAL OFF}  //In compiler (we currently) trust!
 {$DEFINITIONINFO ON}
 {$DENYPACKAGEUNIT ON}
 {$EXTENDEDSYNTAX ON}

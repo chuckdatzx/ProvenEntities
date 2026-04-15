@@ -44,7 +44,7 @@ uses
   PE.Tests.Types.Foundational.Digit.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas',
-  PE.Tests.Types.Foundational.Generics in '..\Tests\PE.Tests.Types.Foundational.Generics.pas',
+  PE.Tests.TypeCompleteAndValueComplete.ArrayOf in '..\Tests\PE.Tests.TypeCompleteAndValueComplete.ArrayOf.pas',
   PE.Types.Composite in '..\Source\PE.Types.Composite.pas',
   PE.Types.Foundational in '..\Source\PE.Types.Foundational.pas',
   PE.Types.Foundational.Generics in '..\Source\PE.Types.Foundational.Generics.pas';
@@ -54,11 +54,12 @@ type
   T = Cardinal;
 
 begin
+  Randomize();
   {
   All you need to do to prove things out at runtime is to execute the binary produced by this project file.
   You're likely only going to get 1 of 2 results when running from the command line:
   1) Complete Failure: (Likely brought to you by everyone's favorite bug to track down!) Runtime error <X> at address <Y>, or
-  2) Complete Passing: After running the binary, you see "Tests Started...Tests Completed"
+  2) Complete Passing: After running the binary, you see "Tests Started...Tests Completed" (eventually)
   }
   System.Assert(ExecuteTypeAndValueCompleteProof, 'This test runner expects to run a type complete and value complete execution every time');
   System.Write('Tests Started...');

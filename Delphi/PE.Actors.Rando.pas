@@ -51,18 +51,23 @@ begin
   Result := System.Default(T);
   var ATypeInfo: PTypeInfo := System.TypeInfo(T);
   System.Assert(System.Assigned(ATypeInfo), 'Rando cannot continue because the provided type T does not seem to generate type info');
+  var ATypeInfoName: string := ATypeInfo.Name;
   case System.GetTypeKind(T) of
     tkInteger, tkWideChar:
       begin
         var ATypeData := GetTypeData(ATypeInfo);
+        var Retries: NativeUInt := 0;
         System.Assert(System.Assigned(ATypeData), 'Rando cannot continue because the provided type T does not seem to have type data');
-        case ATypeData.OrdType of
-          TOrdType.otSByte, TOrdType.otUByte: Result := TValue.FromOrdinal(ATypeInfo, Random(256) + 1).AsType<T>();
-          TOrdType.otSWord, TOrdType.otUWord: Result := TValue.FromOrdinal(ATypeInfo, Random(65536) + 1).AsType<T>();
-          TOrdType.otSLong, TOrdType.otULong: Result := TValue.FromOrdinal(ATypeInfo, Random(MaxInt) + 1).AsType<T>();
-        else
-          System.Assert(False, 'Rando does not have a complete enough understanding of the TOrdType')
-        end;
+        repeat
+          case ATypeData.OrdType of
+            TOrdType.otSByte, TOrdType.otUByte: Result := TValue.FromOrdinal(ATypeInfo, Random(255) + 1).AsType<T>();
+            TOrdType.otSWord, TOrdType.otUWord: Result := TValue.FromOrdinal(ATypeInfo, Random(65535) + 1).AsType<T>();
+            TOrdType.otSLong, TOrdType.otULong: Result := TValue.FromOrdinal(ATypeInfo, Random(MaxInt) + 1).AsType<T>();
+          else
+            System.Assert(False, 'Rando does not have a complete enough understanding of the TOrdType')
+          end;
+          Retries := Retries + 1;
+        until ((Result <> System.Default(T)) or (Retries > 0));
       end;
     tkInt64: Result := TValue.From<UInt64>((UInt64(Random32Proc) shl 32) or UInt64(Random32Proc)).AsType<T>();
     tkRecord:
@@ -74,7 +79,7 @@ begin
   else
     System.Assert(False, 'Rando is not prepared for type kinds other than [tkInteger, tkInt64, rkRecord, tkWideChar, tkUnicodeString]');
   end;
-  System.Assert(Result <> System.Default(T), 'Rando cannot tell a lie (non-default value = default value)');
+  System.Assert(Result <> System.Default(T), 'Rando cannot tell a lie (non-default value = default value) :: T = ' + ATypeInfoName);
 end;
 
 end.
