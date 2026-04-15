@@ -34,11 +34,16 @@ uses
   PE.Delphi.TypeIdentity in 'PE.Delphi.TypeIdentity.pas',
   PE.Examples.Delphi.CategorizingWithBuckets in '..\Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
   PE.Routines in '..\Source\PE.Routines.pas',
+  PE.Tests in '..\Tests\PE.Tests.pas',
+  PE.Tests.Execute in '..\Tests\PE.Tests.Execute.pas',
   PE.Tests.Routines in '..\Tests\PE.Tests.Routines.pas',
   PE.Tests.Routines.Buckets in '..\Tests\PE.Tests.Routines.Buckets.pas',
   PE.Tests.Types.Buckets in '..\Tests\PE.Tests.Types.Buckets.pas',
   PE.Tests.Types.Composite in '..\Tests\PE.Tests.Types.Composite.pas',
   PE.Tests.Types.Foundational in '..\Tests\PE.Tests.Types.Foundational.pas',
+  PE.Tests.Types.Foundational.Digit.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.pas',
+  PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete.pas',
+  PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.Generics in '..\Tests\PE.Tests.Types.Foundational.Generics.pas',
   PE.Types.Composite in '..\Source\PE.Types.Composite.pas',
   PE.Types.Foundational in '..\Source\PE.Types.Foundational.pas',
@@ -55,14 +60,26 @@ begin
   1) Complete Failure: (Likely brought to you by everyone's favorite bug to track down!) Runtime error <X> at address <Y>, or
   2) Complete Passing: After running the binary, you see "Tests Started...Tests Completed"
   }
+
+  if ExecuteTypeAndValueCompleteProof then
+  begin
+    Writeln('Run a COMPLETE TYPE AND VALUE PROOF? Enter EXACTLY the following character and press Enter to continue(otherwise is ignored): Y');
+    var OptInResult: MonoChar;
+    Read(OptInResult);
+    if (OptInResult = 'Y') then
+    begin
+      System.Write('Tests Started (Type And Value Complete)...');
+      PE.Tests.Execute.DoExecuteTypeAndValueCompleteProof();
+      System.Write('Tests Finished (Type And Value Complete)'); { TODO -oChuck -cMusings : Maybe at a time elapsed to this? }
+      System.Writeln;
+    end;
+  end;
   System.Write('Tests Started...');
-  //If you want to cover more ground, just copy/paste(the line of source code below that tests what you want to cover) and replace T with whatever type.
-  //just make sure to keep it between the first and last System.Write (that way you can be sure no errors could have occurred)
   PE.Tests.Routines.AllTests.Exercise();
   PE.Tests.Routines.Buckets.ExecutableSpeficiation_CategorizeRoutine<T>.Exercise();
   PE.Tests.Types.Buckets.AllTests<T>.Exercise();
   PE.Tests.Types.Composite.AllTests.Exercise();
-  PE.Tests.Types.Foundational.AllTests.Exercise();
+  PE.Tests.Types.Foundational.Exercise();
   PE.Examples.Delphi.CategorizingWithBuckets.Exercise.AllTests();
   System.Write('Tests Completed');
 end.

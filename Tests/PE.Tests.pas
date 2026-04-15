@@ -1,0 +1,51 @@
+unit PE.Tests;
+
+{Assumptions:
+Assumption 1: The source code in this unit (or referencing unit) has not been altered (e.g. is unchanged when compared to "official" repository version <x>)
+Assumption 2: Tests in this unit (or referencing unit) provide "complete type coverage" (See the definitions below regarding "complete type coverage")
+Assumption 3: Tests in this unit prove complete value coverage (See the definitions below regarding "complete value coverage")
+}
+
+{Definitions (all of which require the above Assumptions to be True):
+  "complete type coverage" = the following:
+    - I mean that all "compiler allowed" boundaries, relating to the existence of type in question T, are discretely covered with executable test cases.
+      In other words, where the compiler is concerned, there are not any "loopholes" left to consider. (I'm pretty sure I haven't completed this; I could use help getting there)
+  "complete value coverage" = the following:
+    - I mean that for each type in question T, every test case for a "value complete" solution must exercise every value for T.
+    - I am also implicity arguing that one can achieve "value complete" testing without any explicit type conversions.
+      - Since I am implicity arguing that explicit type conversions are not needed, I won't be accepting any counter-proposals that require explict type conversion (including my own code)
+
+  "Strength(X):"
+    Proof:        You have built and executed a binary that is its own type and value complete proof
+                  - Meaning that for every PE type <x> you use, you have included and executed any provided type complete and value complete tests provided with PE type <x>
+                    - More specifically, I also mean that you can and have successfully executed the PE.Tests.Execute.DoExecuteTypeAndValueCompleteProof(); routine from within said end binary
+                    - And even more specifically, I mean said routine is executed after Delphi's exception handling becomes available
+                    - Yet again more specifically, I mean said routine is executed in a block of code that doesn't trap exceptions, and said exceptions would cause your application to crash if not handled
+                    - ... , I mean that your binary will always be running processor architecture <y>, and so on
+    Extremely
+    Reliable():   Setup 2 "versions" of your end binary:
+                  1) The 1st version is, of course, the end product as you would want it (without any "testing luggage", so to speak)
+                  2) The 2nd version would also include this unit. Then simply make sure that a call to the PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.Exercise() routine such that it is executed as described above.
+    Weak():       You trust that the code under test was tested rigorously by someone that you trust.
+    Weakest():    You hope that code tested by someone else will work for you (especially since "tested" can mean so many things).
+
+[Chuck C.T. :: 4/14/20206 :: Claiming that the above is both sound and complete constructivist proof]
+}
+
+interface
+
+{$DEFINE TYPE_AND_VALUE_COMPLETE_PROOF = True}
+
+const
+{$IFDEF TYPE_AND_VALUE_COMPLETE_PROOF}
+  ExecuteTypeAndValueCompleteProof = True;
+{$ELSE}
+  ExecuteTypeAndValueCompleteProof = False;
+{$ENDIF}
+
+implementation
+
+uses
+  PE.Tests.Execute;
+
+end.

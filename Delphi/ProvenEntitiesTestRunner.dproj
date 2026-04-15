@@ -5,7 +5,7 @@
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win64</Platform>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Console</AppType>
         <MainSource>ProvenEntitiesTestRunner.dpr</MainSource>
@@ -100,11 +100,16 @@
         <DCCReference Include="PE.Delphi.TypeIdentity.pas"/>
         <DCCReference Include="..\Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas"/>
         <DCCReference Include="..\Source\PE.Routines.pas"/>
+        <DCCReference Include="..\Tests\PE.Tests.pas"/>
+        <DCCReference Include="..\Tests\PE.Tests.Execute.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Routines.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Routines.Buckets.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Buckets.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Composite.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.pas"/>
+        <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.pas"/>
+        <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete.pas"/>
+        <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.Generics.pas"/>
         <DCCReference Include="..\Source\PE.Types.Composite.pas"/>
         <DCCReference Include="..\Source\PE.Types.Foundational.pas"/>
