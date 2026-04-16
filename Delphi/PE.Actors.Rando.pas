@@ -21,6 +21,8 @@ unit PE.Actors.Rando;
 interface
 
 uses
+  PE.Routines,
+  PE.Types.Foundational,
   {Delphi}
   System.RTTI,
   System.TypInfo;
@@ -33,7 +35,11 @@ type
   /// Later still, I realized "Why stop with default/non-default values when you could generate random ones and go further?"
   /// For now, Rando has an unfortunate title. I should consider adding proof for Rando. But until then, the title stays.</notes>
   Rando_TheUntrustworthy = record
+  public type RandoNonDefaultValueRequest = 2..10;
+  strict private
+    class function SingleNonDefaultValue<T>: T; static; inline;
   public
+    class function DistinctNonDefaultValues<T>(const Count: RandoNonDefaultValueRequest): ArrayOf<T>; static; inline;
     class function NonDefaultValue<T>(): T; static; inline;
   end;
 
@@ -48,6 +54,31 @@ uses
 {Rando_TheUntrustworthy}
 class function Rando_TheUntrustworthy.NonDefaultValue<T>: T;
 begin
+  Result := SingleNonDefaultValue<T>();
+end;
+
+class function Rando_TheUntrustworthy.DistinctNonDefaultValues<T>(const Count: RandoNonDefaultValueRequest): ArrayOf<T>;
+const RetryCeiling = 10;
+begin
+  { TODO -oChuck -cToDo : Validate that the Count parameter isn't greater than what is possible for T }
+  System.Assert(Count > 1, 'Use the NonDefaultValue<T> member for single non-default values');
+  System.Assert(Count < 11, 'The NonDefaultValues<T> member is currently limited to 10 random non-default values');
+  var BundleAquired: Boolean;
+  var Retries: NaturalNumber := 0;
+  repeat
+    Result := [];
+    for var I: NaturalNumber := 1 to Count do
+      Result := Result + [NonDefaultValue<T>()];
+    BundleAquired := (System.Length(Result) = System.Length(DataStream.UniqueElements<T>(Result)));
+    Retries := Retries + 1;
+  until BundleAquired or (Retries > RetryCeiling);
+  if (not BundleAquired) then
+    System.Assert(Retries > RetryCeiling, 'Rando experienced too many retries');
+  System.Assert(Ord(Count) = System.Length(Result), Format('The number of expected elements (%d) is not the same as actual (%d)', [Count, System.Length(Result)]));
+end;
+
+class function Rando_TheUntrustworthy.SingleNonDefaultValue<T>: T;
+begin
   Result := System.Default(T);
   var ATypeInfo: PTypeInfo := System.TypeInfo(T);
   System.Assert(System.Assigned(ATypeInfo), 'Rando cannot continue because the provided type T does not seem to generate type info');
@@ -56,18 +87,14 @@ begin
     tkInteger, tkWideChar:
       begin
         var ATypeData := GetTypeData(ATypeInfo);
-        var Retries: NativeUInt := 0;
         System.Assert(System.Assigned(ATypeData), 'Rando cannot continue because the provided type T does not seem to have type data');
-        repeat
-          case ATypeData.OrdType of
-            TOrdType.otSByte, TOrdType.otUByte: Result := TValue.FromOrdinal(ATypeInfo, Random(255) + 1).AsType<T>();
-            TOrdType.otSWord, TOrdType.otUWord: Result := TValue.FromOrdinal(ATypeInfo, Random(65535) + 1).AsType<T>();
-            TOrdType.otSLong, TOrdType.otULong: Result := TValue.FromOrdinal(ATypeInfo, Random(MaxInt) + 1).AsType<T>();
-          else
-            System.Assert(False, 'Rando does not have a complete enough understanding of the TOrdType')
-          end;
-          Retries := Retries + 1;
-        until ((Result <> System.Default(T)) or (Retries > 0));
+        case ATypeData.OrdType of
+          TOrdType.otSByte, TOrdType.otUByte: Result := TValue.FromOrdinal(ATypeInfo, Random(255) + 1).AsType<T>();
+          TOrdType.otSWord, TOrdType.otUWord: Result := TValue.FromOrdinal(ATypeInfo, Random(65535) + 1).AsType<T>();
+          TOrdType.otSLong, TOrdType.otULong: Result := TValue.FromOrdinal(ATypeInfo, Random(MaxInt) + 1).AsType<T>();
+        else
+          System.Assert(False, 'Rando does not have a complete enough understanding of the TOrdType')
+        end;
       end;
     tkInt64: Result := TValue.From<UInt64>((UInt64(Random32Proc) shl 32) or UInt64(Random32Proc)).AsType<T>();
     tkRecord:

@@ -26,6 +26,7 @@ where "Strength(X)" is defined in the PE.Tests unit.
 uses
   PE.Actors.Rando,  //In the interface section for inlining
   PE.Delphi.TypeIdentity,
+  PE.Routines,  //In the interface section for inlining
   {Delphi}
   System.RTTI;  //Included here for inlining
 
@@ -142,19 +143,11 @@ begin
   var Expected: ArrayOf<TypeUnderTest> := [];
   for var Counter: NaturalNumber := 1 to 1000 do
   begin
-    case (Random(3) + 3) of
-      3: Expected := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>];
-      4: Expected := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>,
-          Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>];
-      5: Expected := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>,
-          Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>];
-      6: Expected := [Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>,
-          Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>, Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest>];
-    else
-
-      System.Assert(False);
-    end;
-    System.Assert(System.Length(Expected) >= 3);
+    var RandomElementCount: NaturalNumber := (Random(3) + 3);
+    System.Assert((6 >= RandomElementCount) and (RandomElementCount >= 3));
+    Expected := Rando_TheUntrustworthy.DistinctNonDefaultValues<TypeUnderTest>(RandomElementCount);
+    System.Assert(System.Length(Expected) >= 3, 'At least 3 random non-default T values are needed');
+    System.Assert(System.Length(Expected) = System.Length(DataStream.UniqueElements<TypeUnderTest>(Expected)));
     for var EachExpected: TypeUnderTest in Expected do
       System.Assert(not (System.Default(TypeUnderTest) = EachExpected));
     var Actual: ArrayOf<TypeUnderTest> := [];

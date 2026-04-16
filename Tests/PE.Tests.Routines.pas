@@ -243,22 +243,12 @@ begin
 end;
 
 class procedure ExecutableSpecification_DataStreamRoutines<TypeUnderTest1>.Contains<TypeUnderTest2>.MissingElementsAreNotNoticed.ReturnsFalseWhenGivenMultipleVariedElementsOfNonDefaultTAndADefaultValueOfT;
-var
-  IsFinished: Boolean;
 begin
-  var Attempts: Digit := 0;
-  var Actual1: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  var Actual2: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-  var Actual3: TypeUnderTest2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-
-  repeat
-    Actual1 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-    Actual2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-    Actual3 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-    IsFinished := (Actual1 <> Actual2) and (Actual1 <> Actual3) and (Actual2 <> Actual3);
-    Attempts := Attempts + 1;
-  until IsFinished or (Attempts > 2);
-  System.Assert(1 = Attempts, 'Rando has had too many retries!');
+  var Actuals: ArrayOf<TypeUnderTest2> := Rando_TheUntrustworthy.DistinctNonDefaultValues<TypeUnderTest2>(3);
+  System.Assert(3 = System.Length(Actuals));
+  var Actual1: TypeUnderTest2 := Actuals[System.Low(Actuals)];
+  var Actual2: TypeUnderTest2 := Actuals[System.Low(Actuals) + 1];
+  var Actual3: TypeUnderTest2 := Actuals[System.Low(Actuals) + 2];
   System.Assert(not (System.Default(TypeUnderTest2) = Actual1));
   System.Assert(not (System.Default(TypeUnderTest2) = Actual2));
   System.Assert(not (System.Default(TypeUnderTest2) = Actual3));
@@ -269,25 +259,13 @@ begin
 end;
 
 class procedure ExecutableSpecification_DataStreamRoutines<TypeUnderTest1>.Contains<TypeUnderTest2>.MissingElementsAreNotNoticed.ReturnsFalseWhenGivenMultipleVariedElementsOfNonDefaultTAndANonMatchingNonDefaultValueOfT;
-var
-  IsFinished: Boolean;
 begin
-  var Actual1: TypeUnderTest2 := System.Default(TypeUnderTest2);
-  var Actual2: TypeUnderTest2 := System.Default(TypeUnderTest2);
-  var Actual3: TypeUnderTest2 := System.Default(TypeUnderTest2);
-  var Actual4: TypeUnderTest2 := System.Default(TypeUnderTest2);
-  var Attempts: Digit := 0;
-  repeat
-    Actual1 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-    Actual2 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-    Actual3 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-    Actual4 := Rando_TheUntrustworthy.NonDefaultValue<TypeUnderTest2>();
-    IsFinished := (Actual1 <> Actual2) and (Actual1 <> Actual3) and (Actual1 <> Actual4) and
-      (Actual2 <> Actual3) and (Actual2 <> Actual4) and
-      (Actual3 <> Actual4);
-    Attempts := Attempts + 1;
-  until IsFinished or (Attempts > 2);
-  System.Assert(1 = Attempts, 'Rando has had too many retries!');
+  var Actuals: ArrayOf<TypeUnderTest2> := Rando_TheUntrustworthy.DistinctNonDefaultValues<TypeUnderTest2>(4);
+  System.Assert(4 = System.Length(Actuals));
+  var Actual1: TypeUnderTest2 := Actuals[System.Low(Actuals)];
+  var Actual2: TypeUnderTest2 := Actuals[System.Low(Actuals) + 1];
+  var Actual3: TypeUnderTest2 := Actuals[System.Low(Actuals) + 2];
+  var Actual4: TypeUnderTest2 := Actuals[System.Low(Actuals) + 3];
   System.Assert(not (System.Default(TypeUnderTest2) = Actual1));
   System.Assert(not (System.Default(TypeUnderTest2) = Actual2));
   System.Assert(not (System.Default(TypeUnderTest2) = Actual3));

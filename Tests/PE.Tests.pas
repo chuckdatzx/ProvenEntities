@@ -61,7 +61,6 @@ uses
   PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete,
   PE.Types.Foundational;
 
-
 {$IFDEF TYPE_AND_VALUE_COMPLETE_PROOF}
 {TheExecutioner}
 class function TheExecutioner.ExecuteTypeAndValueCompleteProof(): TArray<IFuture<NativeUInt>>;
