@@ -25,8 +25,7 @@ uses
   PE.Delphi.AssignmentCompatibility,
   PE.Delphi.TypeIdentity,
   PE.Types.Composite,
-  PE.Types.Foundational,
-  PE.Types.Foundational.Generics;
+  PE.Types.Foundational;
 
 {$IF (not DelphiTypeIdentityEstablishedAtCompileTime) or (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime)}
    {$MESSAGE FATAL 'Unable to continue without compile-time proof established.'}

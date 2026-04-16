@@ -1,4 +1,4 @@
-unit PE.Types.Foundational;
+﻿unit PE.Types.Foundational;
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}  //In compiler (we currently) trust!
 {$DEFINITIONINFO ON}
@@ -22,23 +22,24 @@ interface
 
 uses
   PE.Delphi.TypeIdentity,
-  PE.Tests,
-  PE.Types.Foundational.Generics;  //Included to provide better support/handling of foundational types
+  PE.Tests;
 
 {$IF PE.Tests.ExecuteTypeAndValueCompleteProof}  //Requiring "opting out" of type complete and value complete testing of the Foundational types
 type
+  ArrayOf<T> = array of T;
   BigNaturalNumber = type UInt64;
   Digit = 0..9;
   MonoChar = type Char;
   NaturalNumber = type Cardinal;
-  {$MESSAGE HINT 'All types in the PE.Types.Foundational namespace appear to include type complete and value complete testing coverage'}
+  {$MESSAGE HINT '😎 :: The PE.Types.Foundational types are on track to include their type complete and value complete coverage'}
 {$ELSE}
 type
+  ArrayOf<T> = array of T;
   BigNaturalNumber = type UInt64;
   Digit = 0..9;
   MonoChar = type Char;
   NaturalNumber = type Cardinal;
-  {$MESSAGE WARN 'Type complete and value complete coverage may have been intentionally avoided for all types in the PE.Types.Foundational namespace'}
+  {$MESSAGE WARN '😮 :: The PE.Types.Foundational test coverage does not seem to be included'}
 {$ENDIF}
 
 type

@@ -35,7 +35,6 @@ uses
   PE.Examples.Delphi.CategorizingWithBuckets in '..\Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas',
   PE.Routines in '..\Source\PE.Routines.pas',
   PE.Tests in '..\Tests\PE.Tests.pas',
-  PE.Tests.Execute in '..\Tests\PE.Tests.Execute.pas',
   PE.Tests.Routines in '..\Tests\PE.Tests.Routines.pas',
   PE.Tests.Routines.Buckets in '..\Tests\PE.Tests.Routines.Buckets.pas',
   PE.Tests.Types.Buckets in '..\Tests\PE.Tests.Types.Buckets.pas',
@@ -47,13 +46,17 @@ uses
   PE.Tests.TypeCompleteAndValueComplete.ArrayOf in '..\Tests\PE.Tests.TypeCompleteAndValueComplete.ArrayOf.pas',
   PE.Types.Composite in '..\Source\PE.Types.Composite.pas',
   PE.Types.Foundational in '..\Source\PE.Types.Foundational.pas',
-  PE.Types.Foundational.Generics in '..\Source\PE.Types.Foundational.Generics.pas';
+  System.Classes,
+  System.SysUtils,
+  System.TimeSpan,
+  System.Threading;
 
 type
   //Replace T with any compilable type; or add your own tests below.
   T = Cardinal;
 
 begin
+  var Start: Integer := System.SysUtils.DateTimeToTimeStamp(System.SysUtils.Now()).Time;
   Randomize();
   {
   All you need to do to prove things out at runtime is to execute the binary produced by this project file.
@@ -61,13 +64,17 @@ begin
   1) Complete Failure: (Likely brought to you by everyone's favorite bug to track down!) Runtime error <X> at address <Y>, or
   2) Complete Passing: After running the binary, you see "Tests Started...Tests Completed" (eventually)
   }
-  System.Assert(ExecuteTypeAndValueCompleteProof, 'This test runner expects to run a type complete and value complete execution every time');
+  System.Assert(ExecuteTypeAndValueCompleteProof);
   System.Write('Tests Started...');
-  PE.Tests.Execute.DoExecuteTypeAndValueCompleteProof();
+  var Futures: ArrayOf<IFuture<NativeUInt>> := PE.Tests.TheExecutioner.ExecuteTypeAndValueCompleteProof();
   PE.Tests.Routines.AllTests.Exercise();
   PE.Tests.Routines.Buckets.ExecutableSpeficiation_CategorizeRoutine<T>.Exercise();
   PE.Tests.Types.Buckets.AllTests<T>.Exercise();
   PE.Tests.Types.Composite.AllTests.Exercise();
   PE.Examples.Delphi.CategorizingWithBuckets.Exercise.AllTests();
-  System.Write('Tests Completed');
+  for var EachFuture in Futures do
+    System.Assert(0 = EachFuture.Value);
+  var Stop: Integer := System.SysUtils.DateTimeToTimeStamp(System.SysUtils.Now()).Time;
+  var DurationInMinutes: Double := (Abs(Abs(Stop) - Abs(Start)) / 60000);
+  System.Write('Tests Completed in :: ' + DurationInMinutes.ToString() + ' minutes');
 end.

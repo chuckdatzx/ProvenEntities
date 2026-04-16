@@ -22,7 +22,7 @@ interface
 
 uses
   {PE}
-  PE.Types.Foundational.Generics;
+  PE.Types.Foundational;
 
 type
   DataStream = class sealed

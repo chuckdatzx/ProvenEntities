@@ -33,8 +33,6 @@ type
     procedure FormCreate(Sender: TObject);
   strict private
     FMyRoutine: SmartClaw<MonoChar>;
-  public
-    { Public declarations }
   end;
 
 var
@@ -47,7 +45,6 @@ implementation
 uses
   {PE}
   PE.Buckets,
-  PE.Types.Foundational.Generics,
   {Delphi}
   System.Character,
   System.Generics.Collections,

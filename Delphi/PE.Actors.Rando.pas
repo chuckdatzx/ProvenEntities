@@ -51,7 +51,7 @@ begin
   Result := System.Default(T);
   var ATypeInfo: PTypeInfo := System.TypeInfo(T);
   System.Assert(System.Assigned(ATypeInfo), 'Rando cannot continue because the provided type T does not seem to generate type info');
-  var ATypeInfoName: string := ATypeInfo.Name;
+  var ATypeInfoName: TSymbolName := ATypeInfo.Name;
   case System.GetTypeKind(T) of
     tkInteger, tkWideChar:
       begin

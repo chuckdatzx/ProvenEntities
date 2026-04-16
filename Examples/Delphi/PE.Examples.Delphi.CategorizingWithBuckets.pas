@@ -24,8 +24,7 @@ uses
   {PE}
   PE.Buckets,
   PE.Types.Composite,
-  PE.Types.Foundational,
-  PE.Types.Foundational.Generics;
+  PE.Types.Foundational;
 
 type
   TCustomEnumeratedType = (cetSour, cetSweet, cetFuzzy);

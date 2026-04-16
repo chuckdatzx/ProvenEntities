@@ -144,8 +144,7 @@ type
 implementation
 
 uses
-  PE.Delphi.TypeIdentity,
-  PE.Types.Foundational.Generics;
+  PE.Delphi.TypeIdentity;
 
 {$REGION 'PE.Buckets.Routines.Categorize<T>'}
 {ExecutableSpeficiation_CategorizeRoutine<TypeUnderTest>}

@@ -18,7 +18,11 @@ unit PE.Tests.TypeCompleteAndValueComplete.ArrayOf;
 {$WARNINGS ON}
 {$WRITEABLECONST OFF}
 interface
-
+{
+If the assumptions (listed in the PE.Tests unit) are True, then the PE.Types.Foundational.ArrayOf<T> type is "proven" to Strength(X) for both now and in any future execution scenarios,
+where "Strength(X)" is defined in the PE.Tests unit.
+[Chuck C.T. :: 4/14/20206 :: Claiming that the above is both sound and complete constructivist proof]
+}
 uses
   PE.Actors.Rando,  //In the interface section for inlining
   PE.Delphi.TypeIdentity,
@@ -61,8 +65,7 @@ type
 implementation
 
 uses
-  PE.Types.Foundational,
-  PE.Types.Foundational.Generics;
+  PE.Types.Foundational;
 
 {$REGION 'ArrayOf<T> type'}
 {ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>}

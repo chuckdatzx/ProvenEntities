@@ -156,9 +156,6 @@ type
 
 implementation
 
-uses
-  PE.Types.Foundational.Generics;
-
 {AllTestsTests<T>}
 class procedure AllTests<T>.Exercise();
 begin

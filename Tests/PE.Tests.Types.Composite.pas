@@ -115,8 +115,7 @@ type
 implementation
 
 uses
-  PE.Delphi.TypeIdentity,
-  PE.Types.Foundational.Generics;
+  PE.Delphi.TypeIdentity;
 
 {AllTests}
 class procedure AllTests.Exercise;
