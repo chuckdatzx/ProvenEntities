@@ -32,9 +32,10 @@ uses
 
 type
   ExecutableSpecification_MonoChar_Complete = record
+  strict private class var MonoChar_Default: MonoChar;
   public type
     AssignmentCompatibility = record
-    strict private const LiteralCharZeroValue: Char = System.Default(Char);
+    strict private const LiteralCharZeroValue: Char = #0;
     strict private const LiteralMonoCharZeroValue: MonoChar = System.Default(MonoChar);
     strict private
       class procedure IsSymmetricallyAssignmentCompatibleWithTheNativeCharTypeWhileRetainingMonoCharAndNativeCharValuesForEveryValueOfMonoCharAndNativeChar(); static; inline;
@@ -52,6 +53,8 @@ type
     strict private {Max property}
       class procedure TheMaxPropertyReturns65535ForADefaultInstance(); static; inline;
       class procedure TheMaxPropertyReturns65535ForANonDefaultInstance(); static; inline;
+    strict private {TypeIdentity}
+      class procedure TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -63,6 +66,8 @@ type
       class procedure Exercise(); static; inline;
     end;
   public
+    class constructor Create();
+  public
     class procedure TheDefaultValueIsZero(); static; inline;
   public
     class procedure Exercise(); static; inline;
@@ -71,6 +76,12 @@ type
 implementation
 
 {ExecutableSpecification_MonoChar_Complete}
+class constructor ExecutableSpecification_MonoChar_Complete.Create;
+begin
+  MonoChar_Default := System.Default(MonoChar);
+  System.Assert(System.Default(MonoChar) = MonoChar_Default);
+end;
+
 class procedure ExecutableSpecification_MonoChar_Complete.Exercise();
 begin
   AssignmentCompatibility.Exercise();
@@ -81,7 +92,7 @@ end;
 
 class procedure ExecutableSpecification_MonoChar_Complete.TheDefaultValueIsZero();
 begin
-  System.Assert(0 = Ord(System.Default(MonoChar)));
+  System.Assert(0 = Ord(MonoChar_Default));
 end;
 
 {ExecutableSpecification_MonoChar_Complete.AssignmentCompatibility}
@@ -114,7 +125,7 @@ begin
   for var EachExpected: Char := Char(Ord(MonoChar.Min) + 1) to MonoChar.Max do
   begin
     var ActualChar: Char := EachExpected;
-    var Actual: MonoChar := System.Default(MonoChar);
+    var Actual: MonoChar := MonoChar_Default;
     System.Assert(not (ActualChar = Actual));
     Actual := ActualChar;
     System.Assert(ActualChar = Actual);
@@ -135,6 +146,7 @@ begin
   TheMinPropertyReturnsZeroForANonDefaultInstance();
   TheMaxPropertyReturns65535ForADefaultInstance();
   TheMaxPropertyReturns65535ForANonDefaultInstance();
+  TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue()
 end;
 
 class procedure ExecutableSpecification_MonoChar_Complete.Boundaries.TheHighestPossibleOrdinalValueIs65536();
@@ -150,8 +162,8 @@ end;
 class procedure ExecutableSpecification_MonoChar_Complete.Boundaries.TheMaxPropertyReturns65535ForADefaultInstance();
 begin
   System.Assert(65535 = Ord(System.High(MonoChar)));
-  var Actual: MonoChar := System.Default(MonoChar);
-  System.Assert(Actual = System.Default(MonoChar));
+  var Actual: MonoChar := MonoChar_Default;
+  System.Assert(Actual = MonoChar_Default);
   System.Assert(65535 = Ord(Actual.Max));
 end;
 
@@ -159,15 +171,15 @@ class procedure ExecutableSpecification_MonoChar_Complete.Boundaries.TheMaxPrope
 begin
   System.Assert(65535 = Ord(System.High(MonoChar)));
   var Actual: MonoChar := Rando_TheUntrustworthy.NonDefaultValue<MonoChar>();
-  System.Assert(not (Actual = System.Default(MonoChar)));
+  System.Assert(not (Actual = MonoChar_Default));
   System.Assert(65535 = Ord(Actual.Max));
 end;
 
 class procedure ExecutableSpecification_MonoChar_Complete.Boundaries.TheMinPropertyReturnsTheFirstMonoCharForADefaultInstance();
 begin
   System.Assert(0 = Ord(System.Low(MonoChar)));
-  var Actual: MonoChar := System.Default(MonoChar);
-  System.Assert(Actual = System.Default(MonoChar));
+  var Actual: MonoChar := MonoChar_Default;
+  System.Assert(Actual = MonoChar_Default);
   System.Assert(0 = Ord(Actual.Min));
 end;
 
@@ -175,8 +187,14 @@ class procedure ExecutableSpecification_MonoChar_Complete.Boundaries.TheMinPrope
 begin
   System.Assert(0 = Ord(System.Low(MonoChar)));
   var Actual: MonoChar := Rando_TheUntrustworthy.NonDefaultValue<MonoChar>();
-  System.Assert(not (Actual = System.Default(MonoChar)));
+  System.Assert(not (Actual = MonoChar_Default));
   System.Assert(0 = Ord(Actual.Min));
+end;
+
+class procedure ExecutableSpecification_MonoChar_Complete.Boundaries.TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue();
+begin
+  TypeEquivalenceInquiry<MonoChar>.HasANonNullSystemDotTypeInfoValue();
+  System.Assert(System.TypeInfo(MonoChar) = MonoChar.TypeIdentity);
 end;
 
 {ExecutableSpecification_MonoChar_Complete.TypeIdentity}

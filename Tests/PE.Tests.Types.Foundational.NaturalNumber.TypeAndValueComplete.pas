@@ -32,12 +32,12 @@ uses
 
 type
   ExecutableSpecification_NaturalNumber_Complete = record
+  strict private class var NaturalNumber_Default: NaturalNumber;
   public type
     AssignmentCompatibility = record
     strict private const LiteralZeroValue = 0;
     strict private {PE Types}
 //      class procedure IsSymmetricallyAssignmentCompatibleWithMonoCharTypeWhileRetainingNaturalNumberAndMonoCharValuesForEveryValueOfMonoChar(); static; inline;
-      class procedure IsSymmetricallyAssignmentCompatibleWithBigNaturalNumberTypeWhileRetainingNaturalNumberAndBigNaturalNumberValuesForEveryValueOfNaturalNumber(); static; inline;
     strict private {Native Types}
       class procedure IsSymmetricallyAssignmentCompatibleWithTheNativeCardinalTypeWhileRetainingCardinalValuesForEveryValueOfNaturalNumberAndCardinal(); static; inline;
     public
@@ -53,6 +53,8 @@ type
     strict private {Max property}
       class procedure TheMaxPropertyReturns4294967295ForADefaultInstance(); static; inline;
       class procedure TheMaxPropertyReturns4294967295ForANonDefaultInstance(); static; inline;
+    strict private {TypeIdentity}
+      class procedure TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -65,6 +67,8 @@ type
       class procedure Exercise(); static; inline;
     end;
   public
+    class constructor Create();
+  public
     class procedure TheDefaultValueIsZero(); static; inline;
   public
     class procedure Exercise(); static; inline;
@@ -72,8 +76,66 @@ type
 
 implementation
 
-{ ExecutableSpecification_NaturalNumber_Complete.Boundaries }
+uses
+  System.SysUtils;
 
+{ExecutableSpecification_NaturalNumber_Complete}
+class constructor ExecutableSpecification_NaturalNumber_Complete.Create;
+begin
+  NaturalNumber_Default := System.Default(NaturalNumber);
+  System.Assert(System.Default(NaturalNumber) = NaturalNumber_Default);
+end;
+
+class procedure ExecutableSpecification_NaturalNumber_Complete.Exercise();
+begin
+  AssignmentCompatibility.Exercise();
+  Boundaries.Exercise();
+  TheDefaultValueIsZero();
+  TypeIdentity.Exercise();
+end;
+
+class procedure ExecutableSpecification_NaturalNumber_Complete.TheDefaultValueIsZero;
+begin
+  System.Assert(0 = NaturalNumber_Default);
+end;
+
+{ExecutableSpecification_NaturalNumber_Complete.AssignmentCompatibility}
+class procedure ExecutableSpecification_NaturalNumber_Complete.AssignmentCompatibility.Exercise;
+begin
+  IsSymmetricallyAssignmentCompatibleWithTheNativeCardinalTypeWhileRetainingCardinalValuesForEveryValueOfNaturalNumberAndCardinal();
+end;
+
+class procedure ExecutableSpecification_NaturalNumber_Complete.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheNativeCardinalTypeWhileRetainingCardinalValuesForEveryValueOfNaturalNumberAndCardinal();
+begin
+  System.Assert(0 = NaturalNumber.Min);
+  System.Assert(4294967295 = NaturalNumber.Max);
+  System.Assert(0 = Cardinal.MinValue);
+  System.Assert(4294967295 = Cardinal.MaxValue);
+  var ActualZeroCardinal: Cardinal := Cardinal.MaxValue;
+  var ActualZeroNaturalNumber: NaturalNumber := NaturalNumber.Max;
+  System.Assert(not (LiteralZeroValue = ActualZeroCardinal));
+  System.Assert(not (LiteralZeroValue = ActualZeroNaturalNumber));
+  ActualZeroCardinal := LiteralZeroValue;
+  ActualZeroNaturalNumber := LiteralZeroValue;
+  System.Assert(LiteralZeroValue = ActualZeroCardinal);
+  System.Assert(LiteralZeroValue = ActualZeroNaturalNumber);
+  System.Assert(ActualZeroCardinal = ActualZeroNaturalNumber);
+  for var Expected: Cardinal := (Cardinal.MinValue + 1) to System.High(Cardinal) do
+  begin
+    var ActualCardinal: Cardinal := Expected;
+    var Actual: NaturalNumber := NaturalNumber_Default;
+    System.Assert(not (ActualCardinal = Actual));
+    Actual := ActualCardinal;
+    System.Assert(ActualCardinal = Actual);
+    ActualCardinal := NaturalNumber_Default;
+    System.Assert(not (ActualCardinal = Actual));
+    ActualCardinal := Actual;
+    System.Assert(Expected = ActualCardinal);
+    System.Assert(ActualCardinal = Actual);
+  end;
+end;
+
+{ExecutableSpecification_NaturalNumber_Complete.Boundaries}
 class procedure ExecutableSpecification_NaturalNumber_Complete.Boundaries.Exercise();
 begin
   TheLowestPossibleValueIsZero();
@@ -82,6 +144,7 @@ begin
   TheMinPropertyReturnsZeroForANonDefaultInstance();
   TheMaxPropertyReturns4294967295ForADefaultInstance();
   TheMaxPropertyReturns4294967295ForANonDefaultInstance();
+  TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue();
 end;
 
 class procedure ExecutableSpecification_NaturalNumber_Complete.Boundaries.TheHighestPossibleNumberIs4294967295();
@@ -97,8 +160,8 @@ end;
 class procedure ExecutableSpecification_NaturalNumber_Complete.Boundaries.TheMaxPropertyReturns4294967295ForADefaultInstance();
 begin
   System.Assert(4294967295 = System.High(NaturalNumber));
-  var Actual: NaturalNumber := System.Default(NaturalNumber);
-  System.Assert(Actual = System.Default(NaturalNumber));
+  var Actual: NaturalNumber := NaturalNumber_Default;
+  System.Assert(Actual = NaturalNumber_Default);
   System.Assert(4294967295 = Actual.Max);
 end;
 
@@ -106,15 +169,15 @@ class procedure ExecutableSpecification_NaturalNumber_Complete.Boundaries.TheMax
 begin
   System.Assert(4294967295 = System.High(NaturalNumber));
   var Actual: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
-  System.Assert(not (Actual = System.Default(NaturalNumber)));
+  System.Assert(not (Actual = NaturalNumber_Default));
   System.Assert(4294967295 = Actual.Max);
 end;
 
 class procedure ExecutableSpecification_NaturalNumber_Complete.Boundaries.TheMinPropertyReturnsZeroForADefaultInstance();
 begin
   System.Assert(0 = System.Low(NaturalNumber));
-  var Actual: NaturalNumber := System.Default(NaturalNumber);
-  System.Assert(Actual = System.Default(NaturalNumber));
+  var Actual: NaturalNumber := NaturalNumber_Default;
+  System.Assert(Actual = NaturalNumber_Default);
   System.Assert(0 = Actual.Min);
 end;
 
@@ -122,22 +185,14 @@ class procedure ExecutableSpecification_NaturalNumber_Complete.Boundaries.TheMin
 begin
   System.Assert(0 = System.Low(NaturalNumber));
   var Actual: NaturalNumber := Rando_TheUntrustworthy.NonDefaultValue<NaturalNumber>();
-  System.Assert(not (Actual = System.Default(NaturalNumber)));
+  System.Assert(not (Actual = NaturalNumber_Default));
   System.Assert(0 = Actual.Min);
 end;
 
-{ExecutableSpecification_NaturalNumber_Complete}
-class procedure ExecutableSpecification_NaturalNumber_Complete.Exercise();
+class procedure ExecutableSpecification_NaturalNumber_Complete.Boundaries.TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue();
 begin
-  AssignmentCompatibility.Exercise();
-  Boundaries.Exercise();
-  TheDefaultValueIsZero();
-  TypeIdentity.Exercise();
-end;
-
-class procedure ExecutableSpecification_NaturalNumber_Complete.TheDefaultValueIsZero;
-begin
-  System.Assert(0 = System.Default(NaturalNumber));
+  TypeEquivalenceInquiry<NaturalNumber>.HasANonNullSystemDotTypeInfoValue();
+  System.Assert(System.TypeInfo(NaturalNumber) = NaturalNumber.TypeIdentity);
 end;
 
 {ExecutableSpecification_NaturalNumber_Complete.TypeIdentity}
@@ -155,60 +210,6 @@ end;
 class procedure ExecutableSpecification_NaturalNumber_Complete.TypeIdentity.HasItsOwnNonNullTypeIdentity();
 begin
   TypeEquivalenceInquiry<NaturalNumber>.HasANonNullSystemDotTypeInfoValue();
-end;
-
-{ ExecutableSpecification_NaturalNumber_Complete.AssignmentCompatibility }
-
-class procedure ExecutableSpecification_NaturalNumber_Complete.AssignmentCompatibility.Exercise;
-begin
-  IsSymmetricallyAssignmentCompatibleWithBigNaturalNumberTypeWhileRetainingNaturalNumberAndBigNaturalNumberValuesForEveryValueOfNaturalNumber();
-  IsSymmetricallyAssignmentCompatibleWithTheNativeCardinalTypeWhileRetainingCardinalValuesForEveryValueOfNaturalNumberAndCardinal();
-end;
-
-class procedure ExecutableSpecification_NaturalNumber_Complete.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithBigNaturalNumberTypeWhileRetainingNaturalNumberAndBigNaturalNumberValuesForEveryValueOfNaturalNumber();
-begin
-  for var Expected: NaturalNumber := (NaturalNumber.Min + 1) to NaturalNumber.Max do
-  begin
-    var ANaturalNumber: NaturalNumber := System.Default(NaturalNumber);
-    var ABigNaturalNumber: BigNaturalNumber := System.Default(BigNaturalNumber);
-    System.Assert(not (Expected = ABigNaturalNumber));
-    System.Assert(not (Expected = ANaturalNumber));
-    ABigNaturalNumber := Expected;
-    ANaturalNumber := Expected;
-    System.Assert(Expected = ABigNaturalNumber);
-    System.Assert(Expected = ANaturalNumber);
-    System.Assert(ABigNaturalNumber = ANaturalNumber);
-  end;
-end;
-
-class procedure ExecutableSpecification_NaturalNumber_Complete.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheNativeCardinalTypeWhileRetainingCardinalValuesForEveryValueOfNaturalNumberAndCardinal();
-begin
-  System.Assert(0 = NaturalNumber.Min);
-  System.Assert(4294967295 = NaturalNumber.Max);
-  System.Assert(0 = System.Low(Cardinal));
-  System.Assert(4294967295 = System.High(Cardinal));
-  var ActualZeroCardinal: Cardinal := System.High(Cardinal);
-  var ActualZeroNaturalNumber: NaturalNumber := System.High(NaturalNumber);
-  System.Assert(not (LiteralZeroValue = ActualZeroCardinal));
-  System.Assert(not (LiteralZeroValue = ActualZeroNaturalNumber));
-  ActualZeroCardinal := LiteralZeroValue;
-  ActualZeroNaturalNumber := LiteralZeroValue;
-  System.Assert(LiteralZeroValue = ActualZeroCardinal);
-  System.Assert(LiteralZeroValue = ActualZeroNaturalNumber);
-  System.Assert(ActualZeroCardinal = ActualZeroNaturalNumber);
-  for var Expected: Cardinal := (System.Low(Cardinal) + 1) to System.High(Cardinal) do
-  begin
-    var ActualCardinal: Cardinal := Expected;
-    var Actual: NaturalNumber := System.Default(NaturalNumber);
-    System.Assert(not (ActualCardinal = Actual));
-    Actual := ActualCardinal;
-    System.Assert(ActualCardinal = Actual);
-    ActualCardinal := System.Default(Cardinal);
-    System.Assert(not (ActualCardinal = Actual));
-    ActualCardinal := Actual;
-    System.Assert(Expected = ActualCardinal);
-    System.Assert(ActualCardinal = Actual);
-  end;
 end;
 
 end.

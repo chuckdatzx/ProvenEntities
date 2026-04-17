@@ -163,12 +163,10 @@ begin
   BucketInTests<T>.Exercise();
   BucketOutTests.Exercise();
   {BucketIn<T> by Foundational Types}
-  BucketInTests<BigNaturalNumber>.Exercise();
   BucketInTests<Digit>.Exercise();
   BucketInTests<MonoChar>.Exercise();
   BucketInTests<NaturalNumber>.Exercise();
   {BucketIn<T> by Foundational Generic Types}
-  BucketInTests<ArrayOf<BigNaturalNumber>>.Exercise();
   BucketInTests<ArrayOf<Digit>>.Exercise();
   BucketInTests<ArrayOf<MonoChar>>.Exercise();
   BucketInTests<ArrayOf<NaturalNumber>>.Exercise();

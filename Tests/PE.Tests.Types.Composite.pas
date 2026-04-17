@@ -126,11 +126,6 @@ begin
   ExecutableSpecification_SmartClaw<Digit>.Exercise();
   ExecutableSpecification_SmartClaw<MonoChar>.Exercise();
   ExecutableSpecification_SmartClaw<NaturalNumber>.Exercise();
-  {$IFDEF CPU64BITS}
-  ExecutableSpecification_SmartClaw<BigNaturalNumber>.Exercise();  //Currently causes (F2084 Internal Error: C2252) in Win32 platform
-  {$ELSE}
-    {$MESSAGE WARN 'PE.Types.SmartClaw<T> cannot be proven for the BigNaturalNumber type (other NaturalNumber variations are proven)'}
-  {$IFEND}
   {Composite types by Composite types}
   ExecutableSpecification_SmartClaw<MultiChar>.Exercise();
 end;

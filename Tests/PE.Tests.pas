@@ -44,7 +44,7 @@ const
 type
   TheExecutioner = record
   public
-    class function ExecuteTypeAndValueCompleteProof(): TArray<IFuture<NativeUInt>>; static;
+    class function ExecuteTypeAndValueCompleteProof(): TArray<ITask>; static;
   end;
 {$ELSE}
 const
@@ -54,32 +54,37 @@ const
 implementation
 
 uses
+  PE.Tests.Routines,
   PE.Tests.TypeCompleteAndValueComplete.ArrayOf,
-  PE.Tests.Types.Foundational.BigNaturalNumber.TypeAndValueComplete,
   PE.Tests.Types.Foundational.Digit.TypeAndValueComplete,
   PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete,
   PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete,
-  PE.Types.Foundational;
+  PE.Types.Composite,
+  PE.Types.Foundational,
+  System.Classes,
+  System.SysUtils;
 
 {$IFDEF TYPE_AND_VALUE_COMPLETE_PROOF}
 {TheExecutioner}
-class function TheExecutioner.ExecuteTypeAndValueCompleteProof(): TArray<IFuture<NativeUInt>>;
+class function TheExecutioner.ExecuteTypeAndValueCompleteProof(): TArray<ITask>;
 begin
   {$MESSAGE HINT '👍 :: Value and type complete testing battery is staged for execution'}
-  Result := [TTask.Future<NativeUInt>(function: NativeUInt begin ExecutableSpecification_BigNaturalNumber_Complete.Exercise(); Result := 0 end),
-    TTask.Future<NativeUInt>(function: NativeUInt begin ExecutableSpecification_Digit_Complete.Exercise(); Result := 0 end),
-    TTask.Future<NativeUInt>(function: NativeUInt begin ExecutableSpecification_MonoChar_Complete.Exercise(); Result := 0 end),
-    TTask.Future<NativeUInt>(function: NativeUInt begin ExecutableSpecification_NaturalNumber_Complete.Exercise(); Result := 0 end),
-    {Foundational types by foundational generic types}
-    TTask.Future<NativeUInt>(function: NativeUInt begin ExecutableSpecification_ArrayOf_Complete<Digit>.Exercise(); Result := 0 end),
-    TTask.Future<NativeUInt>(function: NativeUInt begin ExecutableSpecification_ArrayOf_Complete<MonoChar>.Exercise(); Result := 0 end),
-    TTask.Future<NativeUInt>(function: NativeUInt begin ExecutableSpecification_ArrayOf_Complete<NaturalNumber>.Exercise(); Result := 0 end)];
-  {$IFDEF CPU64BITS}
-  //ExecutableSpecification_ArrayOf_Complete<BigNaturalNumber>.Exercise(); //Currently causes (F2084 Internal Error: C2252) in Win32 platform
-  { TODO -oChuck -cToDo : Need to figure out how feasible it is to run the above routine }
-  {$ELSE}
-    {$MESSAGE WARN 'PE.Types.Foundational.Generics.ArrayOf<T> cannot be proven for the BigNaturalNumber type (other NaturalNumber variations are proven)'}
-  {$IFEND}
+  {Foundational types}
+  Result := [TTask.Create(procedure begin ExecutableSpecification_Digit_Complete.Exercise(); end),
+    TTask.Create(procedure begin ExecutableSpecification_MonoChar_Complete.Exercise(); end),
+    TTask.Create(procedure begin ExecutableSpecification_NaturalNumber_Complete.Exercise(); end)];
+  {Foundational types by foundational generic types}
+  Result := [TTask.Create(procedure begin ExecutableSpecification_ArrayOf_Complete<Digit>.Exercise(); end),
+    TTask.Create(procedure begin ExecutableSpecification_ArrayOf_Complete<MonoChar>.Exercise(); end),
+    TTask.Create(procedure begin ExecutableSpecification_ArrayOf_Complete<NaturalNumber>.Exercise(); end)] + Result;
+  {Routines by Foundational Types}
+  Result := [TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<Digit>.Exercise(); end),
+    TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<MonoChar>.Exercise(); end),
+    TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<NaturalNumber>.Exercise(); end)] + Result;
+  Result := [TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutine_UniqueElements_ValueComplete<Digit>.Exercise(); end),
+    TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutine_UniqueElements_ValueComplete<MonoChar>.Exercise(); end)] + Result;
+  {Routines by Composite Types}
+  Result := [TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<MultiChar>.Exercise(); end)] + Result;
 end;
 {$ELSE}
 {$MESSAGE WARN '🙈 :: Value and type complete testing battery for the "PE.Types.Foundational" types WILL NOT be executed'}

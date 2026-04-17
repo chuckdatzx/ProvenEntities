@@ -32,10 +32,10 @@ uses
 
 type
   ExecutableSpecification_Digit_Complete = record
+  strict private class var Digit_Default: Digit;
   public type
     AssignmentCompatibility = record
     strict private {PE Types}
-      class procedure IsSymmetricallyAssignmentCompatibleWithTheBigNaturalNumberTypeWhileRetainingBigNaturalNumberValues(); static; inline;
       class procedure IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues(); static; inline;
     strict private {Native Delphi Types}
       class procedure IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues(); static; inline;
@@ -59,19 +59,10 @@ type
     strict private {Max}
       class procedure TheMaxPropertyReturns9ForADefaultInstance(); static; inline;
       class procedure TheMaxPropertyReturns9ForANonDefaultInstance(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-    StaticTransformations = record
-    public type
-      ///<notes>Sorry; is currently in English only (Agreed; not having this in "all languages" makes it not value complete (unless you're on the "language having" side))</notes>
-      ToEnglishMonoChar = record
-      strict private const ExpectedEnglishMonoChars: array[System.Low(Digit)..System.High(Digit)] of MonoChar = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-      strict private
-        class procedure ReturnsTheExpectedMonoCharCounterpartForEveryValueInDigit(); static; inline;
-      public
-        class procedure Exercise(); static; inline;
-      end;
+    strict private {MonoCharMap}
+      class procedure TheMonoCharMapPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsMonoCharValue(); static; inline;
+    strict private {TypeIdentity}
+      class procedure TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue(); static; inline;
     public
       class procedure Exercise(); static; inline;
     end;
@@ -82,6 +73,8 @@ type
       class procedure Exercise(); static; inline;
     end;
   public
+    class constructor Create();
+  public
     class procedure TheDefaultValueIsZero(); static; inline;
   public
     class procedure Exercise(); static; inline;
@@ -90,49 +83,36 @@ type
 implementation
 
 {ExecutableSpecification_Digit_Complete}
+class constructor ExecutableSpecification_Digit_Complete.Create;
+begin
+  Digit_Default := System.Default(Digit);
+  System.Assert(System.Default(Digit) = Digit_Default);
+end;
+
 class procedure ExecutableSpecification_Digit_Complete.Exercise;
 begin
   AssignmentCompatibility.Exercise();
   Boundaries.Exercise();
   Properties.Exercise();
   TheDefaultValueIsZero();
-  StaticTransformations.Exercise();
   TypeIdentity.Exercise();
 end;
 
 class procedure ExecutableSpecification_Digit_Complete.TheDefaultValueIsZero;
 begin
-  System.Assert(0 = System.Default(Digit));
+  System.Assert(0 = Digit_Default);
 end;
 
 {ExecutableSpecification_Digit_Complete.AssignmentCompatibility}
 class procedure ExecutableSpecification_Digit_Complete.AssignmentCompatibility.Exercise;
 begin
   {PE Types}
-  IsSymmetricallyAssignmentCompatibleWithTheBigNaturalNumberTypeWhileRetainingBigNaturalNumberValues();
   IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues();
   {Native Delphi Types}
   IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues();
   IsSymmetricallyAssignmentCompatibleWithTheIntegerTypeWhileRetainingIntegerValues();
   IsSymmetricallyAssignmentCompatibleWithTheUInt64TypeWhileRetainingUInt64Values();
   IsSymmetricallyAssignmentCompatibleWithTheWordTypeWhileRetainingWordValues();
-end;
-
-class procedure ExecutableSpecification_Digit_Complete.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheBigNaturalNumberTypeWhileRetainingBigNaturalNumberValues;
-begin
-  var ADigit: Digit;
-  var ABigNaturalNumber: BigNaturalNumber;
-  for var I: Digit := Digit.Min to Digit.Max do
-  begin
-    ADigit := I;
-    ABigNaturalNumber := ADigit + 1;
-    System.Assert(I = ADigit);
-    System.Assert(not (ABigNaturalNumber = ADigit));
-    ABigNaturalNumber := ADigit;
-    System.Assert(ABigNaturalNumber = ADigit);
-    ADigit := ABigNaturalNumber;
-    System.Assert(I = ADigit);
-  end;
 end;
 
 class procedure ExecutableSpecification_Digit_Complete.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues;
@@ -244,13 +224,30 @@ begin
   TheMaxPropertyReturns9ForANonDefaultInstance();
   TheMinPropertyReturnsZeroForADefaultInstance();
   TheMinPropertyReturnsZeroForANonDefaultInstance();
+  TheMonoCharMapPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsMonoCharValue();
+  TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue();
+end;
+
+class procedure ExecutableSpecification_Digit_Complete.Properties.TheMonoCharMapPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsMonoCharValue();
+begin
+  System.Assert(10 = System.Length(Digit.MonoCharMap));
+  System.Assert('0' = Digit.MonoCharMap[0]);
+  System.Assert('1' = Digit.MonoCharMap[1]);
+  System.Assert('2' = Digit.MonoCharMap[2]);
+  System.Assert('3' = Digit.MonoCharMap[3]);
+  System.Assert('4' = Digit.MonoCharMap[4]);
+  System.Assert('5' = Digit.MonoCharMap[5]);
+  System.Assert('6' = Digit.MonoCharMap[6]);
+  System.Assert('7' = Digit.MonoCharMap[7]);
+  System.Assert('8' = Digit.MonoCharMap[8]);
+  System.Assert('9' = Digit.MonoCharMap[9]);
 end;
 
 class procedure ExecutableSpecification_Digit_Complete.Properties.TheMaxPropertyReturns9ForADefaultInstance;
 begin
   System.Assert(9 = System.High(Digit));
-  var Actual: Digit := System.Default(Digit);
-  System.Assert(Actual = System.Default(Digit));
+  var Actual: Digit := Digit_Default;
+  System.Assert(Actual = Digit_Default);
   System.Assert(9 = Actual.Max);
 end;
 
@@ -258,15 +255,15 @@ class procedure ExecutableSpecification_Digit_Complete.Properties.TheMaxProperty
 begin
   System.Assert(9 = System.High(Digit));
   var Actual: Digit := Rando_TheUntrustworthy.NonDefaultValue<Digit>();
-  System.Assert(not (Actual = System.Default(Digit)));
+  System.Assert(not (Actual = Digit_Default));
   System.Assert(9 = Actual.Max);
 end;
 
 class procedure ExecutableSpecification_Digit_Complete.Properties.TheMinPropertyReturnsZeroForADefaultInstance;
 begin
   System.Assert(0 = System.Low(Digit));
-  var Actual: Digit := System.Default(Digit);
-  System.Assert(Actual = System.Default(Digit));
+  var Actual: Digit := Digit_Default;
+  System.Assert(Actual = Digit_Default);
   System.Assert(0 = Actual.Min);
 end;
 
@@ -274,8 +271,14 @@ class procedure ExecutableSpecification_Digit_Complete.Properties.TheMinProperty
 begin
   System.Assert(0 = System.Low(Digit));
   var Actual: Digit := Rando_TheUntrustworthy.NonDefaultValue<Digit>();
-  System.Assert(not (Actual = System.Default(Digit)));
+  System.Assert(not (Actual = Digit_Default));
   System.Assert(0 = Actual.Min);
+end;
+
+class procedure ExecutableSpecification_Digit_Complete.Properties.TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue;
+begin
+  TypeEquivalenceInquiry<Digit>.HasANonNullSystemDotTypeInfoValue();
+  System.Assert(System.TypeInfo(Digit) = Digit.TypeIdentity);
 end;
 
 {ExecutableSpecification_Digit_Complete.TypeIdentity}
@@ -287,24 +290,6 @@ end;
 class procedure ExecutableSpecification_Digit_Complete.TypeIdentity.HasItsOwnNonNullTypeIdentity();
 begin
   TypeEquivalenceInquiry<Digit>.HasANonNullSystemDotTypeInfoValue();
-end;
-
-{ExecutableSpecification_Digit_Complete.StaticTransformations.ToEnglishMonoChar}
-class procedure ExecutableSpecification_Digit_Complete.StaticTransformations.ToEnglishMonoChar.Exercise();
-begin
-  ReturnsTheExpectedMonoCharCounterpartForEveryValueInDigit();
-end;
-
-class procedure ExecutableSpecification_Digit_Complete.StaticTransformations.ToEnglishMonoChar.ReturnsTheExpectedMonoCharCounterpartForEveryValueInDigit();
-begin
-  for var I: Digit := Digit.Min to Digit.Max do
-    System.Assert(ExpectedEnglishMonoChars[I] = Digit.StaticTransformations.DigitToEnglishMonoCharMap[I]);
-end;
-
-{ExecutableSpecification_Digit_Complete.StaticTransformations}
-class procedure ExecutableSpecification_Digit_Complete.StaticTransformations.Exercise;
-begin
-  ToEnglishMonoChar.Exercise()
 end;
 
 end.

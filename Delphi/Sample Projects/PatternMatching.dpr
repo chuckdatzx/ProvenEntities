@@ -12,10 +12,11 @@ uses
   PE.Tests in '..\..\Tests\PE.Tests.pas',
   PE.Tests.TypeCompleteAndValueComplete.ArrayOf in '..\..\Tests\PE.Tests.TypeCompleteAndValueComplete.ArrayOf.pas',
   PE.Actors.Rando in '..\PE.Actors.Rando.pas',
-  PE.Tests.Types.Foundational.BigNaturalNumber.TypeAndValueComplete in '..\..\Tests\PE.Tests.Types.Foundational.BigNaturalNumber.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.Digit.TypeAndValueComplete in '..\..\Tests\PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete in '..\..\Tests\PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete.pas',
-  PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete in '..\..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas';
+  PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete in '..\..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas',
+  PE.Tests.Routines in '..\..\Tests\PE.Tests.Routines.pas',
+  PE.Routines in '..\..\Source\PE.Routines.pas';
 
 {$R *.res}
 

@@ -226,10 +226,11 @@
         <DCCReference Include="..\..\Tests\PE.Tests.pas"/>
         <DCCReference Include="..\..\Tests\PE.Tests.TypeCompleteAndValueComplete.ArrayOf.pas"/>
         <DCCReference Include="..\PE.Actors.Rando.pas"/>
-        <DCCReference Include="..\..\Tests\PE.Tests.Types.Foundational.BigNaturalNumber.TypeAndValueComplete.pas"/>
         <DCCReference Include="..\..\Tests\PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.pas"/>
         <DCCReference Include="..\..\Tests\PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete.pas"/>
         <DCCReference Include="..\..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas"/>
+        <DCCReference Include="..\..\Tests\PE.Tests.Routines.pas"/>
+        <DCCReference Include="..\..\Source\PE.Routines.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

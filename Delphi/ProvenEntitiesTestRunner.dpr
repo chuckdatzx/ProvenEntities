@@ -39,7 +39,6 @@ uses
   PE.Tests.Routines.Buckets in '..\Tests\PE.Tests.Routines.Buckets.pas',
   PE.Tests.Types.Buckets in '..\Tests\PE.Tests.Types.Buckets.pas',
   PE.Tests.Types.Composite in '..\Tests\PE.Tests.Types.Composite.pas',
-  PE.Tests.Types.Foundational.BigNaturalNumber.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.BigNaturalNumber.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.Digit.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete.pas',
   PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete in '..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas',
@@ -66,14 +65,30 @@ begin
   }
   System.Assert(ExecuteTypeAndValueCompleteProof);
   System.Write('Tests Started...');
-  var Futures: ArrayOf<IFuture<NativeUInt>> := PE.Tests.TheExecutioner.ExecuteTypeAndValueCompleteProof();
-  PE.Tests.Routines.AllTests.Exercise();
+  var Tasks: ArrayOf<ITask> := PE.Tests.TheExecutioner.ExecuteTypeAndValueCompleteProof();
   PE.Tests.Routines.Buckets.ExecutableSpeficiation_CategorizeRoutine<T>.Exercise();
   PE.Tests.Types.Buckets.AllTests<T>.Exercise();
   PE.Tests.Types.Composite.AllTests.Exercise();
   PE.Examples.Delphi.CategorizingWithBuckets.Exercise.AllTests();
-  for var EachFuture in Futures do
-    System.Assert(0 = EachFuture.Value);
+  for var I: NativeUInt := System.Low(Tasks) to System.High(Tasks) do
+  begin
+    System.Assert(Tasks[I].Status = TTaskStatus.Created);
+    Tasks[I] := Tasks[I].Start;
+  end;
+  var AllTasksAccountedFor: Boolean;
+  repeat
+    AllTasksAccountedFor := True;
+    for var EachTask: ITask in Tasks do
+    begin
+      System.Assert(System.Assigned(EachTask));
+      System.Assert(not (EachTask.Status in [TTaskStatus.Canceled, TTaskStatus.Exception]));
+      AllTasksAccountedFor := AllTasksAccountedFor and (EachTask.Status = TTaskStatus.Completed);
+      if (not AllTasksAccountedFor) then
+        Break;
+      { TODO -oChuck -cToDo : Need to add a mechanism for handling/surfacing exceptions in threads }
+    end;
+    YieldProcessor();
+  until AllTasksAccountedFor;
   var Stop: Integer := System.SysUtils.DateTimeToTimeStamp(System.SysUtils.Now()).Time;
   var DurationInMinutes: Double := (Abs(Abs(Stop) - Abs(Start)) / 60000);
   System.Write('Tests Completed in :: ' + DurationInMinutes.ToString() + ' minutes');

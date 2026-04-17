@@ -27,6 +27,7 @@ uses
   PE.Actors.Rando,  //In the interface section for inlining
   PE.Delphi.TypeIdentity,
   PE.Routines,  //In the interface section for inlining
+  PE.Types.Foundational,  //In the interface section for inlining
   {Delphi}
   System.RTTI;  //Included here for inlining
 
@@ -36,19 +37,38 @@ uses
 
 type
   {$REGION 'ArrayOf<T> type'}
+  {
+  Domain Notes:
+    Assumption: It will never be possible to "fully test" any ArrayOf<T>
+    Reasoning: By its own definition/existence, it is simply unbounded given that its size is not bounded (just like a native Delphi string type)
+
+  Theory: Even if the above assumption is indeed True, we may still be able to perform "enough" testing; where "enough" = we believe/think/feel that ArrayOf<T> will perform as expected in context <X>
+
+  Theory being applied to assignment compatibility:
+    - Let's figure out some intuivite categories for framing
+      - Let's take the type-level problem we're having, array size, and frame it in the following 3 categores: 1)No elements (empty), 2) Single element, 3)Multiple elements (at least 3)
+        - We clearly aren't going to be covering all cases, but the above categories inform us to the common type-relative situations we are handling (so we can reshape existing or add more as needed)
+    - On the value front, let's split the values we'll be dealing with into the following 2 categories: 1) Default value, 2) Non-default values
+      - Splitting the value domain into these 2 categories allows us to always handle the default value situation, while giving us some flexibility regarding how we handle the non-default category ('cause some domains are really big)
+      - For a small enough value domain of T, we can quite easily provide value-complete solutions for the type categories above
+        - Need to keep in mind that as the domain of T increases, it may increase exponentially
+    - So sure, we don't have a full proof (since that doesn't even seem possible). But, what we do have is known categorical slices, where each categorial slice can be (at least in theory) value complete.
+  }
   ExecutableSpecification_ArrayOf_Complete<TypeUnderTest: record> = record
+  strict private class var Default_ArrayOfTypeUnderTest: ArrayOf<TypeUnderTest>;
+  strict private class var Default_TypeUnderTest: TypeUnderTest;
   public type
     AssignmentOperator = record
-    strict private class function InIsServiceableTypeWeTrust(): Boolean; static; inline;
-    strict private
-      class procedure IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesASingleElementOfTForAllT(); static; inline;  //This routine could take a very very very long time to complete
-      class procedure IsSymmetricallyAssignmentCompatibleWithItself_DemonstratedBy1000IterationsOfCopyingARandomRangeOfMultipleElementsFromOneInstanceToAnotherWhereEachElementHasARandomNonDefaultValueOfT(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-    Defaults = record
-    strict private
-      class procedure IsInitializedToAnEmptyCollectionOfElements(); static; inline;
+    strict private {No Elements}
+      class procedure IsSymmetricallyAssignmentCompatibleWithItselfWhenNoElementsArePresent(); static; inline;
+    strict private {Single Elements (Default)}
+      class procedure IsSymmetricallyAssignmentCompatibleWithItselfWhenOnly1DefaultElementIsPresent(); static; inline;
+    strict private {Multiple Elements (Default) :: This seems like a good boundary to test, but at the same time it also seems rather silly to run this test and still run the single element default version as well}
+      class procedure IsSymmetricallyAssignmentCompatibleWithItselfWhenSeveralDefaultElementsArePresent(); static; inline;
+    strict private {Single Elements (Non Default) :: Beyond this place, there may be dragons}
+      class procedure IsSymmetricallyAssignmentCompatibleWithItselfWhenOnly1NonDefaultElementIsPresent_ForAllNonDefaultValuesOfT(); static; inline;  //This routine has the potential to run nearly indefinitely
+    strict private {Multiple Elements (Non Default) :: Beyond this place, there may likely be dragons}
+      class procedure IsSymmetricallyAssignmentCompatibleWithItselfWhenSeveralIdenticalNonDefaultElementsArePresent_ForAllNonDefaultValuesOfT(); static; inline;  //This routine has the potential to run nearly indefinitely
     public
       class procedure Exercise(); static; inline;
     end;
@@ -59,43 +79,53 @@ type
       class procedure Exercise(); static; inline;
     end;
   public
+    class constructor Create();
+  public
+    class procedure TheDefaultValueIsAnEmptyCollectionOfElementsOfTypeUnderTest(); static; inline;
+  public
     class procedure Exercise(); static; inline;
   end;
   {$ENDREGION}
 
 implementation
 
-uses
-  PE.Types.Foundational;
-
 {$REGION 'ArrayOf<T> type'}
 {ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>}
+class constructor ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.Create;
+begin
+  Default_TypeUnderTest := System.Default(TypeUnderTest);
+  System.Assert(System.Default(TypeUnderTest) = Default_TypeUnderTest);
+  Default_ArrayOfTypeUnderTest := System.Default(ArrayOf<TypeUnderTest>);
+  System.Assert(System.Default(ArrayOf<TypeUnderTest>) = Default_ArrayOfTypeUnderTest);
+end;
+
 class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.Exercise;
 begin
   AssignmentOperator.Exercise();
-  Defaults.Exercise();
+  TheDefaultValueIsAnEmptyCollectionOfElementsOfTypeUnderTest();
   TypeIdentity.Exercise();
 end;
 
-{ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.AssignmentOperator}
-class function ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.AssignmentOperator.InIsServiceableTypeWeTrust(): Boolean;
+class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.TheDefaultValueIsAnEmptyCollectionOfElementsOfTypeUnderTest;
 begin
-  TypeEquivalenceInquiry<TypeUnderTest>.HasANonNullSystemDotTypeInfoValue();
-  Result := (System.TypeInfo(Digit) <> System.TypeInfo(TypeUnderTest)) or
-    (System.TypeInfo(MonoChar) <> System.TypeInfo(TypeUnderTest)) or
-    (System.TypeInfo(NaturalNumber) <> System.TypeInfo(TypeUnderTest));
+  var Actual: ArrayOf<TypeUnderTest> := System.Default(ArrayOf<TypeUnderTest>);
+  System.Assert(Default_ArrayOfTypeUnderTest = Actual);
+  System.Assert(0 = System.Length(Actual));
 end;
 
+{ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.AssignmentOperator}
 class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.AssignmentOperator.Exercise;
 begin
-  IsSymmetricallyAssignmentCompatibleWithItself_DemonstratedBy1000IterationsOfCopyingARandomRangeOfMultipleElementsFromOneInstanceToAnotherWhereEachElementHasARandomNonDefaultValueOfT();
-  IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesASingleElementOfTForAllT();
+  IsSymmetricallyAssignmentCompatibleWithItselfWhenNoElementsArePresent();
+  IsSymmetricallyAssignmentCompatibleWithItselfWhenOnly1DefaultElementIsPresent();
+  IsSymmetricallyAssignmentCompatibleWithItselfWhenOnly1NonDefaultElementIsPresent_ForAllNonDefaultValuesOfT();
+  IsSymmetricallyAssignmentCompatibleWithItselfWhenSeveralDefaultElementsArePresent();
+  IsSymmetricallyAssignmentCompatibleWithItselfWhenSeveralIdenticalNonDefaultElementsArePresent_ForAllNonDefaultValuesOfT();
 end;
 
-class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfAndCopiesASingleElementOfTForAllT();
+class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfWhenOnly1NonDefaultElementIsPresent_ForAllNonDefaultValuesOfT();
 begin
-  System.Assert(InIsServiceableTypeWeTrust(), 'Unserviceable type in the EnforceServiceableTypes member');
-  if (System.TypeInfo(NaturalNumber) = System.TypeInfo(TypeUnderTest))then
+  if (NaturalNumber.TypeIdentity = System.TypeInfo(TypeUnderTest))then
   begin
     for var Counter: NaturalNumber := NaturalNumber.Min to NaturalNumber.Max do
     begin
@@ -113,7 +143,7 @@ begin
     end;
   end
   else begin
-    var OrdinalValidationAndProvider: TValue := TValue.From<TypeUnderTest>(System.Default(TypeUnderTest));
+    var OrdinalValidationAndProvider: TValue := TValue.From<TypeUnderTest>(Default_TypeUnderTest);
     System.Assert(OrdinalValidationAndProvider.IsOrdinal);
     System.Assert(System.Assigned(OrdinalValidationAndProvider.TypeData));
     System.Assert(not ((System.TypeInfo(TypeUnderTest) = System.TypeInfo(Boolean)) or (OrdinalValidationAndProvider.TypeData.MinValue < 0) or (OrdinalValidationAndProvider.TypeData.MaxValue = -1)));
@@ -126,9 +156,9 @@ begin
       var AValue: TValue := TValue.From<NativeInt>(Counter);
       ExpectedValue := TValue.FromOrdinal(System.TypeInfo(TypeUnderTest), Counter).AsType<TypeUnderTest>();
       var Expected: ArrayOf<TypeUnderTest> := [ExpectedValue];
-      System.Assert(not (Expected = System.Default(ArrayOf<TypeUnderTest>)));
+      System.Assert(not (Expected = Default_ArrayOfTypeUnderTest));
       System.Assert(1 = System.Length(Expected));
-      var Actual: ArrayOf<TypeUnderTest> := System.Default(ArrayOf<TypeUnderTest>);
+      var Actual: ArrayOf<TypeUnderTest> := Default_ArrayOfTypeUnderTest;
       System.Assert(System.Default(ArrayOf<TypeUnderTest>) = Actual);
       Actual := Expected;
       System.Assert(not (System.Default(ArrayOf<TypeUnderTest>) = Actual));
@@ -138,37 +168,138 @@ begin
   end;
 end;
 
-class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItself_DemonstratedBy1000IterationsOfCopyingARandomRangeOfMultipleElementsFromOneInstanceToAnotherWhereEachElementHasARandomNonDefaultValueOfT;
+class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfWhenOnly1DefaultElementIsPresent;
 begin
-  var Expected: ArrayOf<TypeUnderTest> := [];
-  for var Counter: NaturalNumber := 1 to 1000 do
+  var Expected: ArrayOf<TypeUnderTest> := [Default_TypeUnderTest];
+  System.Assert(1 = System.Length(Expected));
+  System.Assert(Default_TypeUnderTest = Expected[System.Low(Expected)]);
+  var Actual: ArrayOf<TypeUnderTest> := [];
+  System.Assert(not (System.Length(Expected) = System.Length(Actual)));
+  Actual := Expected;
+  Expected := Actual;
+  System.Assert(System.Length(Expected) = System.Length(Actual));
+  System.Assert(1 = System.Length(Expected));
+  System.Assert(Default_TypeUnderTest = Expected[System.Low(Expected)]);
+  System.Assert(Default_TypeUnderTest = Actual[System.Low(Actual)]);
+end;
+
+class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfWhenSeveralDefaultElementsArePresent;
+begin
+  var Expected: ArrayOf<TypeUnderTest> := [Default_TypeUnderTest, Default_TypeUnderTest, Default_TypeUnderTest];
+  System.Assert(3 = System.Length(Expected));
+  System.Assert(Default_TypeUnderTest = Expected[System.Low(Expected)]);
+  System.Assert(Default_TypeUnderTest = Expected[System.Low(Expected) + 1]);
+  System.Assert(Default_TypeUnderTest = Expected[System.Low(Expected) + 2]);
+  var Actual: ArrayOf<TypeUnderTest> := [];
+  System.Assert(not (System.Length(Expected) = System.Length(Actual)));
+  Actual := Expected;
+  Expected := Actual;
+  System.Assert(System.Length(Expected) = System.Length(Actual));
+  System.Assert(3 = System.Length(Expected));
+  System.Assert(Default_TypeUnderTest = Expected[System.Low(Expected)]);
+  System.Assert(Default_TypeUnderTest = Expected[System.Low(Expected) + 1]);
+  System.Assert(Default_TypeUnderTest = Expected[System.Low(Expected) + 2]);
+  System.Assert(Default_TypeUnderTest = Actual[System.Low(Actual)]);
+  System.Assert(Default_TypeUnderTest = Actual[System.Low(Actual) + 1]);
+  System.Assert(Default_TypeUnderTest = Actual[System.Low(Actual) + 2]);
+end;
+
+class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfWhenSeveralIdenticalNonDefaultElementsArePresent_ForAllNonDefaultValuesOfT;
+begin
+  if (Digit.TypeIdentity = System.TypeInfo(TypeUnderTest)) then
   begin
-    var RandomElementCount: NaturalNumber := (Random(3) + 3);
-    System.Assert((6 >= RandomElementCount) and (RandomElementCount >= 3));
-    Expected := Rando_TheUntrustworthy.DistinctNonDefaultValues<TypeUnderTest>(RandomElementCount);
-    System.Assert(System.Length(Expected) >= 3, 'At least 3 random non-default T values are needed');
-    System.Assert(System.Length(Expected) = System.Length(DataStream.UniqueElements<TypeUnderTest>(Expected)));
-    for var EachExpected: TypeUnderTest in Expected do
-      System.Assert(not (System.Default(TypeUnderTest) = EachExpected));
-    var Actual: ArrayOf<TypeUnderTest> := [];
-    System.Assert(not (System.Length(Expected) = System.Length(Actual)));
-    Actual := Expected;
-    System.Assert(System.Length(Expected) = System.Length(Actual));
-    for var I: NaturalNumber := System.Low(Expected) to System.High(Expected) do
-      System.Assert(Expected[I] = Actual[I]);
-  end;
+    for var Counter: Digit := Digit.Min to Digit.Max do
+    begin
+      var ExpectedValue: Digit;
+      ExpectedValue := Counter;
+      var Expected: ArrayOf<Digit> := [ExpectedValue, ExpectedValue, ExpectedValue];
+      System.Assert(not (Expected = System.Default(ArrayOf<Digit>)));
+      System.Assert(3 = System.Length(Expected));
+      System.Assert(ExpectedValue = Expected[System.Low(Expected)]);
+      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 1]);
+      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 2]);
+      var Actual: ArrayOf<Digit> := System.Default(ArrayOf<Digit>);
+      System.Assert(System.Default(ArrayOf<Digit>) = Actual);
+      System.Assert(not (System.Length(Expected) = System.Length(Actual)));
+      Actual := Expected;
+      System.Assert(System.Length(Expected) = System.Length(Actual));
+      System.Assert(3 = System.Length(Expected));
+      System.Assert(ExpectedValue = Expected[System.Low(Expected)]);
+      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 1]);
+      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 2]);
+      System.Assert(ExpectedValue = Actual[System.Low(Actual)]);
+      System.Assert(ExpectedValue = Actual[System.Low(Actual) + 1]);
+      System.Assert(ExpectedValue = Actual[System.Low(Actual) + 2]);
+    end;
+  end
+  else
+    if (MonoChar.TypeIdentity = System.TypeInfo(TypeUnderTest)) then
+    begin
+      for var Counter: MonoChar := MonoChar.Min to MonoChar.Max do
+      begin
+        var ExpectedValue: MonoChar;
+        ExpectedValue := Counter;
+        var Expected: ArrayOf<MonoChar> := [ExpectedValue, ExpectedValue, ExpectedValue];
+        System.Assert(not (Expected = System.Default(ArrayOf<MonoChar>)));
+        System.Assert(3 = System.Length(Expected));
+        System.Assert(ExpectedValue = Expected[System.Low(Expected)]);
+        System.Assert(ExpectedValue = Expected[System.Low(Expected) + 1]);
+        System.Assert(ExpectedValue = Expected[System.Low(Expected) + 2]);
+        var Actual: ArrayOf<MonoChar> := System.Default(ArrayOf<MonoChar>);
+        System.Assert(System.Default(ArrayOf<MonoChar>) = Actual);
+        System.Assert(not (System.Length(Expected) = System.Length(Actual)));
+        Actual := Expected;
+        System.Assert(System.Length(Expected) = System.Length(Actual));
+        System.Assert(3 = System.Length(Expected));
+        System.Assert(ExpectedValue = Expected[System.Low(Expected)]);
+        System.Assert(ExpectedValue = Expected[System.Low(Expected) + 1]);
+        System.Assert(ExpectedValue = Expected[System.Low(Expected) + 2]);
+        System.Assert(ExpectedValue = Actual[System.Low(Actual)]);
+        System.Assert(ExpectedValue = Actual[System.Low(Actual) + 1]);
+        System.Assert(ExpectedValue = Actual[System.Low(Actual) + 2]);
+      end;
+    end
+    else
+      if (NaturalNumber.TypeIdentity = System.TypeInfo(TypeUnderTest))then
+      begin
+        for var Counter: NaturalNumber := NaturalNumber.Min to NaturalNumber.Max do
+        begin
+          var ExpectedValue: NaturalNumber;
+          ExpectedValue := Counter;
+          var Expected: ArrayOf<NaturalNumber> := [ExpectedValue, ExpectedValue, ExpectedValue];
+          System.Assert(not (Expected = System.Default(ArrayOf<NaturalNumber>)));
+          System.Assert(3 = System.Length(Expected));
+          System.Assert(ExpectedValue = Expected[System.Low(Expected)]);
+          System.Assert(ExpectedValue = Expected[System.Low(Expected) + 1]);
+          System.Assert(ExpectedValue = Expected[System.Low(Expected) + 2]);
+          var Actual: ArrayOf<NaturalNumber> := System.Default(ArrayOf<NaturalNumber>);
+          System.Assert(System.Default(ArrayOf<NaturalNumber>) = Actual);
+          System.Assert(not (System.Length(Expected) = System.Length(Actual)));
+          Actual := Expected;
+          System.Assert(System.Length(Expected) = System.Length(Actual));
+          System.Assert(3 = System.Length(Expected));
+          System.Assert(ExpectedValue = Expected[System.Low(Expected)]);
+          System.Assert(ExpectedValue = Expected[System.Low(Expected) + 1]);
+          System.Assert(ExpectedValue = Expected[System.Low(Expected) + 2]);
+          System.Assert(ExpectedValue = Actual[System.Low(Actual)]);
+          System.Assert(ExpectedValue = Actual[System.Low(Actual) + 1]);
+          System.Assert(ExpectedValue = Actual[System.Low(Actual) + 2]);
+        end;
+      end
+      else
+        System.Assert(False, 'Routine not ready for other types');
 end;
 
-{ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.Defaults}
-class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.Defaults.Exercise;
+class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.AssignmentOperator.IsSymmetricallyAssignmentCompatibleWithItselfWhenNoElementsArePresent;
 begin
-  IsInitializedToAnEmptyCollectionOfElements();
-end;
-
-class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.Defaults.IsInitializedToAnEmptyCollectionOfElements;
-begin
-  var Actual: ArrayOf<TypeUnderTest> := System.Default(ArrayOf<TypeUnderTest>);
-  System.Assert(0 = System.Length(Actual));
+  var Expected: ArrayOf<TypeUnderTest> := Default_ArrayOfTypeUnderTest;
+  System.Assert(System.Default(ArrayOf<TypeUnderTest>) = Expected);
+  var Actual: ArrayOf<TypeUnderTest> := [Default_TypeUnderTest];
+  System.Assert(not (Expected = Actual));
+  Actual := Expected;
+  Expected := Actual;
+  System.Assert(Default_ArrayOfTypeUnderTest = Expected);
+  System.Assert(Default_ArrayOfTypeUnderTest = Actual);
 end;
 
 {ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.TypeIdentity}
