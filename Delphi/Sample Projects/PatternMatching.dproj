@@ -194,6 +194,7 @@
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
+        <DCC_UnitSearchPath>..\$(Platform)\$(Config);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
@@ -218,19 +219,6 @@
             <Form>Form2</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="..\..\Source\PE.Buckets.pas"/>
-        <DCCReference Include="..\PE.Delphi.AssignmentCompatibility.pas"/>
-        <DCCReference Include="..\PE.Delphi.TypeIdentity.pas"/>
-        <DCCReference Include="..\..\Source\PE.Types.Composite.pas"/>
-        <DCCReference Include="..\..\Source\PE.Types.Foundational.pas"/>
-        <DCCReference Include="..\..\Tests\PE.Tests.pas"/>
-        <DCCReference Include="..\..\Tests\PE.Tests.TypeCompleteAndValueComplete.ArrayOf.pas"/>
-        <DCCReference Include="..\PE.Actors.Rando.pas"/>
-        <DCCReference Include="..\..\Tests\PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.pas"/>
-        <DCCReference Include="..\..\Tests\PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete.pas"/>
-        <DCCReference Include="..\..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas"/>
-        <DCCReference Include="..\..\Tests\PE.Tests.Routines.pas"/>
-        <DCCReference Include="..\..\Source\PE.Routines.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -92,7 +92,7 @@ begin
   FMyRoutine := function (const Value: MonoChar): Boolean
   begin
     Result := False;
-    if TCharacter.IsLetter(Value) then
+    if (TCharacter.IsLetterOrDigit(Value) or TCharacter.IsPunctuation(Value) or (TCharacter.IsSeparator(Value))) then
     begin
       System.Assert(System.Assigned(ADictionary), 'The "private" dictionary is not assigned');
       if ADictionary.ContainsKey(Value) then

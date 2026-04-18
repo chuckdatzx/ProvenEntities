@@ -74,6 +74,7 @@ object Form2: TForm2
           Size.Height = 214.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 5
+          Options = [ColumnResize, ColumnMove, ColLines, RowLines, Tabs, Header, HeaderClick, AutoDisplacement]
           Viewport.Width = 636.000000000000000000
           Viewport.Height = 189.000000000000000000
         end
