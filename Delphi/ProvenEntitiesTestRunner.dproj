@@ -115,12 +115,12 @@
         <DCCReference Include="..\Tests\PE.Tests.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Foundational.Discrete.Digit.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Foundational.Discrete.MonoChar.pas"/>
+        <DCCReference Include="..\Tests\PE.Tests.Foundational.Discrete.NaturalNumber.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Foundational.Unbound.ArrayOf.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Routines.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Routines.Buckets.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Buckets.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Composite.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete.pas"/>
         <DCCReference Include="..\Source\PE.Types.Composite.pas"/>
         <DCCReference Include="..\Source\PE.Types.Foundational.pas"/>
         <BuildConfiguration Include="Base">

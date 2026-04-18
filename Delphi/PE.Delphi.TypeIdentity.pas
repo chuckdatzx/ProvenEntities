@@ -77,6 +77,7 @@ implementation
 class procedure TypeEquivalenceInquiry<TypeUnderTest>.DoesNotShareTypeIdentityWith<ThisGuy>;
 begin
   System.Assert(SystemDotTypeInfoProducesNonNullTypeInfoAtCompileTime);
+  HasANonNullSystemDotTypeInfoValue();
   System.Assert(not (System.TypeInfo(TypeUnderTest) = System.TypeInfo(ThisGuy)));
 end;
 

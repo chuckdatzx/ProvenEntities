@@ -1,9 +1,9 @@
 ﻿unit PE.Tests;
 
 {Assumptions:
-Assumption 1: The source code in this unit (or referencing unit) has not been altered (e.g. is unchanged when compared to "official" repository version <x>)
-Assumption 2: Tests in this unit (or referencing unit) provide "complete type coverage" (See the definitions below regarding "complete type coverage")
-Assumption 3: Tests in this unit prove complete value coverage (See the definitions below regarding "complete value coverage")
+Assumption 1: The source code in this unit, and any PE referencing units, has not been altered (e.g. is unchanged when compared to "official" repository version <x>)
+Assumption 2: Tests invoked from this unit provide "complete type coverage" (See the definitions below regarding "complete type coverage")
+Assumption 3: Tests in this unit prove "complete value coverage" (See the definitions below regarding "complete value coverage")
 }
 
 {Definitions (all of which require the above Assumptions to be True):
@@ -11,7 +11,9 @@ Assumption 3: Tests in this unit prove complete value coverage (See the definiti
     - I mean that all "compiler allowed" boundaries, relating to the existence of type in question T, are discretely covered with executable test cases.
       In other words, where the compiler is concerned, there are not any "loopholes" left to consider. (I'm pretty sure I haven't completed this; I could use help getting there)
   "complete value coverage" = the following:
-    - I mean that for each type in question T, every test case for a "value complete" solution must exercise every value for T.
+    - Where T is a bounded type (i.e. has known boundaries), every test case for a "value complete" solution must exercise every possible value for T.
+    - Where T is not bounded (i.e. not possible to complete), categories of coverage (framing boundaries) must be established to maximize coverage; and each category must exercise every value of T
+      - For an unbounded context, I'm currently considering the best possible outcome to be the one in which everyone unanimously agrees that he/she/they can trust type T due to the coverage present (i.e. it takes a village)
     - I am also implicity arguing that one can achieve "value complete" testing without any explicit type conversions.
       - Since I am implicity arguing that explicit type conversions are not needed, I won't be accepting any counter-proposals that require explict type conversion (including my own code)
 
@@ -54,11 +56,11 @@ const
 implementation
 
 uses
-  PE.Tests.Routines,
   PE.Tests.Foundational.Discrete.Digit,
   PE.Tests.Foundational.Discrete.MonoChar,
+  PE.Tests.Foundational.Discrete.NaturalNumber,
   PE.Tests.Foundational.Unbound.ArrayOf,
-  PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete,
+  PE.Tests.Routines,
   PE.Types.Composite,
   PE.Types.Foundational,
   System.Classes,
@@ -72,7 +74,7 @@ begin
   {Foundational types}
   Result := [TTask.Create(procedure begin PE.Tests.Foundational.Discrete.Digit.Exercise(); end),
     TTask.Create(procedure begin PE.Tests.Foundational.Discrete.MonoChar.Exercise(); end),
-    TTask.Create(procedure begin ExecutableSpecification_NaturalNumber_Complete.Exercise(); end)];
+    TTask.Create(procedure begin PE.Tests.Foundational.Discrete.NaturalNumber.Exercise(); end)];
   {Unbound foundational generic types Bound foundational types by }
   Result := [TTask.Create(procedure begin PE.Tests.Foundational.Unbound.ArrayOf.ExecutableSpecification_ArrayOf_Complete<Digit>.Exercise(); end),
     TTask.Create(procedure begin PE.Tests.Foundational.Unbound.ArrayOf.ExecutableSpecification_ArrayOf_Complete<MonoChar>.Exercise(); end),
