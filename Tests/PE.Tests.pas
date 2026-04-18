@@ -70,7 +70,7 @@ class function TheExecutioner.ExecuteTypeAndValueCompleteProof(): TArray<ITask>;
 begin
   {$MESSAGE HINT '👍 :: Value and type complete testing battery is staged for execution'}
   {Foundational types}
-  Result := [TTask.Create(procedure begin ExecutableSpecification_Digit_Complete.Exercise(); end),
+  Result := [TTask.Create(procedure begin PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.Exercise(); end),
     TTask.Create(procedure begin ExecutableSpecification_MonoChar_Complete.Exercise(); end),
     TTask.Create(procedure begin ExecutableSpecification_NaturalNumber_Complete.Exercise(); end)];
   {Foundational types by foundational generic types}

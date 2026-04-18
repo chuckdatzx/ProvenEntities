@@ -91,5 +91,9 @@ begin
   until AllTasksAccountedFor;
   var Stop: Integer := System.SysUtils.DateTimeToTimeStamp(System.SysUtils.Now()).Time;
   var DurationInMinutes: Double := (Abs(Abs(Stop) - Abs(Start)) / 60000);
-  System.Write('Tests Completed in :: ' + DurationInMinutes.ToString() + ' minutes');
+  System.Writeln('Tests Completed in :: ' + DurationInMinutes.ToString() + ' minutes');
+  System.Writeln('Press Enter to close the application');
+  ReadLn;
+  ExitCode := 0;
+  Exit;
 end.

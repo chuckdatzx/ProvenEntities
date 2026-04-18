@@ -31,20 +31,9 @@ uses
   PE.Types.Foundational;
 
 type
-  ExecutableSpecification_Digit_Complete = record
+  ExecutableSpecification_Digit_TypeCompleteTests = record
   strict private class var Digit_Default: Digit;
   public type
-    AssignmentCompatibility = record
-    strict private {PE Types}
-      class procedure IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues(); static; inline;
-    strict private {Native Delphi Types}
-      class procedure IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues(); static; inline;
-      class procedure IsSymmetricallyAssignmentCompatibleWithTheIntegerTypeWhileRetainingIntegerValues(); static; inline;
-      class procedure IsSymmetricallyAssignmentCompatibleWithTheUInt64TypeWhileRetainingUInt64Values(); static; inline;
-      class procedure IsSymmetricallyAssignmentCompatibleWithTheWordTypeWhileRetainingWordValues(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
     Boundaries = record
     strict private
       class procedure TheLowestTypeAllowedValueIsZero(); static; inline;
@@ -80,145 +69,72 @@ type
     class procedure Exercise(); static; inline;
   end;
 
+  ExecutableSpecification_Digit_ValueCompleteTests = record
+  public type
+    AssignmentCompatibility = record
+    strict private {PE Types}
+      class procedure IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues(); static; inline;
+    strict private {Native Delphi Types}
+      class procedure IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues(); static; inline;
+      class procedure IsSymmetricallyAssignmentCompatibleWithTheIntegerTypeWhileRetainingIntegerValues(); static; inline;
+      class procedure IsSymmetricallyAssignmentCompatibleWithTheUInt64TypeWhileRetainingUInt64Values(); static; inline;
+      class procedure IsSymmetricallyAssignmentCompatibleWithTheWordTypeWhileRetainingWordValues(); static; inline;
+    public
+      class procedure Exercise(); static; inline;
+    end;
+  public
+    class procedure Exercise(); static; inline;
+  end;
+
+procedure Exercise(); inline;
+
 implementation
 
-{ExecutableSpecification_Digit_Complete}
-class constructor ExecutableSpecification_Digit_Complete.Create;
+procedure Exercise(); inline;
+begin
+  ExecutableSpecification_Digit_TypeCompleteTests.Exercise();
+  ExecutableSpecification_Digit_ValueCompleteTests.Exercise();
+end;
+
+{ExecutableSpecification_Digit_TypeCompleteTests}
+class constructor ExecutableSpecification_Digit_TypeCompleteTests.Create;
 begin
   Digit_Default := System.Default(Digit);
   System.Assert(System.Default(Digit) = Digit_Default);
 end;
 
-class procedure ExecutableSpecification_Digit_Complete.Exercise;
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Exercise;
 begin
-  AssignmentCompatibility.Exercise();
   Boundaries.Exercise();
   Properties.Exercise();
   TheDefaultValueIsZero();
   TypeIdentity.Exercise();
 end;
 
-class procedure ExecutableSpecification_Digit_Complete.TheDefaultValueIsZero;
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.TheDefaultValueIsZero;
 begin
   System.Assert(0 = Digit_Default);
 end;
 
-{ExecutableSpecification_Digit_Complete.AssignmentCompatibility}
-class procedure ExecutableSpecification_Digit_Complete.AssignmentCompatibility.Exercise;
-begin
-  {PE Types}
-  IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues();
-  {Native Delphi Types}
-  IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues();
-  IsSymmetricallyAssignmentCompatibleWithTheIntegerTypeWhileRetainingIntegerValues();
-  IsSymmetricallyAssignmentCompatibleWithTheUInt64TypeWhileRetainingUInt64Values();
-  IsSymmetricallyAssignmentCompatibleWithTheWordTypeWhileRetainingWordValues();
-end;
-
-class procedure ExecutableSpecification_Digit_Complete.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues;
-begin
-  var ADigit: Digit;
-  var AByte: Byte;
-  for var I: Digit := Digit.Min to Digit.Max do
-  begin
-    ADigit := I;
-    AByte := ADigit + 1;
-    System.Assert(I = ADigit);
-    System.Assert(not (AByte = ADigit));
-    AByte := ADigit;
-    System.Assert(AByte = ADigit);
-    ADigit := AByte;
-    System.Assert(I = ADigit);
-  end;
-end;
-
-class procedure ExecutableSpecification_Digit_Complete.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheIntegerTypeWhileRetainingIntegerValues;
-begin
-  var ADigit: Digit;
-  var AnInteger: Integer;
-  for var I: Digit := Digit.Min to Digit.Max do
-  begin
-    ADigit := I;
-    AnInteger := ADigit + 1;
-    System.Assert(I = ADigit);
-    System.Assert(not (AnInteger = ADigit));
-    AnInteger := ADigit;
-    System.Assert(AnInteger = ADigit);
-    ADigit := AnInteger;
-    System.Assert(I = ADigit);
-  end;
-end;
-
-class procedure ExecutableSpecification_Digit_Complete.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues();
-begin
-  var ADigit: Digit;
-  var ANaturalNumber: NaturalNumber;
-  for var I: Digit := Digit.Min to Digit.Max do
-  begin
-    ADigit := I;
-    ANaturalNumber := ADigit + 1;
-    System.Assert(I = ADigit);
-    System.Assert(not (ANaturalNumber = ADigit));
-    ANaturalNumber := ADigit;
-    System.Assert(ANaturalNumber = ADigit);
-    ADigit := ANaturalNumber;
-    System.Assert(I = ADigit);
-  end;
-end;
-
-class procedure ExecutableSpecification_Digit_Complete.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheUInt64TypeWhileRetainingUInt64Values();
-begin
-  var ADigit: Digit;
-  var AnUInt64: UInt64;
-  for var I: Digit := Digit.Min to Digit.Max do
-  begin
-    ADigit := I;
-    AnUInt64 := ADigit + 1;
-    System.Assert(I = ADigit);
-    System.Assert(not (AnUInt64 = ADigit));
-    AnUInt64 := ADigit;
-    System.Assert(AnUInt64 = ADigit);
-    ADigit := AnUInt64;
-    System.Assert(I = ADigit);
-  end;
-end;
-
-class procedure ExecutableSpecification_Digit_Complete.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheWordTypeWhileRetainingWordValues();
-begin
-  var ADigit: Digit;
-  var WordUp: Word;
-  for var I: Digit := Digit.Min to Digit.Max do
-  begin
-    ADigit := I;
-    WordUp := ADigit + 1;
-    System.Assert(I = ADigit);
-    System.Assert(not (WordUp = ADigit));
-    WordUp := ADigit;
-    System.Assert(WordUp = ADigit);
-    ADigit := WordUp;
-    System.Assert(I = ADigit);
-  end;
-end;
-
-{ExecutableSpecification_Digit_Complete.Boundaries}
-class procedure ExecutableSpecification_Digit_Complete.Boundaries.Exercise;
+{ExecutableSpecification_Digit_TypeCompleteTests.Boundaries}
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Boundaries.Exercise;
 begin
   TheLowestTypeAllowedValueIsZero();
   TheHighestTypeAllowedValueIs9();
 end;
 
-class procedure ExecutableSpecification_Digit_Complete.Boundaries.TheLowestTypeAllowedValueIsZero();
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Boundaries.TheLowestTypeAllowedValueIsZero();
 begin
   System.Assert(9 = System.High(Digit));
 end;
 
-class procedure ExecutableSpecification_Digit_Complete.Boundaries.TheHighestTypeAllowedValueIs9();
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Boundaries.TheHighestTypeAllowedValueIs9();
 begin
   System.Assert(0 = System.Low(Digit));
 end;
 
-{ExecutableSpecification_Digit_Complete.Properties}
-class procedure ExecutableSpecification_Digit_Complete.Properties.Exercise;
+{ExecutableSpecification_Digit_TypeCompleteTests.Properties}
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.Exercise;
 begin
   TheMaxPropertyReturns9ForADefaultInstance();
   TheMaxPropertyReturns9ForANonDefaultInstance();
@@ -228,7 +144,7 @@ begin
   TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue();
 end;
 
-class procedure ExecutableSpecification_Digit_Complete.Properties.TheMonoCharMapPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsMonoCharValue();
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMonoCharMapPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsMonoCharValue();
 begin
   System.Assert(10 = System.Length(Digit.MonoCharMap));
   System.Assert('0' = Digit.MonoCharMap[0]);
@@ -243,7 +159,7 @@ begin
   System.Assert('9' = Digit.MonoCharMap[9]);
 end;
 
-class procedure ExecutableSpecification_Digit_Complete.Properties.TheMaxPropertyReturns9ForADefaultInstance;
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMaxPropertyReturns9ForADefaultInstance;
 begin
   System.Assert(9 = System.High(Digit));
   var Actual: Digit := Digit_Default;
@@ -251,7 +167,7 @@ begin
   System.Assert(9 = Actual.Max);
 end;
 
-class procedure ExecutableSpecification_Digit_Complete.Properties.TheMaxPropertyReturns9ForANonDefaultInstance;
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMaxPropertyReturns9ForANonDefaultInstance;
 begin
   System.Assert(9 = System.High(Digit));
   var Actual: Digit := Rando_TheUntrustworthy.NonDefaultValue<Digit>();
@@ -259,7 +175,7 @@ begin
   System.Assert(9 = Actual.Max);
 end;
 
-class procedure ExecutableSpecification_Digit_Complete.Properties.TheMinPropertyReturnsZeroForADefaultInstance;
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMinPropertyReturnsZeroForADefaultInstance;
 begin
   System.Assert(0 = System.Low(Digit));
   var Actual: Digit := Digit_Default;
@@ -267,7 +183,7 @@ begin
   System.Assert(0 = Actual.Min);
 end;
 
-class procedure ExecutableSpecification_Digit_Complete.Properties.TheMinPropertyReturnsZeroForANonDefaultInstance;
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMinPropertyReturnsZeroForANonDefaultInstance;
 begin
   System.Assert(0 = System.Low(Digit));
   var Actual: Digit := Rando_TheUntrustworthy.NonDefaultValue<Digit>();
@@ -275,21 +191,141 @@ begin
   System.Assert(0 = Actual.Min);
 end;
 
-class procedure ExecutableSpecification_Digit_Complete.Properties.TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue;
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue;
 begin
   TypeEquivalenceInquiry<Digit>.HasANonNullSystemDotTypeInfoValue();
   System.Assert(System.TypeInfo(Digit) = Digit.TypeIdentity);
 end;
 
-{ExecutableSpecification_Digit_Complete.TypeIdentity}
-class procedure ExecutableSpecification_Digit_Complete.TypeIdentity.Exercise();
+{ExecutableSpecification_Digit_TypeCompleteTests.TypeIdentity}
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.TypeIdentity.Exercise();
 begin
   HasItsOwnNonNullTypeIdentity();
 end;
 
-class procedure ExecutableSpecification_Digit_Complete.TypeIdentity.HasItsOwnNonNullTypeIdentity();
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.TypeIdentity.HasItsOwnNonNullTypeIdentity();
 begin
   TypeEquivalenceInquiry<Digit>.HasANonNullSystemDotTypeInfoValue();
+end;
+
+{ ExecutableSpecification_Digit_TypeCompleteTests.AssignmentCompatibility }
+
+class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.Exercise;
+begin
+  {PE Types}
+  IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues();
+  {Native Delphi Types}
+  IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues();
+  IsSymmetricallyAssignmentCompatibleWithTheIntegerTypeWhileRetainingIntegerValues();
+  IsSymmetricallyAssignmentCompatibleWithTheUInt64TypeWhileRetainingUInt64Values();
+  IsSymmetricallyAssignmentCompatibleWithTheWordTypeWhileRetainingWordValues();
+end;
+
+class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues;
+begin
+  //Validating Assumptions
+  System.Assert(Digit.Max > Digit.Min);
+  //Test
+  var ADigit: Digit;
+  var AByte: Byte;
+  for var Expected: Digit := Digit.Min to Digit.Max do
+  begin
+    ADigit := Expected;
+    AByte := ADigit + 1;
+    System.Assert(Expected = ADigit);
+    System.Assert(not (Expected = AByte));
+    AByte := ADigit;
+    System.Assert(ADigit = AByte);
+    ADigit := AByte;
+    System.Assert(Expected = ADigit);
+  end;
+end;
+
+class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheIntegerTypeWhileRetainingIntegerValues;
+begin
+  //Validating Assumptions
+  System.Assert(Digit.Max > Digit.Min);
+  //Test
+  var ADigit: Digit;
+  var AnInteger: Integer;
+  for var Expected: Digit := Digit.Min to Digit.Max do
+  begin
+    ADigit := Expected;
+    AnInteger := ADigit + 1;
+    System.Assert(Expected = ADigit);
+    System.Assert(not (Expected = AnInteger));
+    AnInteger := ADigit;
+    System.Assert(ADigit = AnInteger);
+    ADigit := AnInteger;
+    System.Assert(Expected = ADigit);
+  end;
+end;
+
+class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues;
+begin
+  //Validating Assumptions
+  System.Assert(Digit.Max > Digit.Min);
+  //Test
+  var ADigit: Digit;
+  var ANaturalNumber: NaturalNumber;
+  for var Expected: Digit := Digit.Min to Digit.Max do
+  begin
+    ADigit := Expected;
+    ANaturalNumber := ADigit + 1;
+    System.Assert(Expected = ADigit);
+    System.Assert(not (Expected = ANaturalNumber));
+    ANaturalNumber := ADigit;
+    System.Assert(ADigit = ANaturalNumber);
+    ADigit := ANaturalNumber;
+    System.Assert(Expected = ADigit);
+  end;
+end;
+
+class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheUInt64TypeWhileRetainingUInt64Values;
+begin
+  //Validating Assumptions
+  System.Assert(Digit.Max > Digit.Min);
+  //Test
+  var ADigit: Digit;
+  var AnUInt64: UInt64;
+  for var Expected: Digit := Digit.Min to Digit.Max do
+  begin
+    ADigit := Expected;
+    AnUInt64 := ADigit + 1;
+    System.Assert(Expected = ADigit);
+    System.Assert(not (Expected = AnUInt64));
+    AnUInt64 := ADigit;
+    System.Assert(ADigit = AnUInt64);
+    ADigit := AnUInt64;
+    System.Assert(Expected = ADigit);
+  end;
+end;
+
+class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheWordTypeWhileRetainingWordValues;
+begin
+  //Validating Assumptions
+  System.Assert(Digit.Max > Digit.Min);
+  //Test
+  var ADigit: Digit;
+  var AWord: Word;
+  for var Expected: Digit := Digit.Min to Digit.Max do
+  begin
+    ADigit := Expected;
+    AWord := ADigit + 1;
+    System.Assert(Expected = ADigit);
+    System.Assert(not (Expected = AWord));
+    AWord := ADigit;
+    System.Assert(ADigit = AWord);
+    ADigit := AWord;
+    System.Assert(Expected = ADigit);
+  end;
+end;
+
+{ ExecutableSpecification_Digit_ValueCompleteTests }
+
+class procedure ExecutableSpecification_Digit_ValueCompleteTests.Exercise;
+begin
+  AssignmentCompatibility.Exercise();
 end;
 
 end.
