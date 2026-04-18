@@ -1,4 +1,4 @@
-unit PE.Tests.TypeCompleteAndValueComplete.ArrayOf;
+unit PE.Tests.Foundational.Unbound.ArrayOf;
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
 {$DEFINITIONINFO ON}

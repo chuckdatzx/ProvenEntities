@@ -1,4 +1,4 @@
-unit PE.Tests.Types.Foundational.Digit.TypeAndValueComplete;
+unit PE.Tests.Foundational.Discrete.Digit;
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
 {$DEFINITIONINFO ON}

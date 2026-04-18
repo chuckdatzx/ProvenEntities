@@ -55,9 +55,9 @@ implementation
 
 uses
   PE.Tests.Routines,
-  PE.Tests.TypeCompleteAndValueComplete.ArrayOf,
-  PE.Tests.Types.Foundational.Digit.TypeAndValueComplete,
-  PE.Tests.Types.Foundational.MonoChar.TypeAndValueComplete,
+  PE.Tests.Foundational.Discrete.Digit,
+  PE.Tests.Foundational.Discrete.MonoChar,
+  PE.Tests.Foundational.Unbound.ArrayOf,
   PE.Tests.Types.Foundational.NaturalNumber.TypeAndValueComplete,
   PE.Types.Composite,
   PE.Types.Foundational,
@@ -70,13 +70,13 @@ class function TheExecutioner.ExecuteTypeAndValueCompleteProof(): TArray<ITask>;
 begin
   {$MESSAGE HINT '👍 :: Value and type complete testing battery is staged for execution'}
   {Foundational types}
-  Result := [TTask.Create(procedure begin PE.Tests.Types.Foundational.Digit.TypeAndValueComplete.Exercise(); end),
-    TTask.Create(procedure begin ExecutableSpecification_MonoChar_Complete.Exercise(); end),
+  Result := [TTask.Create(procedure begin PE.Tests.Foundational.Discrete.Digit.Exercise(); end),
+    TTask.Create(procedure begin PE.Tests.Foundational.Discrete.MonoChar.Exercise(); end),
     TTask.Create(procedure begin ExecutableSpecification_NaturalNumber_Complete.Exercise(); end)];
-  {Foundational types by foundational generic types}
-  Result := [TTask.Create(procedure begin ExecutableSpecification_ArrayOf_Complete<Digit>.Exercise(); end),
-    TTask.Create(procedure begin ExecutableSpecification_ArrayOf_Complete<MonoChar>.Exercise(); end),
-    TTask.Create(procedure begin ExecutableSpecification_ArrayOf_Complete<NaturalNumber>.Exercise(); end)] + Result;
+  {Unbound foundational generic types Bound foundational types by }
+  Result := [TTask.Create(procedure begin PE.Tests.Foundational.Unbound.ArrayOf.ExecutableSpecification_ArrayOf_Complete<Digit>.Exercise(); end),
+    TTask.Create(procedure begin PE.Tests.Foundational.Unbound.ArrayOf.ExecutableSpecification_ArrayOf_Complete<MonoChar>.Exercise(); end),
+    TTask.Create(procedure begin PE.Tests.Foundational.Unbound.ArrayOf.ExecutableSpecification_ArrayOf_Complete<NaturalNumber>.Exercise(); end)] + Result;
   {Routines by Foundational Types}
   Result := [TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<Digit>.Exercise(); end),
     TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<MonoChar>.Exercise(); end),

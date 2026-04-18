@@ -25,18 +25,20 @@ uses
   PE.Tests;
 
 {$IF PE.Tests.ExecuteTypeAndValueCompleteProof}  //Requiring "opting out" of type complete and value complete testing of the Foundational types
-type
-  ArrayOf<T> = array of T;
+type {Discrete Types}
   Digit = 0..9;
   MonoChar = type Char;
   NaturalNumber = type Cardinal;
+type {Unbound Types}
+  ArrayOf<T> = array of T;
   {$MESSAGE HINT '😎 :: The PE.Types.Foundational types are on track to include their type complete and value complete coverage'}
 {$ELSE}
-type
-  ArrayOf<T> = array of T;
+type {Discrete Types}
   Digit = 0..9;
   MonoChar = type Char;
   NaturalNumber = type Cardinal;
+type {Unbound Types}
+  ArrayOf<T> = array of T;
   {$MESSAGE WARN '😮 :: The PE.Types.Foundational test coverage does not seem to be included'}
 {$ENDIF}
 
