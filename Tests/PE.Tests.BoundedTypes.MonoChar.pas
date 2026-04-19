@@ -1,4 +1,4 @@
-unit PE.Tests.Foundational.Discrete.MonoChar;
+unit PE.Tests.BoundedTypes.MonoChar;
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
 {$DEFINITIONINFO ON}
@@ -27,7 +27,7 @@ where "Strength(X)" is defined in the PE.Tests unit.
 uses
   PE.Actors.Rando,  //In the interface section for inlining
   PE.Delphi.TypeIdentity,  //In the interface section for inlining
-  PE.Types.Foundational;
+  PE.Types;
 
 type
   ExecutableSpecification_MonoChar_TypeCompleteTests = record

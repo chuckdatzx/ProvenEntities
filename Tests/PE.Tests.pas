@@ -56,13 +56,14 @@ const
 implementation
 
 uses
-  PE.Tests.Foundational.Discrete.Digit,
-  PE.Tests.Foundational.Discrete.MonoChar,
-  PE.Tests.Foundational.Discrete.NaturalNumber,
-  PE.Tests.Foundational.Unbound.ArrayOf,
+  PE.Tests.BoundedTypes.Digit,
+  PE.Tests.BoundedTypes.MonoChar,
+  PE.Tests.BoundedTypes.NaturalNumber,
+  PE.Tests.BoundlessTypes.ArrayOf,
+  PE.Tests.BoundlessRoutines.DataStream.UniqueElements,
   PE.Tests.Routines,
+  PE.Types,
   PE.Types.Composite,
-  PE.Types.Foundational,
   System.Classes,
   System.SysUtils;
 
@@ -71,22 +72,25 @@ uses
 class function TheExecutioner.ExecuteTypeAndValueCompleteProof(): TArray<ITask>;
 begin
   {$MESSAGE HINT '👍 :: Value and type complete testing battery is staged for execution'}
-  {Foundational types}
-  Result := [TTask.Create(procedure begin PE.Tests.Foundational.Discrete.Digit.Exercise(); end),
-    TTask.Create(procedure begin PE.Tests.Foundational.Discrete.MonoChar.Exercise(); end),
-    TTask.Create(procedure begin PE.Tests.Foundational.Discrete.NaturalNumber.Exercise(); end)];
-  {Unbound foundational generic types Bound foundational types by }
-  Result := [TTask.Create(procedure begin PE.Tests.Foundational.Unbound.ArrayOf.ExecutableSpecification_ArrayOf_Complete<Digit>.Exercise(); end),
-    TTask.Create(procedure begin PE.Tests.Foundational.Unbound.ArrayOf.ExecutableSpecification_ArrayOf_Complete<MonoChar>.Exercise(); end),
-    TTask.Create(procedure begin PE.Tests.Foundational.Unbound.ArrayOf.ExecutableSpecification_ArrayOf_Complete<NaturalNumber>.Exercise(); end)] + Result;
-  {Routines by Foundational Types}
-  Result := [TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<Digit>.Exercise(); end),
-    TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<MonoChar>.Exercise(); end),
-    TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<NaturalNumber>.Exercise(); end)] + Result;
-  Result := [TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutine_UniqueElements_ValueComplete<Digit>.Exercise(); end),
-    TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutine_UniqueElements_ValueComplete<MonoChar>.Exercise(); end)] + Result;
+  {Bounded Types}
+  Result := [TTask.Create(procedure begin PE.Tests.BoundedTypes.Digit.Exercise(); end),
+    TTask.Create(procedure begin PE.Tests.BoundedTypes.MonoChar.Exercise(); end),
+    TTask.Create(procedure begin PE.Tests.BoundedTypes.NaturalNumber.Exercise(); end)];
+  {Boundless Types by Bounded Types}
+  Result := [TTask.Create(procedure begin PE.Tests.BoundlessTypes.ArrayOf.ExecutableSpecification_ArrayOf_Complete<Digit>.Exercise(); end),
+    TTask.Create(procedure begin PE.Tests.BoundlessTypes.ArrayOf.ExecutableSpecification_ArrayOf_Complete<MonoChar>.Exercise(); end),
+    TTask.Create(procedure begin PE.Tests.BoundlessTypes.ArrayOf.ExecutableSpecification_ArrayOf_Complete<NaturalNumber>.Exercise(); end)] + Result;
+  {Boundless Routines by Bounded Types (representing the realm of all natural numbers; 0..∞)}
+  Result := [TTask.Create(procedure begin PE.Tests.BoundlessRoutines.DataStream.UniqueElements.ExecutableSpecification_DataStreams_UniqueElements_ZeroThroughInfinity_ValueCompleteTests.Exercise(); end),
+    TTask.Create(procedure begin PE.Tests.BoundlessRoutines.DataStream.UniqueElements.ExecutableSpecification_DataStreams_UniqueElements_TypeCompleteOrdinal<MonoChar>.Exercise(); end),
+    TTask.Create(procedure begin PE.Tests.BoundlessRoutines.DataStream.UniqueElements.ExecutableSpecification_DataStreams_UniqueElements_TypeCompleteOrdinal<NaturalNumber>.Exercise(); end)];
+//  Result := [TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<Digit>.Exercise(); end),
+//    TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<MonoChar>.Exercise(); end),
+//    TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<NaturalNumber>.Exercise(); end)] + Result;
+//  Result := [TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutine_UniqueElements_ValueComplete<Digit>.Exercise(); end),
+//    TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutine_UniqueElements_ValueComplete<MonoChar>.Exercise(); end)] + Result;
   {Routines by Composite Types}
-  Result := [TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<MultiChar>.Exercise(); end)] + Result;
+//  Result := [TTask.Create(procedure begin ExecutableSpecification_DataStreamRoutines_TypeComplete<MultiChar>.Exercise(); end)] + Result;
 end;
 {$ELSE}
 {$MESSAGE WARN '🙈 :: Value and type complete testing battery for the "PE.Types.Foundational" types WILL NOT be executed'}

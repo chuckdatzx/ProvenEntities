@@ -22,8 +22,8 @@ interface
 
 uses
   PE.Actors.Rando,  //For inlining
-  PE.Types.Composite,
-  PE.Types.Foundational;
+  PE.Types,
+  PE.Types.Composite;
 
 type
   AllTests = record

@@ -22,7 +22,7 @@ interface
 
 uses
   PE.Delphi.TypeIdentity,
-  PE.Types.Foundational;
+  PE.Types;
 
 {$IF (not DelphiTypeIdentityEstablishedAtCompileTime)}
    {$MESSAGE FATAL 'Unable to continue without compile-time proof established.'}

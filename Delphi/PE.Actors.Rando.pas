@@ -22,7 +22,7 @@ interface
 
 uses
   PE.Routines,
-  PE.Types.Foundational,
+  PE.Types,
   {Delphi}
   System.RTTI,
   System.TypInfo;

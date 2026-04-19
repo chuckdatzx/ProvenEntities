@@ -1,4 +1,4 @@
-﻿unit PE.Types.Foundational;
+﻿unit PE.Types;
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}  //In compiler (we currently) trust!
 {$DEFINITIONINFO ON}
@@ -31,7 +31,7 @@ type {Discrete Types}
   NaturalNumber = type Cardinal;
 type {Unbound Types}
   ArrayOf<T> = array of T;
-  {$MESSAGE HINT '😎 :: The PE.Types.Foundational types are on track to include their type complete and value complete coverage'}
+  {$MESSAGE HINT '😎 :: The PE.Types are on track to include their type complete and value complete coverage'}
 {$ELSE}
 type {Discrete Types}
   Digit = 0..9;
@@ -39,7 +39,7 @@ type {Discrete Types}
   NaturalNumber = type Cardinal;
 type {Unbound Types}
   ArrayOf<T> = array of T;
-  {$MESSAGE WARN '😮 :: The PE.Types.Foundational test coverage does not seem to be included'}
+  {$MESSAGE WARN '😮 :: The PE.Types test coverage does not seem to be included'}
 {$ENDIF}
 
 type

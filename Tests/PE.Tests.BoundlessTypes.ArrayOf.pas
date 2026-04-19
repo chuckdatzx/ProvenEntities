@@ -1,4 +1,4 @@
-unit PE.Tests.Foundational.Unbound.ArrayOf;
+unit PE.Tests.BoundlessTypes.ArrayOf;
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
 {$DEFINITIONINFO ON}
@@ -27,7 +27,7 @@ uses
   PE.Actors.Rando,  //In the interface section for inlining
   PE.Delphi.TypeIdentity,
   PE.Routines,  //In the interface section for inlining
-  PE.Types.Foundational,  //In the interface section for inlining
+  PE.Types,  //In the interface section for inlining
   {Delphi}
   System.RTTI;  //Included here for inlining
 

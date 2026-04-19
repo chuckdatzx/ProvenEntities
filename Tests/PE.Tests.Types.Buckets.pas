@@ -24,8 +24,8 @@ uses
   PE.Actors.Rando, //For inlining
   PE.Buckets,
   PE.Delphi.TypeIdentity,
-  PE.Types.Composite, //For inlining
-  PE.Types.Foundational;
+  PE.Types,
+  PE.Types.Composite; //For inlining
 
 {$IF (not IdenticallyDefinedGenericRecordsAreTypeIdenticalAccordingToSystemDotTypeInfoAtCompileTime)}
    {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}

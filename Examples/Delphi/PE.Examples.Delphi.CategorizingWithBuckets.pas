@@ -23,8 +23,8 @@ interface
 uses
   {PE}
   PE.Buckets,
-  PE.Types.Composite,
-  PE.Types.Foundational;
+  PE.Types,
+  PE.Types.Composite;
 
 type
   TCustomEnumeratedType = (cetSour, cetSweet, cetFuzzy);

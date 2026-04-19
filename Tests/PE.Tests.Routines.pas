@@ -23,7 +23,7 @@ interface
 uses
   PE.Actors.Rando,  //In the interface section for inlining
   PE.Routines,
-  PE.Types.Foundational,
+  PE.Types,
   System.RTTI;  //In the interface section for inlining
 
 type

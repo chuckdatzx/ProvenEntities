@@ -1,4 +1,4 @@
-unit PE.Tests.Foundational.Discrete.NaturalNumber;
+unit PE.Tests.BoundedTypes.NaturalNumber;
 {$BOOLEVAL OFF}
 {$DEFINITIONINFO ON}
 {$DENYPACKAGEUNIT ON}
@@ -27,7 +27,7 @@ where "Strength(X)" is defined in the PE.Tests unit.
 uses
   PE.Actors.Rando,  //In the interface section for inlining
   PE.Delphi.TypeIdentity,  //In the interface section for inlining
-  PE.Types.Foundational;
+  PE.Types;
 
 type
   ExecutableSpecification_NaturalNumber_TypeComplete = record

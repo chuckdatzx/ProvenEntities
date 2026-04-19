@@ -1,4 +1,4 @@
-unit PE.Tests.Foundational.Discrete.Digit;
+unit PE.Tests.BoundedTypes.Digit;
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
 {$DEFINITIONINFO ON}
@@ -28,7 +28,7 @@ interface
 uses
   PE.Actors.Rando,  //In the interface section for inlining
   PE.Delphi.TypeIdentity,  //In the interface section for inlining
-  PE.Types.Foundational;
+  PE.Types;
 
 type
   ExecutableSpecification_Digit_TypeCompleteTests = record
