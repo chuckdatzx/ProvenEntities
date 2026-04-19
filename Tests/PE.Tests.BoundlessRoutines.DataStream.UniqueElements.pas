@@ -45,20 +45,17 @@ Theory: Any type that is either a bounded subset or a bounded superset, with res
 
 }
 
-//Theory: Even if the above assumption is indeed True, we may still be able to perform "enough" testing such that we can trust our current and future usage of the DataStreams.UniqueElements<T> routine.
-//  - "enough" = given the test coverage presented combined with successful execution results, we believe/think/feel that the DataStreams.UniqueElements<T> routine will perform as expected in context <X>
-
 uses
   PE.Actors.Rando,
   PE.Delphi.TypeIdentity,
   PE.Routines,  //In the interface section for inlining
   PE.Types,  //In the interface section for inlining
+  {Delphi}
   System.RTTI,  //In the interface section for inlining
-  System.TypInfo,
-  System.SysUtils;
+  System.TypInfo;
 
 type
-  ExecutableSpecification_DataStreams_UniqueElements_ZeroThroughInfinity_ValueCompleteTests = record
+  ExecutableSpecification_DataStreams_UniqueElements_Digit_ValueCompleteTests = record
   strict private
     class procedure ForAll3Million628Thousand800PossibleCombinations_TheSameUniqueValuesProvidedAreAlwaysTheSameUniqueValuesReturned(); static; inline;
   public
@@ -78,13 +75,13 @@ type
 
 implementation
 
-{ExecutableSpecification_DataStreams_UniqueElements_ZeroThroughInfinity_ValueCompleteTests}
-class procedure ExecutableSpecification_DataStreams_UniqueElements_ZeroThroughInfinity_ValueCompleteTests.Exercise;
+{ExecutableSpecification_DataStreams_UniqueElements_Digit_ValueCompleteTests}
+class procedure ExecutableSpecification_DataStreams_UniqueElements_Digit_ValueCompleteTests.Exercise;
 begin
   ForAll3Million628Thousand800PossibleCombinations_TheSameUniqueValuesProvidedAreAlwaysTheSameUniqueValuesReturned();
 end;
 
-class procedure ExecutableSpecification_DataStreams_UniqueElements_ZeroThroughInfinity_ValueCompleteTests.ForAll3Million628Thousand800PossibleCombinations_TheSameUniqueValuesProvidedAreAlwaysTheSameUniqueValuesReturned;
+class procedure ExecutableSpecification_DataStreams_UniqueElements_Digit_ValueCompleteTests.ForAll3Million628Thousand800PossibleCombinations_TheSameUniqueValuesProvidedAreAlwaysTheSameUniqueValuesReturned;
 begin
   var TestCount: NaturalNumber := 0;
   System.Assert(0 = TestCount);
@@ -156,6 +153,7 @@ begin
     System.Assert(AValue.IsOrdinal(), 'This battery of tests only handles ordinal cases for DataStream.UniqueElements<T>');
     System.Assert(System.Assigned(AValue.TypeData), 'TypeData is not assigned');
     System.Assert(AValue.TypeData.OrdType in [otSByte, otUByte, otSWord, otUWord, otSLong, otULong]);
+    System.Assert(AValue.TypeData.MinValue >= 0);
     System.Assert(AValue.TypeData.MaxValue > 0);
   end;
 end;

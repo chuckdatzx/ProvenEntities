@@ -19,7 +19,7 @@ uses
   FMX.Types,
   {PE}
   PE.Types.Composite,
-  PE.Types.Foundational;
+  PE.Types;
 
 type
   TForm2 = class(TForm)
@@ -45,6 +45,7 @@ implementation
 uses
   {PE}
   PE.Buckets,
+  PE.Tests,
   {Delphi}
   System.Character,
   System.Generics.Collections,

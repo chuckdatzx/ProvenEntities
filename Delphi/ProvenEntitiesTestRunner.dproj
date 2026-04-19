@@ -118,7 +118,7 @@
         <DCCReference Include="..\Tests\PE.Tests.BoundedTypes.NaturalNumber.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.BoundlessRoutines.DataStream.UniqueElements.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.BoundlessTypes.ArrayOf.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.Routines.pas"/>
+        <DCCReference Include="..\Tests\PE.Tests.BoundlessRoutines.DataStream.Contains.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Routines.Buckets.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Buckets.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.Types.Composite.pas"/>

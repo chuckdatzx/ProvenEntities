@@ -40,7 +40,7 @@ uses
   PE.Tests.BoundedTypes.NaturalNumber in '..\Tests\PE.Tests.BoundedTypes.NaturalNumber.pas',
   PE.Tests.BoundlessRoutines.DataStream.UniqueElements in '..\Tests\PE.Tests.BoundlessRoutines.DataStream.UniqueElements.pas',
   PE.Tests.BoundlessTypes.ArrayOf in '..\Tests\PE.Tests.BoundlessTypes.ArrayOf.pas',
-  PE.Tests.Routines in '..\Tests\PE.Tests.Routines.pas',
+  PE.Tests.BoundlessRoutines.DataStream.Contains in '..\Tests\PE.Tests.BoundlessRoutines.DataStream.Contains.pas',
   PE.Tests.Routines.Buckets in '..\Tests\PE.Tests.Routines.Buckets.pas',
   PE.Tests.Types.Buckets in '..\Tests\PE.Tests.Types.Buckets.pas',
   PE.Tests.Types.Composite in '..\Tests\PE.Tests.Types.Composite.pas',

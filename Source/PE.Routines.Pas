@@ -27,9 +27,9 @@ uses
 type
   DataStream = class sealed
   public
-    ///<summary>Returns true if any single occurrence of Value T is present in ADataStream</summary>
+    ///<summary>Returns True if any single occurrence of Value is present in ADataStream</summary>
     class function Contains<T>(const ADataStream: ArrayOf<T>; const Value: T): Boolean; inline; static;
-    ///<summary>Returns an array of T where duplicate values in ADataStream are removed</summary>
+    ///<summary>Returns an array of T where duplicate values in ADataStream are filtered out</summary>
     class function UniqueElements<T>(const ADataStream: ArrayOf<T>): ArrayOf<T>; inline; static;
   end;
 
