@@ -48,8 +48,8 @@ type
     strict private {Max}
       class procedure TheMaxPropertyReturns9ForADefaultInstance(); static; inline;
       class procedure TheMaxPropertyReturns9ForANonDefaultInstance(); static; inline;
-    strict private {MonoCharMap}
-      class procedure TheMonoCharMapPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsMonoCharValue(); static; inline;
+    strict private {MonoChar}
+      class procedure TheMonoCharPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsRepresentationAsAMonoCharValue(); static; inline;
     strict private {TypeIdentity}
       class procedure TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue(); static; inline;
     public
@@ -140,23 +140,23 @@ begin
   TheMaxPropertyReturns9ForANonDefaultInstance();
   TheMinPropertyReturnsZeroForADefaultInstance();
   TheMinPropertyReturnsZeroForANonDefaultInstance();
-  TheMonoCharMapPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsMonoCharValue();
+  TheMonoCharPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsRepresentationAsAMonoCharValue();
   TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue();
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMonoCharMapPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsMonoCharValue();
+class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMonoCharPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsRepresentationAsAMonoCharValue();
 begin
-  System.Assert(10 = System.Length(Digit.MonoCharMap));
-  System.Assert('0' = Digit.MonoCharMap[0]);
-  System.Assert('1' = Digit.MonoCharMap[1]);
-  System.Assert('2' = Digit.MonoCharMap[2]);
-  System.Assert('3' = Digit.MonoCharMap[3]);
-  System.Assert('4' = Digit.MonoCharMap[4]);
-  System.Assert('5' = Digit.MonoCharMap[5]);
-  System.Assert('6' = Digit.MonoCharMap[6]);
-  System.Assert('7' = Digit.MonoCharMap[7]);
-  System.Assert('8' = Digit.MonoCharMap[8]);
-  System.Assert('9' = Digit.MonoCharMap[9]);
+  System.Assert(10 = System.Length(Digit.MonoChar));
+  System.Assert('0' = Digit.MonoChar[0]);
+  System.Assert('1' = Digit.MonoChar[1]);
+  System.Assert('2' = Digit.MonoChar[2]);
+  System.Assert('3' = Digit.MonoChar[3]);
+  System.Assert('4' = Digit.MonoChar[4]);
+  System.Assert('5' = Digit.MonoChar[5]);
+  System.Assert('6' = Digit.MonoChar[6]);
+  System.Assert('7' = Digit.MonoChar[7]);
+  System.Assert('8' = Digit.MonoChar[8]);
+  System.Assert('9' = Digit.MonoChar[9]);
 end;
 
 class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMaxPropertyReturns9ForADefaultInstance;

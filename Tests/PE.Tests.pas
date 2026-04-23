@@ -1,21 +1,16 @@
 ﻿unit PE.Tests;
 
 {Assumptions:
-Assumption 1: The source code in this unit, and any PE referencing units, has not been altered (e.g. is unchanged when compared to "official" repository version <x>)
-Assumption 2: Tests invoked from this unit provide "complete type coverage" (See the definitions below regarding "complete type coverage")
-Assumption 3: Tests in this unit prove "complete value coverage" (See the definitions below regarding "complete value coverage")
+Assumption 1: The source code in this unit, and any PE referencing units, has not been altered (e.g. is unchanged when compared to official repository version <x>)
+Assumption 2: "Value complete testing coverage" is self-explanatory and possible, though only possible, when every test case executed against type T is expressed using "every possible value of T"
+Assumption 3: The concept of "Type complete testing coverage for T" is not possible unless the compilation environment itself imposes boundaries on T (T must reach some discrete point of meaning; cannot be allowed to grow indefinitely).
 }
 
 {Definitions (all of which require the above Assumptions to be True):
-  "complete type coverage" = the following:
-    - I mean that all "compiler allowed" boundaries, relating to the existence of type in question T, are discretely covered with executable test cases.
-      In other words, where the compiler is concerned, there are not any "loopholes" left to consider. (I'm pretty sure I haven't completed this; I could use help getting there)
-  "complete value coverage" = the following:
-    - Where T is a bounded type (i.e. has known boundaries), every test case for a "value complete" solution must exercise every possible value for T.
-    - Where T is not bounded (i.e. not possible to complete), categories of coverage (framing boundaries) must be established to maximize coverage; and each category must exercise every value of T
-      - For an unbounded context, I'm currently considering the best possible outcome to be the one in which everyone unanimously agrees that he/she/they can trust type T due to the coverage present (i.e. it takes a village)
-    - I am also implicity arguing that one can achieve "value complete" testing without any explicit type conversions.
-      - Since I am implicity arguing that explicit type conversions are not needed, I won't be accepting any counter-proposals that require explict type conversion (including my own code)
+  "every possible value of T" = the following
+    - every value of T that is defined by the mere existence of T, expressed in terms of T, where said expressions are not comprised of "some bullshittery" (e.g. explicit typecasting)
+  "Type complete testing coverage for T" = the following:
+    - Considering the foundational principles of sound and complete, for all of T, every possible test has been made and successfully executed in context <X>
 
   "Strength(X):"
     Proof:        You have built and executed a binary that is its own type and value complete proof
@@ -31,7 +26,7 @@ Assumption 3: Tests in this unit prove "complete value coverage" (See the defini
     Weak():       You trust that the code under test was tested rigorously by someone that you trust.
     Weakest():    You hope that the code was tested by someone/something at some point (especially since "tested" can mean so many things).
 
-[Chuck C.T. :: 4/14/20206 :: Claiming that the above is both sound and complete constructivist proof]
+[Chuck C.T. :: 4/20/20206 :: Claiming that the above is both sound and complete constructivist proof]
 }
 
 interface

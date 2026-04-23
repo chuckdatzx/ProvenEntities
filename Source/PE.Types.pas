@@ -24,7 +24,7 @@ uses
   PE.Delphi.TypeIdentity,
   PE.Tests;
 
-{$IF PE.Tests.ExecuteTypeAndValueCompleteProof}  //Requiring "opting out" of type complete and value complete testing of the Foundational types
+{$IF PE.Tests.ExecuteTypeAndValueCompleteProof}  //Requiring "opting out" of type complete/value complete compilation of testing tools for the following types:
 type {Discrete Types}
   Digit = 0..9;
   MonoChar = type Char;
@@ -49,7 +49,7 @@ type
   {public :: Class Properties}
     public class property TypeIdentity: Pointer read GetTypeIdentity;
   {public :: "Class Properties"}
-    public const MonoCharMap: array [System.Low(Digit)..System.High(Digit)] of MonoChar = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    public const MonoChar: array [System.Low(Digit)..System.High(Digit)] of MonoChar = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');  //By being defined in the Unicode BMP as digits, is automatically localized to <x> languages
     public const Max: Digit = System.High(Digit);
     public const Min: Digit = System.Low(Digit);
   end;

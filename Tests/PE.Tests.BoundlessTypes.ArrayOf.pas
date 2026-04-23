@@ -18,11 +18,7 @@ unit PE.Tests.BoundlessTypes.ArrayOf;
 {$WARNINGS ON}
 {$WRITEABLECONST OFF}
 interface
-{
-If the assumptions (listed in the PE.Tests unit) are True, then the PE.Types.Foundational.ArrayOf<T> type is "proven" to Strength(X) for both now and in any future execution scenarios,
-where "Strength(X)" is defined in the PE.Tests unit.
-[Chuck C.T. :: 4/14/20206 :: Claiming that the above is both sound and complete constructivist proof]
-}
+
 uses
   PE.Actors.Rando,  //In the interface section for inlining
   PE.Delphi.TypeIdentity,
@@ -35,14 +31,45 @@ uses
    {$MESSAGE FATAL 'Unable to continue without compile-time assertions established.'}
 {$ENDIF}
 
+{
+Assumption: It will never be possible to perform type complete testing against the ArrayOf<T> because its own existince includes the property of boundlessness (in, and only in, the following forms)
+  - The definition of ArrayOf<T> includes the property of boundlessness with respect to T (if T is boundless then ArrayOf<T> must also be boundless; the converse is also True)
+  - The definition of ArrayOf<T> includes the property of boundlessness with respect to its own size
+
+
+
+
+
+Assumption: It is possible to value complete test ArrayOf<T>, where T is bounded, for assignment compatibility
+Assumption: Any "type complete testing" of ArrayOf<T> can only be accomplished when T is bounded
+
+It is possible to value complete test ArrayOf<T>, where T is bounded, for assignment compatibility and value preservation
+
+How does one "perform type complete testing" against ArrayOf<T>?
+
+- Assignment Compatiblity: Show that for every possible value of T, ArrayOf<T> holds and preserves a value of T
+
+}
+
+
 type
   {$REGION 'ArrayOf<T> type'}
   {
   Domain Notes:
-    Assumption: It will never be possible to "fully test" any ArrayOf<T>
-    Reasoning: By its own definition/existence, it is simply unbounded given that its size is not bounded (just like a native Delphi string type)
+    Assumption: It will never be possible to perform type complete testing the ArrayOf<T> (since the definition of ArrayOf<T> includes the property of boundlessness)
+    Assumption: It will never be possible to perform value complete testing ArrayOf<T> for all T (since T could be boundless)
+    Assumption: It is possible to value complete test ArrayOf<T>, where T is bounded, for type-level properties (e.g. assignment compatibility/value preservation)
 
-  Theory: Even if the above assumption is indeed True, we may still be able to perform "enough" testing; where "enough" = we believe/think/feel that ArrayOf<T> will perform as expected in context <X>
+  Theory: If the above assumptions are all True, then it seems that the best we can do is as follows:
+    - Regarding the type dimension, I don't currently have any sort of criteria I can argue is "solid" framing. For now, I'll have to settle with consistency of framing across types using the following:
+      - "Flexing" the size of ArrayOf<T> by performing any value complete testing towards the higher end of what is allowed by computational context <X> (i.e. take as much memory as "safely" allowed)
+    - Regarding the value dimension, it is possible to prove out that the ArrayOf<T>, where T is bounded, preserves values for all of T. However, how this is done seems "complicated".
+
+
+  Potential Coverage Options:
+    - All values of T instantiated and contiguously assigned to a single ArrayOf<T>
+
+
 
   Theory being applied to assignment compatibility:
     - Let's figure out some intuivite categories for framing

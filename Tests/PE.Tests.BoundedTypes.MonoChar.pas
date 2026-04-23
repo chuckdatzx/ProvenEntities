@@ -19,11 +19,7 @@ unit PE.Tests.BoundedTypes.MonoChar;
 {$WARNINGS ON}
 {$WRITEABLECONST OFF}
 interface
-{
-If the assumptions (listed in the PE.Tests unit) are True, then the PE.Types.Foundational.NaturalNumber type is "proven" to Strength(X) for both now and in any future execution scenarios,
-where "Strength(X)" is defined in the PE.Tests unit.
-[Chuck C.T. :: 4/14/20206 :: Claiming that the above is both sound and complete constructivist proof]
-}
+
 uses
   PE.Actors.Rando,  //In the interface section for inlining
   PE.Delphi.TypeIdentity,  //In the interface section for inlining
