@@ -20,78 +20,124 @@
 {$WRITEABLECONST OFF}
 interface
 
+{Just a not-so-friendly PSA. If you change a single character in this unit, you have decided [this is not a discussion; you made it a fact] that YOU know what is best.}
+
 uses
-  PE.Delphi.TypeIdentity,
-  PE.Tests;
+  PE.Delphi.TypeIdentity;
 
-{$IF PE.Tests.ExecuteTypeAndValueCompleteProof}  //Requiring "opting out" of type complete/value complete compilation of testing tools for the following types:
 type {Discrete Types}
-  Digit = 0..9;
-  MonoChar = type Char;
-  NaturalNumber = type Cardinal;
-type {Unbound Types}
-  ArrayOf<T> = array of T;
-  {$MESSAGE HINT '😎 :: The PE.Types are on track to include their type complete and value complete coverage'}
-{$ELSE}
-type {Discrete Types}
-  Digit = 0..9;
-  MonoChar = type Char;
-  NaturalNumber = type Cardinal;
-type {Unbound Types}
-  ArrayOf<T> = array of T;
-  {$MESSAGE WARN '😮 :: The PE.Types test coverage does not seem to be included'}
-{$ENDIF}
-
-type
-  DigitHelper = record Helper for Digit
-  {Internal Members}
-    strict private class function GetTypeIdentity(): Pointer; static; inline;
-  {public :: Class Properties}
-    public class property TypeIdentity: Pointer read GetTypeIdentity;
-  {public :: "Class Properties"}
-    public const MonoChar: array [System.Low(Digit)..System.High(Digit)] of MonoChar = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');  //By being defined in the Unicode BMP as digits, is automatically localized to <x> languages
-    public const Max: Digit = System.High(Digit);
-    public const Min: Digit = System.Low(Digit);
-  end;
-
-  MonoCharHelper = record Helper for MonoChar
-  {Internal Members}
-    strict private class function GetTypeIdentity(): Pointer; static; inline;
-  {public :: Class Properties}
-    public class property TypeIdentity: Pointer read GetTypeIdentity;
-  {public :: "Class Properties"}
-    public const Max: MonoChar = System.High(MonoChar);
-    public const Min: MonoChar = System.Low(MonoChar);
-  end;
-
-  NaturalNumberHelper = record Helper for NaturalNumber
-  {Internal Members}
-    strict private class function GetTypeIdentity(): Pointer; static; inline;
-  {public :: Class Properties}
-    public class property TypeIdentity: Pointer read GetTypeIdentity;
-  {public "Class Properties"}
-    public const Max: NaturalNumber = System.High(NaturalNumber);
-    public const Min: NaturalNumber = System.Low(NaturalNumber);
+  Digit = record
+  public
+    const Zero = 0;
+    const One = 1;
+    const Two = 2;
+    const Three = 3;
+    const Four = 4;
+    const Five = 5;
+    const Six = 6;
+    const Seven = 7;
+    const Eight = 8;
+    const Nine = 9;
+    const Min = Zero;
+    const Max = Nine;
+    type Range = Min..Max;
+  strict private
+    class var FDelphiTypeIdentity: Pointer;
+    class function InternalStaticOperator_VsInteger_Equals(const DigitValue: Digit; const IntegerValue: Integer): Boolean; static; inline;
+    class function InternalStaticOperator_VsInteger_In(const DigitValue: Digit; const IntegerValue: Integer): Boolean; static; inline;
+  strict private
+    FValue: Byte;
+  strict private
+    function GetValue(): Range; inline;
+    procedure SetValue(const AValue: Range); inline;
+  public
+    class constructor Create();
+  public
+    class operator Equal(const Left, Right: Digit): Boolean;
+    class operator Equal(const Left: Integer; const Right: Digit): Boolean; static; inline;
+    class operator Equal(const Left: Digit; const Right: Integer): Boolean; static; inline;
+    class operator Implicit(const AValue: Range): Digit; static; inline;
+    class operator In(const Left: Digit; const Right: Integer): Boolean; static; inline;
+    class operator In(const Left: Integer; const Right: Digit): Boolean; static; inline;
+  public
+    class property TypeIdentity: Pointer read FDelphiTypeIdentity;
+  public
+    property Value: Range read GetValue write SetValue;
   end;
 
 implementation
 
-{DigitHelper}
-class function DigitHelper.GetTypeIdentity: Pointer;
+uses
+  PE.Tests.BoundedTypes.Digit;
+
+class constructor Digit.Create();
 begin
-  Result := System.TypeInfo(Digit);
+  FDelphiTypeIdentity := System.TypeInfo(Digit);
 end;
 
-{MonoCharHelper}
-class function MonoCharHelper.GetTypeIdentity: Pointer;
+function Digit.GetValue: Range;
 begin
-  Result := System.TypeInfo(MonoChar);
+  System.Assert((FValue <= Max) and (FValue >= Min));
+  Result := FValue;
 end;
 
-{NaturalNumberHelper}
-class function NaturalNumberHelper.GetTypeIdentity: Pointer;
+class operator Digit.Equal(const Left: Integer; const Right: Digit) : Boolean;
 begin
-  Result := System.TypeInfo(NaturalNumber);
+  Result := InternalStaticOperator_VsInteger_Equals(Right, Left);
+end;
+
+class operator Digit.Equal(const Left: Digit; const Right: Integer) : Boolean;
+begin
+  Result := InternalStaticOperator_VsInteger_Equals(Left, Right);
+end;
+
+class operator Digit.Equal(const Left, Right: Digit): Boolean;
+begin
+  Result := Left.Value = Right.Value;
+end;
+
+class operator Digit.Implicit(const AValue: Range): Digit;
+begin
+  Result.Value := AValue;
+end;
+
+class operator Digit.In(const Left: Digit; const Right: Integer): Boolean;
+begin
+  Result := InternalStaticOperator_VsInteger_In(Left, Right);
+end;
+
+class operator Digit.In(const Left: Integer; const Right: Digit): Boolean;
+begin
+  Result := InternalStaticOperator_VsInteger_In(Right, Left);
+end;
+
+class function Digit.InternalStaticOperator_VsInteger_Equals(const DigitValue: Digit; const IntegerValue: Integer): Boolean;
+begin
+  case IntegerValue of
+    0: Result := (Zero = 0);
+    1: Result := (One = 1);
+    2: Result := (Two = 2);
+    3: Result := (Three = 3);
+    4: Result := (Four = 4);
+    5: Result := (Five = 5);
+    6: Result := (Six = 6);
+    7: Result := (Seven = 7);
+    8: Result := (Eight = 8);
+    9: Result := (Nine = 9);
+  else
+    System.Halt;
+  end;
+end;
+
+class function Digit.InternalStaticOperator_VsInteger_In(const DigitValue: Digit; const IntegerValue: Integer): Boolean;
+begin
+  Result := (DigitValue.Min >= IntegerValue) and (DigitValue.Max <= IntegerValue);
+end;
+
+procedure Digit.SetValue(const AValue: Range);
+begin
+  System.Assert((AValue >= Min) and (AValue <= Max));
+  FValue := AValue;
 end;
 
 end.

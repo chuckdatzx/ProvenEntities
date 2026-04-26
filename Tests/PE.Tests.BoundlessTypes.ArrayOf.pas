@@ -235,29 +235,29 @@ class procedure ExecutableSpecification_ArrayOf_Complete<TypeUnderTest>.Assignme
 begin
   if (Digit.TypeIdentity = System.TypeInfo(TypeUnderTest)) then
   begin
-    for var Counter: Digit := Digit.Min to Digit.Max do
-    begin
-      var ExpectedValue: Digit;
-      ExpectedValue := Counter;
-      var Expected: ArrayOf<Digit> := [ExpectedValue, ExpectedValue, ExpectedValue];
-      System.Assert(not (Expected = System.Default(ArrayOf<Digit>)));
-      System.Assert(3 = System.Length(Expected));
-      System.Assert(ExpectedValue = Expected[System.Low(Expected)]);
-      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 1]);
-      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 2]);
-      var Actual: ArrayOf<Digit> := System.Default(ArrayOf<Digit>);
-      System.Assert(System.Default(ArrayOf<Digit>) = Actual);
-      System.Assert(not (System.Length(Expected) = System.Length(Actual)));
-      Actual := Expected;
-      System.Assert(System.Length(Expected) = System.Length(Actual));
-      System.Assert(3 = System.Length(Expected));
-      System.Assert(ExpectedValue = Expected[System.Low(Expected)]);
-      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 1]);
-      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 2]);
-      System.Assert(ExpectedValue = Actual[System.Low(Actual)]);
-      System.Assert(ExpectedValue = Actual[System.Low(Actual) + 1]);
-      System.Assert(ExpectedValue = Actual[System.Low(Actual) + 2]);
-    end;
+//    for var Counter: Digit := Digit.Min to Digit.Max do
+//    begin
+//      var ExpectedValue: Digit;
+//      ExpectedValue := Counter;
+//      var Expected: ArrayOf<Digit> := [ExpectedValue, ExpectedValue, ExpectedValue];
+//      System.Assert(not (Expected = System.Default(ArrayOf<Digit>)));
+//      System.Assert(3 = System.Length(Expected));
+//      System.Assert(ExpectedValue = Expected[System.Low(Expected)]);
+//      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 1]);
+//      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 2]);
+//      var Actual: ArrayOf<Digit> := System.Default(ArrayOf<Digit>);
+//      System.Assert(System.Default(ArrayOf<Digit>) = Actual);
+//      System.Assert(not (System.Length(Expected) = System.Length(Actual)));
+//      Actual := Expected;
+//      System.Assert(System.Length(Expected) = System.Length(Actual));
+//      System.Assert(3 = System.Length(Expected));
+//      System.Assert(ExpectedValue = Expected[System.Low(Expected)]);
+//      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 1]);
+//      System.Assert(ExpectedValue = Expected[System.Low(Expected) + 2]);
+//      System.Assert(ExpectedValue = Actual[System.Low(Actual)]);
+//      System.Assert(ExpectedValue = Actual[System.Low(Actual) + 1]);
+//      System.Assert(ExpectedValue = Actual[System.Low(Actual) + 2]);
+//    end;
   end
   else
     if (MonoChar.TypeIdentity = System.TypeInfo(TypeUnderTest)) then

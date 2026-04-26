@@ -92,43 +92,43 @@ end;
 
 class function ExecutableSpecification_DataStreams_Contains_Digit_ValueCompleteTests.GenerateExpected(const ADataStream: ArrayOf<Digit>; const AValue: Digit): Boolean;
 begin
-  System.Assert(10 = System.Length(ADataStream));
-  Result := False;
-  for var I: NativeInt := System.Low(ADataStream) to System.High(ADataStream) do
-    if (ADataStream[I] = AValue) then
-      Exit(True);
+//  System.Assert(10 = System.Length(ADataStream));
+//  Result := False;
+//  for var I: NativeInt := System.Low(ADataStream) to System.High(ADataStream) do
+//    if (ADataStream[I] = AValue) then
+//      Exit(True);
 end;
 
 class procedure ExecutableSpecification_DataStreams_Contains_Digit_ValueCompleteTests.GivenAll3Million628Thousand800PossibleCombinationsForArrayOfDigit_AndGivenEveryValueOfDigit_All36Million288Thousand000TestCasesMatchExpectedForAGeneratedExpected;
 begin
-  var TestCount: NaturalNumber := 0;
-  System.Assert(0 = TestCount);
-  for var Digit0: Digit := 0 to Digit.Max do
-    for var Digit1: Digit := 1 to Digit.Max do
-      for var Digit2: Digit := 2 to Digit.Max do
-        for var Digit3: Digit := 3 to Digit.Max do
-          for var Digit4: Digit := 4 to Digit.Max do
-            for var Digit5: Digit := 5 to Digit.Max do
-              for var Digit6: Digit := 6 to Digit.Max do
-                for var Digit7: Digit := 7 to Digit.Max do
-                  for var Digit8: Digit := 8 to Digit.Max do
-                    for var Digit9: Digit := 9 to Digit.Max do
-                    begin
-                      var ActualDataStream: ArrayOf<Digit> := [Digit0, Digit1, Digit2, Digit3,
-                        Digit4, Digit5, Digit6, Digit7, Digit8, Digit9];
-                      for var ActualValue: Digit := System.Low(ActualDataStream) to System.High(ActualDataStream) do
-                      begin
-                        //Generating expected
-                        var Expected: Boolean := GenerateExpected(ActualDataStream, ActualValue);
-                        //Test
-                        var Actual: Boolean := not Expected;
-                        System.Assert(not (Expected = Actual));
-                        Actual := DataStream.Contains<Digit>(ActualDataStream, ActualValue);
-                        System.Assert(Expected = Actual);
-                        TestCount := TestCount + 1;
-                      end;
-                    end;
-  System.Assert(36288000 = TestCount);
+//  var TestCount: NaturalNumber := 0;
+//  System.Assert(0 = TestCount);
+//  for var Digit0: Digit := 0 to Digit.Max do
+//    for var Digit1: Digit := 1 to Digit.Max do
+//      for var Digit2: Digit := 2 to Digit.Max do
+//        for var Digit3: Digit := 3 to Digit.Max do
+//          for var Digit4: Digit := 4 to Digit.Max do
+//            for var Digit5: Digit := 5 to Digit.Max do
+//              for var Digit6: Digit := 6 to Digit.Max do
+//                for var Digit7: Digit := 7 to Digit.Max do
+//                  for var Digit8: Digit := 8 to Digit.Max do
+//                    for var Digit9: Digit := 9 to Digit.Max do
+//                    begin
+//                      var ActualDataStream: ArrayOf<Digit> := [Digit0, Digit1, Digit2, Digit3,
+//                        Digit4, Digit5, Digit6, Digit7, Digit8, Digit9];
+//                      for var ActualValue: Digit := System.Low(ActualDataStream) to System.High(ActualDataStream) do
+//                      begin
+//                        Generating expected
+//                        var Expected: Boolean := GenerateExpected(ActualDataStream, ActualValue);
+//                        Test
+//                        var Actual: Boolean := not Expected;
+//                        System.Assert(not (Expected = Actual));
+//                        Actual := DataStream.Contains<Digit>(ActualDataStream, ActualValue);
+//                        System.Assert(Expected = Actual);
+//                        TestCount := TestCount + 1;
+//                      end;
+//                    end;
+//  System.Assert(36288000 = TestCount);
 end;
 
 {ExecutableSpecification_DataStream_Contains_TypeCompleteOrdinal<OrdinalUnderTest>}

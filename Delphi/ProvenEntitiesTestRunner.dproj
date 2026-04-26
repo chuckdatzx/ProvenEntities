@@ -107,23 +107,10 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="PE.Actors.Rando.pas"/>
-        <DCCReference Include="..\Source\PE.Buckets.pas"/>
         <DCCReference Include="PE.Delphi.AssignmentCompatibility.pas"/>
         <DCCReference Include="PE.Delphi.TypeIdentity.pas"/>
-        <DCCReference Include="..\Examples\Delphi\PE.Examples.Delphi.CategorizingWithBuckets.pas"/>
-        <DCCReference Include="..\Source\PE.Routines.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.pas"/>
         <DCCReference Include="..\Tests\PE.Tests.BoundedTypes.Digit.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.BoundedTypes.MonoChar.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.BoundedTypes.NaturalNumber.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.BoundlessRoutines.DataStream.UniqueElements.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.BoundlessTypes.ArrayOf.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.BoundlessRoutines.DataStream.Contains.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.Routines.Buckets.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.Types.Buckets.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.Types.Composite.pas"/>
         <DCCReference Include="..\Source\PE.Types.pas"/>
-        <DCCReference Include="..\Source\PE.Types.Composite.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

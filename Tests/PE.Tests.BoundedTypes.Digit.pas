@@ -18,11 +18,7 @@ unit PE.Tests.BoundedTypes.Digit;
 {$STACKFRAMES OFF}
 {$WARNINGS ON}
 {$WRITEABLECONST OFF}
-{
-If the assumptions (listed in the PE.Tests unit) are True, then the PE.Types.Foundational.NaturalNumber type is "proven" to Strength(X) for both now and in any future execution scenarios,
-where "Strength(X)" is defined in the PE.Tests unit.
-[Chuck C.T. :: 4/14/20206 :: Claiming that the above is both sound and complete constructivist proof]
-}
+
 interface
 
 uses
@@ -31,301 +27,364 @@ uses
   PE.Types;
 
 type
-  ExecutableSpecification_Digit_TypeCompleteTests = record
-  strict private class var Digit_Default: Digit;
-  public type
-    Boundaries = record
-    strict private
-      class procedure TheLowestTypeAllowedValueIsZero(); static; inline;
-      class procedure TheHighestTypeAllowedValueIs9(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-    Properties = record
-    strict private {Min}
-      class procedure TheMinPropertyReturnsZeroForADefaultInstance(); static; inline;
-      class procedure TheMinPropertyReturnsZeroForANonDefaultInstance(); static; inline;
-    strict private {Max}
-      class procedure TheMaxPropertyReturns9ForADefaultInstance(); static; inline;
-      class procedure TheMaxPropertyReturns9ForANonDefaultInstance(); static; inline;
-    strict private {MonoChar}
-      class procedure TheMonoCharPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsRepresentationAsAMonoCharValue(); static; inline;
-    strict private {TypeIdentity}
-      class procedure TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-    TypeIdentity = record
-    strict private
-      class procedure HasItsOwnNonNullTypeIdentity(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-  public
-    class constructor Create();
-  public
-    class procedure TheDefaultValueIsZero(); static; inline;
+  ExecutableSpecification_Digit_Defintion = record
+  strict private
+    class procedure TheSystemUnderTestRecognizesTheTermDigitDotZeroAsEquatingToTheNaturalNumberOf0(); static; inline;
+    class procedure TheSystemUnderTestRecognizesTheTermDigitDotOneAsEquatingToTheNaturalNumberOf1(); static; inline;
+    class procedure TheSystemUnderTestRecognizesTheTermDigitDotTwoAsEquatingToTheNaturalNumberOf2(); static; inline;
+    class procedure TheSystemUnderTestRecognizesTheTermDigitDotThreeAsEquatingToTheNaturalNumberOf3(); static; inline;
+    class procedure TheSystemUnderTestRecognizesTheTermDigitDotFourAsEquatingToTheNaturalNumberOf4(); static; inline;
+    class procedure TheSystemUnderTestRecognizesTheTermDigitDotFiveAsEquatingToTheNaturalNumberOf5(); static; inline;
+    class procedure TheSystemUnderTestRecognizesTheTermDigitDotSixAsEquatingToTheNaturalNumberOf6(); static; inline;
+    class procedure TheSystemUnderTestRecognizesTheTermDigitDotSevenAsEquatingToTheNaturalNumberOf7(); static; inline;
+    class procedure TheSystemUnderTestRecognizesTheTermDigitDotEightAsEquatingToTheNaturalNumberOf8(); static; inline;
+    class procedure TheSystemUnderTestRecognizesTheTermDigitDotNineAsEquatingToTheNaturalNumberOf9(); static; inline;
+    class procedure TheSystemUnderTestRecognizesTheNumericalEstablishmentOfTheDigitRangeAsStartingWith0AndEndingWith9(); static; inline;
+  strict private
+    class procedure TheSystemUnderTestRecognizesTheSmallestPossibleValueOfDigitAs0(); static; inline;
+    class procedure TheSystemUnderTestRecognizesTheLargestPossibleValueOfDigitAs9(); static; inline;
+    class procedure TheSystemUnderTestRecognizesDigitAsAnEntityThatHasTypeIdentity(); static; inline;
+  strict private
+    class procedure TheSystemUnderTestRecognizesSymmetricAssignmentCompatibilityBetweenAnObserverOfDigitAndAnObserverOfDigit(); static; inline;
+    class procedure TheSystemUnderTestRecognizesSymmetricAssignmentCompatibilityBetweenAnObserverOfIntegerAndAnInstanceOfDigit(); static; inline;
   public
     class procedure Exercise(); static; inline;
   end;
-
-  ExecutableSpecification_Digit_ValueCompleteTests = record
-  public type
-    AssignmentCompatibility = record
-    strict private {PE Types}
-      class procedure IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues(); static; inline;
-    strict private {Native Delphi Types}
-      class procedure IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues(); static; inline;
-      class procedure IsSymmetricallyAssignmentCompatibleWithTheIntegerTypeWhileRetainingIntegerValues(); static; inline;
-      class procedure IsSymmetricallyAssignmentCompatibleWithTheUInt64TypeWhileRetainingUInt64Values(); static; inline;
-      class procedure IsSymmetricallyAssignmentCompatibleWithTheWordTypeWhileRetainingWordValues(); static; inline;
-    public
-      class procedure Exercise(); static; inline;
-    end;
-  public
-    class procedure Exercise(); static; inline;
-  end;
-
-procedure Exercise(); inline;
 
 implementation
 
-procedure Exercise(); inline;
+{ ExecutableSpecification_Digit_Defintion }
+
+class procedure ExecutableSpecification_Digit_Defintion.Exercise;
 begin
-  ExecutableSpecification_Digit_TypeCompleteTests.Exercise();
-  ExecutableSpecification_Digit_ValueCompleteTests.Exercise();
+  TheSystemUnderTestRecognizesTheTermDigitDotZeroAsEquatingToTheNaturalNumberOf0();
+  TheSystemUnderTestRecognizesTheTermDigitDotOneAsEquatingToTheNaturalNumberOf1();
+  TheSystemUnderTestRecognizesTheTermDigitDotTwoAsEquatingToTheNaturalNumberOf2();
+  TheSystemUnderTestRecognizesTheTermDigitDotThreeAsEquatingToTheNaturalNumberOf3();
+  TheSystemUnderTestRecognizesTheTermDigitDotFourAsEquatingToTheNaturalNumberOf4();
+  TheSystemUnderTestRecognizesTheTermDigitDotFiveAsEquatingToTheNaturalNumberOf5();
+  TheSystemUnderTestRecognizesTheTermDigitDotSixAsEquatingToTheNaturalNumberOf6();
+  TheSystemUnderTestRecognizesTheTermDigitDotSevenAsEquatingToTheNaturalNumberOf7();
+  TheSystemUnderTestRecognizesTheTermDigitDotEightAsEquatingToTheNaturalNumberOf8();
+  TheSystemUnderTestRecognizesTheTermDigitDotNineAsEquatingToTheNaturalNumberOf9();
+  //
+  TheSystemUnderTestRecognizesTheNumericalEstablishmentOfTheDigitRangeAsStartingWith0AndEndingWith9();
+  TheSystemUnderTestRecognizesTheSmallestPossibleValueOfDigitAs0();
+  TheSystemUnderTestRecognizesTheLargestPossibleValueOfDigitAs9();
+  TheSystemUnderTestRecognizesSymmetricAssignmentCompatibilityBetweenAnObserverOfDigitAndAnObserverOfDigit();
+  TheSystemUnderTestRecognizesSymmetricAssignmentCompatibilityBetweenAnObserverOfIntegerAndAnInstanceOfDigit();
+  TheSystemUnderTestRecognizesDigitAsAnEntityThatHasTypeIdentity();
 end;
 
-{ExecutableSpecification_Digit_TypeCompleteTests}
-class constructor ExecutableSpecification_Digit_TypeCompleteTests.Create;
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesDigitAsAnEntityThatHasTypeIdentity();
 begin
-  Digit_Default := System.Default(Digit);
-  System.Assert(System.Default(Digit) = Digit_Default);
+  System.Assert(System.Assigned(Digit.TypeIdentity));
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Exercise;
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesSymmetricAssignmentCompatibilityBetweenAnObserverOfDigitAndAnObserverOfDigit;
+var
+  Actual,
+  Observer: Digit;
 begin
-  Boundaries.Exercise();
-  Properties.Exercise();
-  TheDefaultValueIsZero();
-  TypeIdentity.Exercise();
+  Observer := 0;
+  Actual := 0;
+  System.Assert(0 = Observer);
+  System.Assert(0 = Actual);
+  System.Assert(Observer = 0);
+  System.Assert(Actual = 0);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 1;
+  Actual := 1;
+  System.Assert(1 = Observer);
+  System.Assert(1 = Actual);
+  System.Assert(Observer = 1);
+  System.Assert(Actual = 1);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 2;
+  Actual := 2;
+  System.Assert(2 = Observer);
+  System.Assert(2 = Actual);
+  System.Assert(Observer = 2);
+  System.Assert(Actual = 2);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 3;
+  Actual := 3;
+  System.Assert(3 = Observer);
+  System.Assert(3 = Actual);
+  System.Assert(Observer = 3);
+  System.Assert(Actual = 3);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 4;
+  Actual := 4;
+  System.Assert(4 = Observer);
+  System.Assert(4 = Actual);
+  System.Assert(Observer = 4);
+  System.Assert(Actual = 4);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 5;
+  Actual := 5;
+  System.Assert(5 = Observer);
+  System.Assert(5 = Actual);
+  System.Assert(Observer = 5);
+  System.Assert(Actual = 5);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 6;
+  Actual := 6;
+  System.Assert(6 = Observer);
+  System.Assert(6 = Actual);
+  System.Assert(Observer = 6);
+  System.Assert(Actual = 6);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 7;
+  Actual := 7;
+  System.Assert(7 = Observer);
+  System.Assert(7 = Actual);
+  System.Assert(Observer = 7);
+  System.Assert(Actual = 7);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 8;
+  Actual := 8;
+  System.Assert(8 = Observer);
+  System.Assert(8 = Actual);
+  System.Assert(Observer = 8);
+  System.Assert(Actual = 8);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 9;
+  Actual := 9;
+  System.Assert(9 = Observer);
+  System.Assert(9 = Actual);
+  System.Assert(Observer = 9);
+  System.Assert(Actual = 9);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.TheDefaultValueIsZero;
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesSymmetricAssignmentCompatibilityBetweenAnObserverOfIntegerAndAnInstanceOfDigit();
+var
+  Actual: Digit;
+  Observer: Integer;
 begin
-  System.Assert(0 = Digit_Default);
+  Observer := 0;
+  Actual := 0;
+  System.Assert(0 = Observer);
+  System.Assert(0 = Actual);
+  System.Assert(Observer = 0);
+  System.Assert(Actual = 0);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 1;
+  Actual := 1;
+  System.Assert(1 = Observer);
+  System.Assert(1 = Actual);
+  System.Assert(Observer = 1);
+  System.Assert(Actual = 1);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 2;
+  Actual := 2;
+  System.Assert(2 = Observer);
+  System.Assert(2 = Actual);
+  System.Assert(Observer = 2);
+  System.Assert(Actual = 2);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 3;
+  Actual := 3;
+  System.Assert(3 = Observer);
+  System.Assert(3 = Actual);
+  System.Assert(Observer = 3);
+  System.Assert(Actual = 3);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 4;
+  Actual := 4;
+  System.Assert(4 = Observer);
+  System.Assert(4 = Actual);
+  System.Assert(Observer = 4);
+  System.Assert(Actual = 4);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 5;
+  Actual := 5;
+  System.Assert(5 = Observer);
+  System.Assert(5 = Actual);
+  System.Assert(Observer = 5);
+  System.Assert(Actual = 5);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 6;
+  Actual := 6;
+  System.Assert(6 = Observer);
+  System.Assert(6 = Actual);
+  System.Assert(Observer = 6);
+  System.Assert(Actual = 6);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 7;
+  Actual := 7;
+  System.Assert(7 = Observer);
+  System.Assert(7 = Actual);
+  System.Assert(Observer = 7);
+  System.Assert(Actual = 7);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 8;
+  Actual := 8;
+  System.Assert(8 = Observer);
+  System.Assert(8 = Actual);
+  System.Assert(Observer = 8);
+  System.Assert(Actual = 8);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
+  Observer := 9;
+  Actual := 9;
+  System.Assert(9 = Observer);
+  System.Assert(9 = Actual);
+  System.Assert(Observer = 9);
+  System.Assert(Actual = 9);
+  System.Assert(Observer = Actual);
+  System.Assert(Actual = Observer);
 end;
 
-{ExecutableSpecification_Digit_TypeCompleteTests.Boundaries}
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Boundaries.Exercise;
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheSmallestPossibleValueOfDigitAs0();
 begin
-  TheLowestTypeAllowedValueIsZero();
-  TheHighestTypeAllowedValueIs9();
+  System.Assert(0 = Digit.Min);
+  System.Assert(Digit.Min = 0);
+  System.Assert(0 = System.Low(Digit.Range));
+  System.Assert(System.Low(Digit.Range) = 0);
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Boundaries.TheLowestTypeAllowedValueIsZero();
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotZeroAsEquatingToTheNaturalNumberOf0();
+var
+  SystemObserver: Integer;
 begin
-  System.Assert(9 = System.High(Digit));
+  SystemObserver := 0;
+  System.Assert(0 = SystemObserver);
+  System.Assert(SystemObserver = 0);
+  System.Assert(Digit.Zero = 0);
+  System.Assert(0 = Digit.Zero);
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Boundaries.TheHighestTypeAllowedValueIs9();
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheLargestPossibleValueOfDigitAs9;
 begin
-  System.Assert(0 = System.Low(Digit));
+  System.Assert(9 = Digit.Max);
+  System.Assert(Digit.Max = 9);
+  System.Assert(9 = System.High(Digit.Range));
+  System.Assert(System.High(Digit.Range) = 9);
 end;
 
-{ExecutableSpecification_Digit_TypeCompleteTests.Properties}
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.Exercise;
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheNumericalEstablishmentOfTheDigitRangeAsStartingWith0AndEndingWith9;
 begin
-  TheMaxPropertyReturns9ForADefaultInstance();
-  TheMaxPropertyReturns9ForANonDefaultInstance();
-  TheMinPropertyReturnsZeroForADefaultInstance();
-  TheMinPropertyReturnsZeroForANonDefaultInstance();
-  TheMonoCharPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsRepresentationAsAMonoCharValue();
-  TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue();
+  System.Assert(0 = System.Low(Digit.Range));
+  System.Assert(9 = System.High(Digit.Range));
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMonoCharPropertyProvidesAnArrayOfDigitsSuchThatEachDigitValueReturnsItsRepresentationAsAMonoCharValue();
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotEightAsEquatingToTheNaturalNumberOf8;
+var
+  SystemObserver: Integer;
 begin
-  System.Assert(10 = System.Length(Digit.MonoChar));
-  System.Assert('0' = Digit.MonoChar[0]);
-  System.Assert('1' = Digit.MonoChar[1]);
-  System.Assert('2' = Digit.MonoChar[2]);
-  System.Assert('3' = Digit.MonoChar[3]);
-  System.Assert('4' = Digit.MonoChar[4]);
-  System.Assert('5' = Digit.MonoChar[5]);
-  System.Assert('6' = Digit.MonoChar[6]);
-  System.Assert('7' = Digit.MonoChar[7]);
-  System.Assert('8' = Digit.MonoChar[8]);
-  System.Assert('9' = Digit.MonoChar[9]);
+  SystemObserver := 8;
+  System.Assert(8 = SystemObserver);
+  System.Assert(SystemObserver = 8);
+  System.Assert(Digit.Eight = 8);
+  System.Assert(8 = Digit.Eight);
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMaxPropertyReturns9ForADefaultInstance;
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotFiveAsEquatingToTheNaturalNumberOf5;
+var
+  SystemObserver: Integer;
 begin
-  System.Assert(9 = System.High(Digit));
-  var Actual: Digit := Digit_Default;
-  System.Assert(Actual = Digit_Default);
-  System.Assert(9 = Actual.Max);
+  SystemObserver := 5;
+  System.Assert(5 = SystemObserver);
+  System.Assert(SystemObserver = 5);
+  System.Assert(Digit.Five = 5);
+  System.Assert(5 = Digit.Five);
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMaxPropertyReturns9ForANonDefaultInstance;
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotFourAsEquatingToTheNaturalNumberOf4;
+var
+  SystemObserver: Integer;
 begin
-  System.Assert(9 = System.High(Digit));
-  var Actual: Digit := Rando_TheUntrustworthy.NonDefaultValue<Digit>();
-  System.Assert(not (Actual = Digit_Default));
-  System.Assert(9 = Actual.Max);
+  SystemObserver := 4;
+  System.Assert(4 = SystemObserver);
+  System.Assert(SystemObserver = 4);
+  System.Assert(Digit.Four = 4);
+  System.Assert(4 = Digit.Four);
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMinPropertyReturnsZeroForADefaultInstance;
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotNineAsEquatingToTheNaturalNumberOf9;
+var
+  SystemObserver: Integer;
 begin
-  System.Assert(0 = System.Low(Digit));
-  var Actual: Digit := Digit_Default;
-  System.Assert(Actual = Digit_Default);
-  System.Assert(0 = Actual.Min);
+  SystemObserver := 9;
+  System.Assert(9 = SystemObserver);
+  System.Assert(SystemObserver = 9);
+  System.Assert(Digit.Nine = 9);
+  System.Assert(9 = Digit.Nine);
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheMinPropertyReturnsZeroForANonDefaultInstance;
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotOneAsEquatingToTheNaturalNumberOf1();
+var
+  SystemObserver: Integer;
 begin
-  System.Assert(0 = System.Low(Digit));
-  var Actual: Digit := Rando_TheUntrustworthy.NonDefaultValue<Digit>();
-  System.Assert(not (Actual = Digit_Default));
-  System.Assert(0 = Actual.Min);
+  SystemObserver := 1;
+  System.Assert(1 = SystemObserver);
+  System.Assert(SystemObserver = 1);
+  System.Assert(Digit.One = 1);
+  System.Assert(1 = Digit.One);
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.Properties.TheTypeIdentityPropertyContainsANonNullIdentifierMatchingTheSystemDotInfoRoutinesValue;
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotSevenAsEquatingToTheNaturalNumberOf7;
+var
+  SystemObserver: Integer;
 begin
-  TypeEquivalenceInquiry<Digit>.HasANonNullSystemDotTypeInfoValue();
-  System.Assert(System.TypeInfo(Digit) = Digit.TypeIdentity);
+  SystemObserver := 7;
+  System.Assert(7 = SystemObserver);
+  System.Assert(SystemObserver = 7);
+  System.Assert(Digit.Seven = 7);
+  System.Assert(7 = Digit.Seven);
 end;
 
-{ExecutableSpecification_Digit_TypeCompleteTests.TypeIdentity}
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.TypeIdentity.Exercise();
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotSixAsEquatingToTheNaturalNumberOf6;
+var
+  SystemObserver: Integer;
 begin
-  HasItsOwnNonNullTypeIdentity();
+  SystemObserver := 6;
+  System.Assert(6 = SystemObserver);
+  System.Assert(SystemObserver = 6);
+  System.Assert(Digit.Six = 6);
+  System.Assert(6 = Digit.Six);
 end;
 
-class procedure ExecutableSpecification_Digit_TypeCompleteTests.TypeIdentity.HasItsOwnNonNullTypeIdentity();
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotThreeAsEquatingToTheNaturalNumberOf3;
+var
+  SystemObserver: Integer;
 begin
-  TypeEquivalenceInquiry<Digit>.HasANonNullSystemDotTypeInfoValue();
+  SystemObserver := 3;
+  System.Assert(3 = SystemObserver);
+  System.Assert(SystemObserver = 3);
+  System.Assert(Digit.Three = 3);
+  System.Assert(3 = Digit.Three);
 end;
 
-{ ExecutableSpecification_Digit_TypeCompleteTests.AssignmentCompatibility }
-
-class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.Exercise;
+class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotTwoAsEquatingToTheNaturalNumberOf2;
+var
+  SystemObserver: Integer;
 begin
-  {PE Types}
-  IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues();
-  {Native Delphi Types}
-  IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues();
-  IsSymmetricallyAssignmentCompatibleWithTheIntegerTypeWhileRetainingIntegerValues();
-  IsSymmetricallyAssignmentCompatibleWithTheUInt64TypeWhileRetainingUInt64Values();
-  IsSymmetricallyAssignmentCompatibleWithTheWordTypeWhileRetainingWordValues();
-end;
-
-class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheByteTypeWhileRetainingByteValues;
-begin
-  //Validating Assumptions
-  System.Assert(Digit.Max > Digit.Min);
-  //Test
-  var ADigit: Digit;
-  var AByte: Byte;
-  for var Expected: Digit := Digit.Min to Digit.Max do
-  begin
-    ADigit := Expected;
-    AByte := ADigit + 1;
-    System.Assert(Expected = ADigit);
-    System.Assert(not (Expected = AByte));
-    AByte := ADigit;
-    System.Assert(ADigit = AByte);
-    ADigit := AByte;
-    System.Assert(Expected = ADigit);
-  end;
-end;
-
-class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheIntegerTypeWhileRetainingIntegerValues;
-begin
-  //Validating Assumptions
-  System.Assert(Digit.Max > Digit.Min);
-  //Test
-  var ADigit: Digit;
-  var AnInteger: Integer;
-  for var Expected: Digit := Digit.Min to Digit.Max do
-  begin
-    ADigit := Expected;
-    AnInteger := ADigit + 1;
-    System.Assert(Expected = ADigit);
-    System.Assert(not (Expected = AnInteger));
-    AnInteger := ADigit;
-    System.Assert(ADigit = AnInteger);
-    ADigit := AnInteger;
-    System.Assert(Expected = ADigit);
-  end;
-end;
-
-class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheNaturalNumberTypeWhileRetainingNaturalNumberValues;
-begin
-  //Validating Assumptions
-  System.Assert(Digit.Max > Digit.Min);
-  //Test
-  var ADigit: Digit;
-  var ANaturalNumber: NaturalNumber;
-  for var Expected: Digit := Digit.Min to Digit.Max do
-  begin
-    ADigit := Expected;
-    ANaturalNumber := ADigit + 1;
-    System.Assert(Expected = ADigit);
-    System.Assert(not (Expected = ANaturalNumber));
-    ANaturalNumber := ADigit;
-    System.Assert(ADigit = ANaturalNumber);
-    ADigit := ANaturalNumber;
-    System.Assert(Expected = ADigit);
-  end;
-end;
-
-class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheUInt64TypeWhileRetainingUInt64Values;
-begin
-  //Validating Assumptions
-  System.Assert(Digit.Max > Digit.Min);
-  //Test
-  var ADigit: Digit;
-  var AnUInt64: UInt64;
-  for var Expected: Digit := Digit.Min to Digit.Max do
-  begin
-    ADigit := Expected;
-    AnUInt64 := ADigit + 1;
-    System.Assert(Expected = ADigit);
-    System.Assert(not (Expected = AnUInt64));
-    AnUInt64 := ADigit;
-    System.Assert(ADigit = AnUInt64);
-    ADigit := AnUInt64;
-    System.Assert(Expected = ADigit);
-  end;
-end;
-
-class procedure ExecutableSpecification_Digit_ValueCompleteTests.AssignmentCompatibility.IsSymmetricallyAssignmentCompatibleWithTheWordTypeWhileRetainingWordValues;
-begin
-  //Validating Assumptions
-  System.Assert(Digit.Max > Digit.Min);
-  //Test
-  var ADigit: Digit;
-  var AWord: Word;
-  for var Expected: Digit := Digit.Min to Digit.Max do
-  begin
-    ADigit := Expected;
-    AWord := ADigit + 1;
-    System.Assert(Expected = ADigit);
-    System.Assert(not (Expected = AWord));
-    AWord := ADigit;
-    System.Assert(ADigit = AWord);
-    ADigit := AWord;
-    System.Assert(Expected = ADigit);
-  end;
-end;
-
-{ ExecutableSpecification_Digit_ValueCompleteTests }
-
-class procedure ExecutableSpecification_Digit_ValueCompleteTests.Exercise;
-begin
-  AssignmentCompatibility.Exercise();
+  SystemObserver := 2;
+  System.Assert(2 = SystemObserver);
+  System.Assert(SystemObserver = 2);
+  System.Assert(Digit.Two = 2);
+  System.Assert(2 = Digit.Two);
 end;
 
 end.
