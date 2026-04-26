@@ -44,10 +44,11 @@ begin
   }
   ExitCode := MaxInt;
   System.WriteLn('Starting Tests...');
-  ExecutableSpecification_Digit_Definition.Exercise();
+  var Actual: Digit := 9;
+  {If the line doesn't look like something that would invoke testing, that is intentional.
+   Place a breakpoint in the Digit's class constructor to see how assigning a value to digit invokes validation before usage}
   System.WriteLn('Tests Complete...');
   System.Writeln('Press any key to close the application');
   ReadLn;
-
   Exit;
 end.

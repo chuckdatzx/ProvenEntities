@@ -73,6 +73,7 @@ uses
 class constructor Digit.Create();
 begin
   FDelphiTypeIdentity := System.TypeInfo(Digit);
+  ExecutableSpecification_Digit_Definition.Exercise();
 end;
 
 function Digit.GetValue: Range;
