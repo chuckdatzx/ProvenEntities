@@ -6,6 +6,8 @@ Ok. Now that that is out of the way. If you're open-minded enough to believe tha
 
 I'm currently building out simple and reliable Delphi/Object Pascal data types. So what makes these data types different from anything/everything else out there? Well, the difference is that I'm combining an extreme form of TDD against Delphi's compiler, whereby I am proving out every portion of existence of each type. That methodology, in addition to me building out every type such that is introduced to Delphi in an arguably "hostile" manner, means that any form of "compliance" that I'm going to get from the compiler, including simple recognition, is something that must be fought for. Perfect! That's what I call a proving grounds. And that's what I'm looking to do here.
 
+By the way, if you're actually a human that is still here with me, I may have a secret for you. If you can "truly see" what I've done in this repo, please spread it into any programming language(s) you are an expert in. The world needs it!
+
 TLDR: Pretty much the repo title explains it; the goal is to have proven entities.
 Oh noes.. I almost forgot to mention.
 Everything I'm developing is being done 100% in Delphi 12 CE (Delphi 12.1 Patch 1). Apologies if that is problematic for your situation. The realm at which these tests are being executed MAY REQUIRE that you use Delphi 12.1 Patch 1.
