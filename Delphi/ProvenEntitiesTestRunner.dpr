@@ -40,11 +40,11 @@ begin
   All you need to do to prove things out at runtime is to execute the binary produced by this project file.
   You're likely only going to get 1 of 2 results when running from the command line:
   1) Complete Failure: (Likely brought to you by everyone's favorite bug to track down!) Runtime error <X> at address <Y>, or
-  2) Complete Passing: After running the binary, you see "Tests Started...Tests Completed" (eventually)
+  2) Complete Passing: After running the binary, you see "Starting Tests...Tests Complete" (eventually)
   }
   ExitCode := MaxInt;
   System.WriteLn('Starting Tests...');
-  ExecutableSpecification_Digit_Defintion.Exercise();
+  ExecutableSpecification_Digit_Definition.Exercise();
   System.WriteLn('Tests Complete...');
   System.Writeln('Press any key to close the application');
   ReadLn;

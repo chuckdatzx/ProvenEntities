@@ -27,7 +27,7 @@ uses
   PE.Types;
 
 type
-  ExecutableSpecification_Digit_Defintion = record
+  ExecutableSpecification_Digit_Definition = record
   strict private
     class procedure TheSystemUnderTestRecognizesTheTermDigitDotZeroAsEquatingToTheNaturalNumberOf0(); static; inline;
     class procedure TheSystemUnderTestRecognizesTheTermDigitDotOneAsEquatingToTheNaturalNumberOf1(); static; inline;
@@ -53,9 +53,8 @@ type
 
 implementation
 
-{ ExecutableSpecification_Digit_Defintion }
-
-class procedure ExecutableSpecification_Digit_Defintion.Exercise;
+{ExecutableSpecification_Digit_Definition}
+class procedure ExecutableSpecification_Digit_Definition.Exercise;
 begin
   TheSystemUnderTestRecognizesTheTermDigitDotZeroAsEquatingToTheNaturalNumberOf0();
   TheSystemUnderTestRecognizesTheTermDigitDotOneAsEquatingToTheNaturalNumberOf1();
@@ -76,12 +75,12 @@ begin
   TheSystemUnderTestRecognizesDigitAsAnEntityThatHasTypeIdentity();
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesDigitAsAnEntityThatHasTypeIdentity();
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesDigitAsAnEntityThatHasTypeIdentity();
 begin
   System.Assert(System.Assigned(Digit.TypeIdentity));
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesSymmetricAssignmentCompatibilityBetweenAnObserverOfDigitAndAnObserverOfDigit;
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesSymmetricAssignmentCompatibilityBetweenAnObserverOfDigitAndAnObserverOfDigit;
 var
   Actual,
   Observer: Digit;
@@ -168,7 +167,7 @@ begin
   System.Assert(Actual = Observer);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesSymmetricAssignmentCompatibilityBetweenAnObserverOfIntegerAndAnInstanceOfDigit();
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesSymmetricAssignmentCompatibilityBetweenAnObserverOfIntegerAndAnInstanceOfDigit();
 var
   Actual: Digit;
   Observer: Integer;
@@ -255,7 +254,7 @@ begin
   System.Assert(Actual = Observer);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheSmallestPossibleValueOfDigitAs0();
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheSmallestPossibleValueOfDigitAs0();
 begin
   System.Assert(0 = Digit.Min);
   System.Assert(Digit.Min = 0);
@@ -263,7 +262,7 @@ begin
   System.Assert(System.Low(Digit.Range) = 0);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotZeroAsEquatingToTheNaturalNumberOf0();
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheTermDigitDotZeroAsEquatingToTheNaturalNumberOf0();
 var
   SystemObserver: Integer;
 begin
@@ -274,7 +273,7 @@ begin
   System.Assert(0 = Digit.Zero);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheLargestPossibleValueOfDigitAs9;
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheLargestPossibleValueOfDigitAs9;
 begin
   System.Assert(9 = Digit.Max);
   System.Assert(Digit.Max = 9);
@@ -282,13 +281,13 @@ begin
   System.Assert(System.High(Digit.Range) = 9);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheNumericalEstablishmentOfTheDigitRangeAsStartingWith0AndEndingWith9;
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheNumericalEstablishmentOfTheDigitRangeAsStartingWith0AndEndingWith9;
 begin
   System.Assert(0 = System.Low(Digit.Range));
   System.Assert(9 = System.High(Digit.Range));
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotEightAsEquatingToTheNaturalNumberOf8;
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheTermDigitDotEightAsEquatingToTheNaturalNumberOf8;
 var
   SystemObserver: Integer;
 begin
@@ -299,7 +298,7 @@ begin
   System.Assert(8 = Digit.Eight);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotFiveAsEquatingToTheNaturalNumberOf5;
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheTermDigitDotFiveAsEquatingToTheNaturalNumberOf5;
 var
   SystemObserver: Integer;
 begin
@@ -310,7 +309,7 @@ begin
   System.Assert(5 = Digit.Five);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotFourAsEquatingToTheNaturalNumberOf4;
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheTermDigitDotFourAsEquatingToTheNaturalNumberOf4;
 var
   SystemObserver: Integer;
 begin
@@ -321,7 +320,7 @@ begin
   System.Assert(4 = Digit.Four);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotNineAsEquatingToTheNaturalNumberOf9;
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheTermDigitDotNineAsEquatingToTheNaturalNumberOf9;
 var
   SystemObserver: Integer;
 begin
@@ -332,7 +331,7 @@ begin
   System.Assert(9 = Digit.Nine);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotOneAsEquatingToTheNaturalNumberOf1();
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheTermDigitDotOneAsEquatingToTheNaturalNumberOf1();
 var
   SystemObserver: Integer;
 begin
@@ -343,7 +342,7 @@ begin
   System.Assert(1 = Digit.One);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotSevenAsEquatingToTheNaturalNumberOf7;
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheTermDigitDotSevenAsEquatingToTheNaturalNumberOf7;
 var
   SystemObserver: Integer;
 begin
@@ -354,7 +353,7 @@ begin
   System.Assert(7 = Digit.Seven);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotSixAsEquatingToTheNaturalNumberOf6;
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheTermDigitDotSixAsEquatingToTheNaturalNumberOf6;
 var
   SystemObserver: Integer;
 begin
@@ -365,7 +364,7 @@ begin
   System.Assert(6 = Digit.Six);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotThreeAsEquatingToTheNaturalNumberOf3;
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheTermDigitDotThreeAsEquatingToTheNaturalNumberOf3;
 var
   SystemObserver: Integer;
 begin
@@ -376,7 +375,7 @@ begin
   System.Assert(3 = Digit.Three);
 end;
 
-class procedure ExecutableSpecification_Digit_Defintion.TheSystemUnderTestRecognizesTheTermDigitDotTwoAsEquatingToTheNaturalNumberOf2;
+class procedure ExecutableSpecification_Digit_Definition.TheSystemUnderTestRecognizesTheTermDigitDotTwoAsEquatingToTheNaturalNumberOf2;
 var
   SystemObserver: Integer;
 begin

@@ -125,6 +125,7 @@ begin
     8: Result := (Eight = 8);
     9: Result := (Nine = 9);
   else
+    Result := False;
     System.Halt;
   end;
 end;
