@@ -107,6 +107,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="..\Source\PE.BoundedTypes.Digit.pas"/>
+        <DCCReference Include="ScratchPad.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -44,7 +44,8 @@ Every Test Case requires an observer from the SUT.
 {$APPTYPE CONSOLE}
 
 uses
-  PE.BoundedTypes.Digit in '..\Source\PE.BoundedTypes.Digit.pas';
+  PE.BoundedTypes.Digit in '..\Source\PE.BoundedTypes.Digit.pas',
+  ScratchPad in 'ScratchPad.pas';
 
 begin
   Randomize();
