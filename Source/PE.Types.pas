@@ -67,13 +67,10 @@ type {Discrete Types}
 
 implementation
 
-uses
-  PE.Tests.BoundedTypes.Digit;
-
 class constructor Digit.Create();
 begin
   FDelphiTypeIdentity := System.TypeInfo(Digit);
-  ExecutableSpecification_Digit_Definition.Exercise();
+  ExecutableSpecification_Digit_Type.Exercise();
 end;
 
 function Digit.GetValue: Range;
@@ -133,7 +130,7 @@ end;
 
 class function Digit.InternalStaticOperator_VsInteger_In(const DigitValue: Digit; const IntegerValue: Integer): Boolean;
 begin
-  Result := (DigitValue.Min >= IntegerValue) and (DigitValue.Max <= IntegerValue);
+  Result := (Digit.Min >= IntegerValue) and (Digit.Max <= IntegerValue);
 end;
 
 procedure Digit.SetValue(const AValue: Range);

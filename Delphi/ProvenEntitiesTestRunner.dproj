@@ -106,11 +106,7 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="PE.Actors.Rando.pas"/>
-        <DCCReference Include="PE.Delphi.AssignmentCompatibility.pas"/>
-        <DCCReference Include="PE.Delphi.TypeIdentity.pas"/>
-        <DCCReference Include="..\Tests\PE.Tests.BoundedTypes.Digit.pas"/>
-        <DCCReference Include="..\Source\PE.Types.pas"/>
+        <DCCReference Include="..\Tests\PE.BoundedTypes.Digit.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

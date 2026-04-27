@@ -25,28 +25,33 @@ I'm truly not trying to scare anyone off. I'm perfectly comfortable calling the 
 and I have researched from the compiler to my code. I'm simply recommending that you do the same
 and not just assume, without pause, that it is unbreakable.}
 
+{
+Formal Declaration of Proof Methodology:
+Every Test Case (i.e. method) is a discrete and executable theorem, proposing some "desired fact of existence" for the Type In Question (TIQ); and each theorem does so through and against the System Under Test (SUT)
+Since the Law of Excluded Middle simply does not apply to our context of proof, yet it is obviously a reality that must be handled in every programming language, I will be introducing new types into Delphi in the most
+diametrically opposed manner I can wield and compile (if you find something even more obtuse than I have, let me know).
+
+Okay... So why are you playing this game on hardcode mode?
+
+Because if I am able to integrate actively hostile, yet incredibly useful, constructs into Delphi, then I am effectively leveraging my expertise in a form of proof that must be accepted if all
+Test Cases are indeed True (which also means any other expert in any other language could be doing the same!).
+
+Notes regarding TC's and their associated TIQ's:
+Every Test Case requires an observer from the SUT.
+  - The purpose of the observer is to serve as both a witness and a source of truth, such that the expressed intent of the Test Case has successfully melded TIQ into the SUT.
+}
+
 {$APPTYPE CONSOLE}
 
 uses
-  PE.Actors.Rando in 'PE.Actors.Rando.pas',
-  PE.Delphi.AssignmentCompatibility in 'PE.Delphi.AssignmentCompatibility.pas',
-  PE.Delphi.TypeIdentity in 'PE.Delphi.TypeIdentity.pas',
-  PE.Tests.BoundedTypes.Digit in '..\Tests\PE.Tests.BoundedTypes.Digit.pas',
-  PE.Types in '..\Source\PE.Types.pas';
+  PE.BoundedTypes.Digit in '..\Tests\PE.BoundedTypes.Digit.pas';
 
 begin
   Randomize();
-  {
-  All you need to do to prove things out at runtime is to execute the binary produced by this project file.
-  You're likely only going to get 1 of 2 results when running from the command line:
-  1) Complete Failure: (Likely brought to you by everyone's favorite bug to track down!) Runtime error <X> at address <Y>, or
-  2) Complete Passing: After running the binary, you see "Starting Tests...Tests Complete" (eventually)
-  }
   ExitCode := MaxInt;
   System.WriteLn('Starting Tests...');
-  var Actual: Digit := 9;
-  {If the line doesn't look like something that would invoke testing, that is intentional.
-   Place a breakpoint in the Digit's class constructor to see how assigning a value to digit invokes validation before usage}
+  ExecutableSpecification_Digit_Type.Exercise();
+  ExitCode := 0;
   System.WriteLn('Tests Complete...');
   System.Writeln('Press any key to close the application');
   ReadLn;
